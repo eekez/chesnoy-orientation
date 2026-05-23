@@ -14,7 +14,1224 @@
 
     <style>
         html, body { height: 100%; overflow: hidden; }
+        @keyframes shimmer { 100% { transform: translateX(100%); } }<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <title>Anciens BCPST & TB - Le Chesnoy</title>
+    <meta name="description" content="Découvrez les parcours et écoles intégrées par les anciens étudiants des filières BCPST et TB du lycée agricole Le Chesnoy.">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+    <style>
+        html, body { height: 100%; overflow: hidden; }
         @keyframes shimmer { 100% { transform: translateX(100%); } }
+
+        /* Range slider */
+        .range-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            position: absolute; width: 100%; height: 4px;
+            background: transparent; pointer-events: none;
+        }
+        .range-slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: #059669; border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+            pointer-events: all; cursor: pointer;
+            transition: transform 0.1s, background 0.1s;
+        }
+        .range-slider-thumb::-moz-range-thumb {
+            width: 16px; height: 16px; border-radius: 50%;
+            background: #059669; border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+            pointer-events: all; cursor: pointer;
+        }
+        .range-slider-thumb::-webkit-slider-thumb:hover { transform: scale(1.2); background: #047857; }
+        .range-slider-thumb:focus::-webkit-slider-thumb { outline: 2px solid #a7f3d0; }
+
+        /* Cluster overrides */
+        .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+            background-clip: padding-box;
+        }
+        .marker-cluster-small div  { background-color: rgba(5,150,105,0.7); }
+        .marker-cluster-medium div { background-color: rgba(217,119,6,0.7); }
+        .marker-cluster-large div  { background-color: rgba(220,38,38,0.7); }
+        .marker-cluster { border-radius: 50% !important; }
+        .marker-cluster div { border-radius: 50% !important; color:#fff; font-weight:bold; font-size:11px; }
+
+        /* List view row focus */
+        .list-school-card:focus { outline: 2px solid #059669; outline-offset: 1px; }
+
+        /* Accordéon vidéos */
+        .video-group {
+            overflow: hidden;
+            transition: max-height 0.28s ease, opacity 0.2s ease;
+            opacity: 1;
+        }
+        .video-group.collapsed { opacity: 0; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans h-full flex flex-col">
+
+<!-- ===== HEADER ===== -->
+<header class="bg-emerald-800 text-white p-3 shadow-md flex items-center justify-between z-10 border-b-4 border-amber-400">
+    <div class="flex items-center space-x-3">
+        <img src="logo.jpg" alt="Logo Le Chesnoy" class="h-12 w-12 rounded-lg bg-white p-0.5 object-contain shadow">
+        <div>
+            <h1 class="text-md md:text-lg font-bold tracking-tight text-amber-300">Lycée Agricole Le Chesnoy</h1>
+            <p class="text-xs opacity-90 font-medium text-white">Parcours des Anciens Étudiants BCPST &amp; TB</p>
+        </div>
+    </div>
+    <button id="view-toggle-btn" onclick="toggleVue()"
+            aria-label="Basculer vers la vue liste"
+            class="text-xs font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shrink-0">
+        <span id="view-toggle-icon" aria-hidden="true">📋</span>
+        <span id="view-toggle-label" class="hidden sm:inline">Vue liste</span>
+    </button>
+</header>
+
+<!-- ===== MAIN ===== -->
+<main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+
+    <!-- CARTE -->
+    <div id="map-container" class="w-full h-2/5 md:h-full md:w-3/5 bg-gray-200 shadow-inner relative">
+        <div id="map" class="w-full h-full"></div>
+        <!-- Légende dynamique -->
+        <div id="map-legend" class="absolute bottom-8 left-2 z-[1000] bg-white/95 backdrop-blur-sm rounded-lg shadow-md border border-gray-200 text-xs overflow-hidden" style="min-width:120px;" role="complementary" aria-label="Légende de la carte">
+            <button id="legend-toggle" onclick="toggleLegend()" aria-expanded="false" aria-controls="legend-body"
+                    class="w-full flex items-center justify-between px-2.5 py-1.5 font-bold text-gray-600 bg-gray-50 hover:bg-gray-100 border-b border-gray-100 transition-colors text-[10px] uppercase tracking-wide">
+                <span>🗂 Légende</span>
+                <span id="legend-arrow" class="text-gray-400 ml-2" aria-hidden="true">▼</span>
+            </button>
+            <div id="legend-body" class="px-2.5 py-2 space-y-1.5 hidden" role="list" aria-label="Types d'écoles"></div>
+        </div>
+    </div>
+
+    <!-- VUE LISTE -->
+    <div id="list-view" class="hidden w-full h-2/5 md:h-full md:w-3/5 overflow-y-auto bg-gray-50 border-r border-gray-200 flex flex-col" role="region" aria-label="Liste des écoles">
+        <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-4 py-2 z-10">
+            <p id="list-header-text" class="text-[11px] text-gray-500"></p>
+        </div>
+        <div id="list-content" class="p-3 space-y-2 flex-1" role="list"></div>
+    </div>
+
+    <!-- PANNEAU DROITE -->
+    <div id="details-panel" class="w-full h-3/5 md:h-full md:w-2/5 bg-white p-4 md:p-6 overflow-y-auto border-t-2 md:border-t-0 md:border-l border-gray-200 flex flex-col">
+
+        <!-- FILTRES -->
+        <div class="space-y-3 mb-4 bg-gray-50 p-3 rounded-xl border border-gray-100 shadow-sm" role="search" aria-label="Filtres de recherche">
+
+            <input type="text" id="search-bar" placeholder="🔍 Rechercher une école, une ville..."
+                   aria-label="Rechercher une école ou une ville"
+                   class="w-full p-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-all text-xs">
+
+            <div class="flex space-x-2" role="group" aria-label="Filtrer par filière">
+                <button id="btn-all-filieres" onclick="changerFiliere('TOUT')" aria-pressed="true"
+                        class="flex-1 py-1.5 px-3 rounded-lg text-xs font-bold bg-emerald-700 text-white shadow-sm transition-all">Tous</button>
+                <button id="btn-bcpst" onclick="changerFiliere('BCPST')" aria-pressed="false"
+                        class="flex-1 py-1.5 px-3 rounded-lg text-xs font-bold bg-white text-gray-700 border border-gray-200 shadow-sm transition-all hover:bg-gray-100">BCPST</button>
+                <button id="btn-tb" onclick="changerFiliere('TB')" aria-pressed="false"
+                        class="flex-1 py-1.5 px-3 rounded-lg text-xs font-bold bg-white text-gray-700 border border-gray-200 shadow-sm transition-all hover:bg-gray-100">TB</button>
+            </div>
+
+            <!-- BANQUE DROPDOWN -->
+            <div>
+                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1" id="banque-label">Banque de concours :</label>
+                <button id="banque-toggle-btn" onclick="toggleBanquePanel()" aria-expanded="false"
+                        aria-haspopup="listbox" aria-labelledby="banque-label"
+                        class="w-full flex items-center justify-between p-2 border border-gray-300 rounded-lg text-xs bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-all">
+                    <span id="banque-btn-label" class="text-gray-500 truncate">Toutes les banques</span>
+                    <span id="banque-btn-arrow" class="text-gray-400 ml-1 shrink-0 text-[10px]" aria-hidden="true">▼</span>
+                </button>
+                <div id="banque-panel" class="hidden mt-1 border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden z-10 relative" role="listbox" aria-multiselectable="true">
+                    <div id="banque-checkboxes" class="p-2 space-y-1 max-h-48 overflow-y-auto"></div>
+                    <div class="border-t border-gray-100 px-2.5 py-1.5 flex justify-between bg-gray-50">
+                        <button onclick="toutSelectionnerBanques()" class="text-[10px] text-emerald-700 font-bold hover:underline">Tout sélectionner</button>
+                        <button onclick="toutDeselectionnerBanques()" class="text-[10px] text-gray-500 font-bold hover:underline">Effacer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RANGE ANNÉES -->
+            <div>
+                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1" id="period-label">
+                    Période d'intégration :
+                    <span id="year-range-label" class="text-emerald-700 ml-1 normal-case font-bold tracking-normal" aria-live="polite">2015 – 2026</span>
+                </label>
+                <div class="relative flex items-center mt-3 mb-1 h-5 px-2" role="group" aria-labelledby="period-label">
+                    <div class="absolute inset-x-2 h-1 bg-gray-200 rounded-full"></div>
+                    <div id="range-fill" class="absolute h-1 bg-emerald-500 rounded-full" style="left:8px;right:8px;"></div>
+                    <input type="range" id="filter-year-start" min="2015" max="2026" value="2015"
+                           aria-label="Année de début" class="range-slider-thumb" oninput="updateRangeSlider(true)">
+                    <input type="range" id="filter-year-end" min="2015" max="2026" value="2026"
+                           aria-label="Année de fin" class="range-slider-thumb" oninput="updateRangeSlider(false)">
+                </div>
+                <div class="flex justify-between text-[9px] text-gray-400 px-1 mt-1" aria-hidden="true">
+                    <span>2015</span><span>2018</span><span>2021</span><span>2024</span><span>2026</span>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between mt-1">
+                <div id="stats-counter" role="status" aria-live="polite"
+                     class="text-[11px] font-medium text-emerald-800 bg-emerald-50/60 px-2 py-1.5 rounded-md border border-emerald-100/70 text-center flex-1 mr-2">
+                    Chargement…
+                </div>
+                <button onclick="reinitialiserFiltres()" aria-label="Réinitialiser tous les filtres"
+                        class="text-[10px] font-bold text-gray-500 bg-gray-100 hover:bg-gray-200 hover:text-gray-800 px-3 py-1.5 rounded-md border border-gray-200 shadow-sm transition-all flex items-center active:scale-95">
+                    <span class="mr-1 text-xs" aria-hidden="true">↺</span> Réinitialiser
+                </button>
+            </div>
+        </div>
+
+        <!-- PLACEHOLDER -->
+        <div id="placeholder-message" class="flex-1 flex flex-col items-center text-center my-auto py-2">
+            <p class="text-4xl mb-3 animate-bounce" aria-hidden="true">📍</p>
+            <p class="text-base font-bold text-emerald-950">Explorez les intégrations du Chesnoy</p>
+            <p class="text-xs px-4 mt-1 text-gray-500 mb-4">Cliquez sur une école de la carte (ou dans la liste) pour en découvrir davantage.</p>
+
+            <!-- GRAPHIQUE PAR ANNÉE -->
+            <div class="w-full max-w-sm mb-4 bg-emerald-50 rounded-xl p-4 border border-emerald-100 shadow-sm">
+                <h3 class="text-xs font-bold text-emerald-900 mb-3 uppercase tracking-wide flex items-center justify-center border-b border-emerald-200/50 pb-2">
+                    <span class="mr-2" aria-hidden="true">📈</span> Intégrations par année
+                </h3>
+                <div id="chart-container" class="w-full" style="height:84px;" role="img" aria-label="Histogramme des intégrations par année"></div>
+            </div>
+
+            <!-- VIDÉOS GÉNÉRALES -->
+            <div class="w-full max-w-sm bg-emerald-50 rounded-xl p-4 border border-emerald-100 shadow-sm overflow-hidden">
+                <h3 class="text-xs font-bold text-emerald-900 mb-1 uppercase tracking-wide flex items-center justify-center border-b border-emerald-200/50 pb-2">
+                    <span class="mr-2 text-base" aria-hidden="true">🎓</span> Conférences et Forums
+                </h3>
+                <div id="general-videos-list" class="space-y-1 mt-2 text-left" role="list"></div>
+            </div>
+			
+			<div class="w-full max-w-sm bg-amber-50 rounded-xl p-4 border border-amber-100 shadow-sm overflow-hidden mt-4">
+                    <h3 class="text-xs font-bold text-amber-900 mb-1 uppercase tracking-wide flex items-center justify-center border-b border-amber-200/50 pb-2 ">
+                        <span class="mr-2 text-base">🗣️</span> Tous les témoignages
+                    </h3>
+                    <div id="all-students-videos-list" class="space-y-1 mt-2 text-left max-h-48 overflow-y-auto pr-1">
+                        </div>
+                </div>
+        </div>
+
+        <!-- FICHE ÉCOLE -->
+        <div id="school-info" class="hidden flex-1 flex flex-col">
+            <button onclick="fermerEcole()" aria-label="Retour à la liste des écoles"
+                    class="mb-3 flex items-center text-[11px] font-bold text-gray-500 hover:text-emerald-700 bg-gray-50 hover:bg-emerald-50 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors w-fit shadow-sm">
+                <span class="mr-1.5 text-sm leading-none" aria-hidden="true">←</span> Retour à l'accueil
+            </button>
+
+            <div class="border-b border-gray-100 pb-3 mb-4">
+                <h2 id="school-name" class="text-xl font-extrabold text-emerald-950 leading-tight">Nom de l'école</h2>
+                <p id="school-city" class="text-xs font-semibold text-amber-600 uppercase tracking-wider mt-1">Ville</p>
+
+                <!-- Badges type + banque -->
+                <div id="school-badges" class="flex flex-wrap gap-1.5 mt-2" aria-label="Catégorie de l'école"></div>
+
+                <!-- Mini-carte -->
+                <div id="school-mini-map" class="hidden w-full rounded-lg overflow-hidden border border-gray-100 mt-3" style="height:96px;" aria-label="Localisation sur la carte"></div>
+
+                <img id="school-image" src="" alt="" class="hidden w-full h-40 object-cover rounded-xl mt-3 mb-2 shadow-sm border border-gray-100">
+                <p id="school-desc" class="text-sm text-gray-600 mt-2 italic bg-gray-50 p-2.5 rounded-lg border-l-4 border-emerald-600">Descriptif…</p>
+                <a id="school-link" href="#" target="_blank" rel="noopener noreferrer"
+                   class="inline-block mt-2 text-xs font-bold text-emerald-700 hover:underline">Visiter le site officiel ↗</a>
+            </div>
+
+            <div id="video-block" class="hidden mb-5 bg-emerald-50 p-3 rounded-xl border border-emerald-100">
+                <h3 class="text-xs font-bold text-emerald-900 mb-2 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <span class="text-red-500 animate-pulse mr-1.5" aria-hidden="true">●</span>
+                        Témoignage : <span id="current-video-author" class="ml-1 text-gray-700 font-normal">Élève</span>
+                    </div>
+                    <button onclick="fermerVideo()" aria-label="Fermer la vidéo"
+                            class="text-gray-400 hover:text-red-600 text-sm font-bold px-1 transition-colors">✕</button>
+                </h3>
+                <div class="aspect-[9/16] w-full max-w-[220px] mx-auto bg-black rounded-xl overflow-hidden shadow-md">
+                    <iframe id="video-player" class="w-full h-full" src="" frameborder="0"
+                            allow="autoplay; encrypted-media" allowfullscreen title="Témoignage d'un ancien élève"></iframe>
+                </div>
+            </div>
+
+            <div class="flex-1">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-wide mb-2">🎓 Anciens élèves du Chesnoy :</h3>
+                <ul id="students-list" class="space-y-2" role="list" aria-label="Liste des anciens élèves"></ul>
+            </div>
+        </div>
+
+    </div><!-- /details-panel -->
+</main><!-- /main -->
+
+<!-- MODAL VIDÉO GLOBALE -->
+<div id="global-video-modal" class="hidden fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
+     role="dialog" aria-modal="true" aria-labelledby="global-video-title-text">
+    <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col border border-gray-700">
+        <div class="flex justify-between items-center p-4 bg-emerald-900 text-white">
+            <h3 id="global-video-title" class="font-bold text-sm md:text-base tracking-wide flex items-center">
+                <span class="text-red-400 animate-pulse mr-2" aria-hidden="true">●</span>
+                <span id="global-video-title-text">Titre</span>
+            </h3>
+            <button onclick="fermerModalGlobale()" aria-label="Fermer la vidéo"
+                    class="text-white hover:text-amber-400 text-2xl leading-none font-bold transition-colors">&times;</button>
+        </div>
+        <div class="aspect-video w-full bg-black">
+            <iframe id="global-video-player" class="w-full h-full" src="" frameborder="0"
+                    allow="autoplay; encrypted-media; fullscreen" allowfullscreen title="Conférence ou forum d'anciens"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- ===== SCRIPTS ===== -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<script src="data.js"></script>
+<script>
+// ================================================================
+// CONFIG
+// ================================================================
+const CONFIG_BANQUES = {
+    "BCPST": {
+        "Agro-Véto": ["Agro","Centrale-Supélec","ENSTIB","PC-BIO","Polytech","Véto","X-Bio"],
+        "G2E":  ["G2E"],
+        "INSA": ["INSA"],
+        "ENS":  ["ENS","Centrale","Mines-Pont"]
+    },
+    "TB": {
+        "Agro-Véto": ["Agro","Véto","ENSTIB"],
+        "Polytech":  ["Polytech"],
+        "INSA":      ["INSA"],
+        "ENS":       ["ENS"]
+    },
+    "TOUT": {
+        "Agro-Véto": ["Agro","Centrale-Supélec","ENSTIB","PC-BIO","Polytech","Véto","X-Bio"],
+        "G2E":  ["G2E"],
+        "INSA": ["INSA"],
+        "ENS":  ["ENS","Centrale","Mines-Pont"]
+    }
+};
+
+const VIDEOS_CATEGORISEES = [
+    {
+        categorie: "Forums des Anciens 2025",
+        videos: [
+            { titre: "Ingénieur : un diplôme, des métiers", lien: "https://youtu.be/ZQS8B2jU3Oc" },
+            { titre: "Vétérinaire, perspectives et contraintes", lien: "https://youtu.be/Vmt8tozX-DA" }
+        ]
+    },
+    {
+        categorie: "Conférence Agreenium",
+        videos: [
+            { titre: "Devenir ingénieur agro après une classe prépa BCPST/TB", lien: "https://www.youtube.com/watch?v=MsNjJ3jfTVA" }
+        ]
+    }
+];
+
+const typeColors = {
+    "Agro":             "#059669",
+    "Véto":             "#2563eb",
+    "Polytech":         "#dc2626",
+    "ENS":              "#4b5563",
+    "G2E":              "#7c3aed",
+    "INSA":             "#d97706",
+    "PC-BIO":           "#db2777",
+    "Centrale-Supélec": "#0891b2",
+    "Centrale":         "#0e7490",
+    "Mines-Pont":       "#0f766e",
+    "ENSTIB":           "#65a30d",
+    "X-BIO":            "#9333ea",
+    "Fac":              "#94a3b8"
+};
+
+// ================================================================
+// STATE
+// ================================================================
+let filiereSelectionnee  = "TOUT";
+let selectedBanqueTypes  = new Set();
+let markers              = [];
+let ecoleActuelleObj     = null;
+let vueCourante          = "carte";
+let miniMap              = null;
+let miniMarker           = null;
+
+// ================================================================
+// CARTE PRINCIPALE
+// ================================================================
+const map = L.map('map', { zoomControl: false }).setView([46.6, 2.2], 5);
+L.control.zoom({ position: 'topleft' }).addTo(map);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors © CARTO'
+}).addTo(map);
+
+const clusterGroup = L.markerClusterGroup({
+    maxClusterRadius: 50,
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true,
+    chunkedLoading: true
+});
+map.addLayer(clusterGroup);
+
+// ================================================================
+// VUE LISTE / CARTE
+// ================================================================
+function toggleVue() {
+    vueCourante = (vueCourante === 'carte') ? 'liste' : 'carte';
+    const mapContainer = document.getElementById('map-container');
+    const listView     = document.getElementById('list-view');
+    const icon         = document.getElementById('view-toggle-icon');
+    const label        = document.getElementById('view-toggle-label');
+    const btn          = document.getElementById('view-toggle-btn');
+
+    if (vueCourante === 'liste') {
+        mapContainer.classList.add('hidden');
+        listView.classList.remove('hidden');
+        icon.textContent  = '🗺';
+        label.textContent = 'Vue carte';
+        btn.setAttribute('aria-label', 'Basculer vers la vue carte');
+        mettreAJourListeVue();
+    } else {
+        mapContainer.classList.remove('hidden');
+        listView.classList.add('hidden');
+        icon.textContent  = '📋';
+        label.textContent = 'Vue liste';
+        btn.setAttribute('aria-label', 'Basculer vers la vue liste');
+        setTimeout(() => map.invalidateSize(), 50);
+    }
+}
+
+function mettreAJourListeVue() {
+    if (vueCourante !== 'liste') return;
+    const container  = document.getElementById('list-content');
+    const anneeDebut = parseInt(document.getElementById('filter-year-start').value);
+    const anneeFin   = parseInt(document.getElementById('filter-year-end').value);
+
+    const ecolesVisibles = markers.filter(item => item.visible);
+    ecolesVisibles.sort((a, b) => {
+        const cA = elevesFiltresPourEcole(a.ecole, anneeDebut, anneeFin).length;
+        const cB = elevesFiltresPourEcole(b.ecole, anneeDebut, anneeFin).length;
+        return cB - cA || a.ecole.nom.localeCompare(b.ecole.nom);
+    });
+
+    const avecAnciens  = ecolesVisibles.filter(i => i.ecole.anciens.length > 0);
+    const sansAnciens  = ecolesVisibles.filter(i => i.ecole.anciens.length === 0);
+    document.getElementById('list-header-text').textContent =
+        avecAnciens.length + ' école' + (avecAnciens.length > 1 ? 's' : '') +
+        (sansAnciens.length ? ' + ' + sansAnciens.length + ' sans ancien recensé' : '') +
+        ' — cliquez pour voir le détail';
+
+    container.innerHTML = '';
+
+    if (ecolesVisibles.length === 0) {
+        container.innerHTML = '<p class="text-sm text-gray-400 italic text-center py-8">Aucune école ne correspond aux critères.</p>';
+        return;
+    }
+
+    ecolesVisibles.forEach(item => {
+        const e = item.ecole;
+        const typeKey = typeColors[e.type_bcpst] ? e.type_bcpst :
+                        typeColors[e.type_tb]    ? e.type_tb    : null;
+        const color   = typeKey ? typeColors[typeKey] : '#6b7280';
+        const count   = elevesFiltresPourEcole(e, anneeDebut, anneeFin).length;
+        const isEmpty = e.anciens.length === 0;
+
+        const card = document.createElement('div');
+        card.className = 'list-school-card bg-white rounded-lg border ' +
+            (isEmpty ? 'border-gray-100 opacity-60' : 'border-gray-100 hover:border-emerald-200 hover:shadow-sm') +
+            ' p-3 cursor-pointer transition-all active:scale-[0.99]';
+        card.setAttribute('role', 'listitem');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('aria-label', 'Voir ' + e.nom + ' à ' + e.ville);
+
+        card.innerHTML =
+            '<div class="flex items-start justify-between gap-2">' +
+              '<div class="min-w-0">' +
+                '<h3 class="font-bold text-sm ' + (isEmpty ? 'text-gray-400' : 'text-gray-900') + ' truncate">' + e.nom + '</h3>' +
+                '<p class="text-xs text-gray-400 mt-0.5">' + e.ville + '</p>' +
+              '</div>' +
+              '<div class="flex flex-col items-end gap-1 shrink-0">' +
+                (typeKey ? '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded text-white" style="background:' + color + '">' + typeKey + '</span>' : '') +
+                '<span class="text-[10px] text-gray-500">' +
+                  (isEmpty ? '<em>Aucun ancien</em>' : count + ' ancien' + (count > 1 ? 's' : '')) +
+                '</span>' +
+              '</div>' +
+            '</div>';
+
+        card.onclick   = () => selectionnerEcoleDepuisListe(e);
+        card.onkeydown = ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); selectionnerEcoleDepuisListe(e); } };
+        container.appendChild(card);
+    });
+}
+
+function selectionnerEcoleDepuisListe(ecole) {
+    afficherEcole(ecole);
+    map.setView(ecole.coords, 12);
+}
+
+// ================================================================
+// URL HASH STATE
+// ================================================================
+function sauvegarderEtat() {
+    const p = new URLSearchParams();
+    if (filiereSelectionnee !== 'TOUT') p.set('f', filiereSelectionnee);
+    if (selectedBanqueTypes.size > 0) p.set('t', Array.from(selectedBanqueTypes).join('~'));
+    const d = document.getElementById('filter-year-start').value;
+    const e = document.getElementById('filter-year-end').value;
+    if (d !== '2015') p.set('d', d);
+    if (e !== '2026') p.set('e', e);
+    const q = document.getElementById('search-bar').value.trim();
+    if (q) p.set('q', q);
+    if (ecoleActuelleObj) p.set('s', ecoleActuelleObj.nom);
+    const hash = p.toString();
+    window.history.replaceState(null, '', hash ? '#' + hash : location.pathname + location.search);
+}
+
+function chargerEtat() {
+    if (!location.hash || location.hash.length <= 1) return;
+    const p = new URLSearchParams(location.hash.slice(1));
+
+    const f = p.get('f');
+    if (f && ['BCPST', 'TB'].includes(f)) changerFiliere(f);
+
+    const t = p.get('t');
+    if (t) {
+        t.split('~').forEach(type => {
+            const cb = document.querySelector('#banque-checkboxes input.item-checkbox[value="' + type + '"]');
+            if (cb) { cb.checked = true; onItemBanqueChange(cb); }
+            else selectedBanqueTypes.add(type);
+        });
+        updateBanqueButton();
+    }
+
+    const d = p.get('d'); const e = p.get('e');
+    if (d) document.getElementById('filter-year-start').value = d;
+    if (e) document.getElementById('filter-year-end').value   = e;
+    if (d || e) updateRangeSlider(true);
+
+    const q = p.get('q');
+    if (q) document.getElementById('search-bar').value = q;
+
+    const s = p.get('s');
+    if (s) {
+        const item = markers.find(m => m.ecole.nom === s);
+        if (item) { afficherEcole(item.ecole); map.setView(item.ecole.coords, 12); }
+    }
+}
+
+// ================================================================
+// GRAPHIQUE ANNÉE
+// ================================================================
+function mettreAJourGraphique() {
+    const container  = document.getElementById('chart-container');
+    if (!container) return;
+    const anneeDebut = parseInt(document.getElementById('filter-year-start').value);
+    const anneeFin   = parseInt(document.getElementById('filter-year-end').value);
+
+    const counts = {};
+    for (let y = anneeDebut; y <= anneeFin; y++) counts[y] = 0;
+
+    markers.forEach(item => {
+        if (!item.visible || item.ecole.anciens.length === 0) return;
+        item.ecole.anciens.forEach(a => {
+            if (a.annee < anneeDebut || a.annee > anneeFin) return;
+            const matchFiliere = (filiereSelectionnee === 'TOUT') || (a.classe && a.classe.includes(filiereSelectionnee));
+            const matchBanque  = selectedBanqueTypes.size === 0 ||
+                selectedBanqueTypes.has(item.ecole.type_bcpst) || selectedBanqueTypes.has(item.ecole.type_tb);
+            if (matchFiliere && matchBanque) counts[a.annee] = (counts[a.annee] || 0) + 1;
+        });
+    });
+
+    const years    = Object.keys(counts).map(Number);
+    const maxCount = Math.max(...Object.values(counts), 1);
+    const W        = container.offsetWidth || 300;
+    const H = 84, padL = 2, padB = 18, padT = 6;
+    const chartH   = H - padB - padT;
+    const n        = years.length;
+    const barW     = Math.max(4, Math.floor((W - padL - 4) / n) - 2);
+    const step     = (W - padL - 4) / n;
+
+    const parts = ['<svg width="' + W + '" height="' + H + '" xmlns="http://www.w3.org/2000/svg">'];
+    parts.push('<line x1="' + padL + '" y1="' + padT + '" x2="' + padL + '" y2="' + (H - padB) + '" stroke="#e5e7eb" stroke-width="1"/>');
+
+    years.forEach((y, i) => {
+        const count = counts[y] || 0;
+        const x     = padL + i * step + (step - barW) / 2;
+        const barH  = count ? Math.max(3, (count / maxCount) * chartH) : 0;
+        const barY  = H - padB - barH;
+
+        if (count > 0) {
+            parts.push('<rect x="' + x.toFixed(1) + '" y="' + barY.toFixed(1) + '" width="' + barW + '" height="' + barH.toFixed(1) + '" rx="2" fill="#059669" opacity="0.85"/>');
+            if (barH > 14) parts.push('<text x="' + (x + barW / 2).toFixed(1) + '" y="' + (barY + barH - 4).toFixed(1) + '" text-anchor="middle" font-size="9" fill="white" font-weight="bold">' + count + '</text>');
+            else           parts.push('<text x="' + (x + barW / 2).toFixed(1) + '" y="' + (barY - 3).toFixed(1)       + '" text-anchor="middle" font-size="9" fill="#059669" font-weight="bold">' + count + '</text>');
+        } else {
+            parts.push('<rect x="' + x.toFixed(1) + '" y="' + (H - padB - 2) + '" width="' + barW + '" height="2" rx="1" fill="#e5e7eb"/>');
+        }
+
+        const showLabel = n <= 9 || i === 0 || i === n - 1 || y % 2 === 0;
+        if (showLabel) parts.push('<text x="' + (x + barW / 2).toFixed(1) + '" y="' + (H - 4) + '" text-anchor="middle" font-size="8" fill="#9ca3af">' + String(y).slice(2) + '</text>');
+    });
+
+    parts.push('</svg>');
+    container.innerHTML = parts.join('');
+}
+
+// ================================================================
+// BANQUE CHECKBOXES
+// ================================================================
+function mettreAJourBanques() {
+    selectedBanqueTypes.clear();
+    renderBanqueCheckboxes();
+    updateBanqueButton();
+}
+
+function renderBanqueCheckboxes() {
+    const container = document.getElementById('banque-checkboxes');
+    container.innerHTML = '';
+    const structure = CONFIG_BANQUES[filiereSelectionnee];
+    for (const [groupe, types] of Object.entries(structure)) {
+        const groupDiv   = document.createElement('div');
+        groupDiv.className = 'mb-0.5';
+
+        const groupLabel = document.createElement('label');
+        groupLabel.className = 'flex items-center gap-1.5 py-1 px-1.5 rounded cursor-pointer hover:bg-gray-50 font-bold text-[11px] text-gray-700 select-none';
+
+        const groupCb = document.createElement('input');
+        groupCb.type = 'checkbox';
+        groupCb.className = 'group-checkbox accent-emerald-600 w-3 h-3 shrink-0';
+        groupCb.dataset.groupe = groupe;
+        groupCb.setAttribute('aria-label', 'Sélectionner toute la banque ' + groupe);
+        groupCb.onchange = function() { toggleGroupBanque(this); };
+
+        groupLabel.appendChild(groupCb);
+        groupLabel.appendChild(document.createTextNode(groupe));
+        groupDiv.appendChild(groupLabel);
+
+        const subDiv = document.createElement('div');
+        subDiv.className = 'ml-4 space-y-0';
+        types.forEach(type => {
+            const itemLabel = document.createElement('label');
+            itemLabel.className = 'flex items-center gap-1.5 py-0.5 px-1.5 rounded cursor-pointer hover:bg-emerald-50 text-[11px] text-gray-600 select-none';
+
+            const itemCb = document.createElement('input');
+            itemCb.type = 'checkbox';
+            itemCb.className = 'item-checkbox accent-emerald-600 w-3 h-3 shrink-0';
+            itemCb.value = type;
+            itemCb.dataset.groupe = groupe;
+            itemCb.setAttribute('aria-label', type);
+            itemCb.onchange = function() { onItemBanqueChange(this); };
+
+            itemLabel.appendChild(itemCb);
+            itemLabel.appendChild(document.createTextNode(type));
+            subDiv.appendChild(itemLabel);
+        });
+        groupDiv.appendChild(subDiv);
+        container.appendChild(groupDiv);
+    }
+}
+
+function toggleGroupBanque(groupCb) {
+    const groupe = groupCb.dataset.groupe;
+    groupCb.indeterminate = false;
+    document.querySelectorAll('#banque-checkboxes input.item-checkbox[data-groupe="' + groupe + '"]').forEach(cb => {
+        cb.checked = groupCb.checked;
+        if (groupCb.checked) selectedBanqueTypes.add(cb.value);
+        else selectedBanqueTypes.delete(cb.value);
+    });
+    updateBanqueButton(); filtrerTout();
+}
+
+function onItemBanqueChange(cb) {
+    if (cb.checked) selectedBanqueTypes.add(cb.value);
+    else selectedBanqueTypes.delete(cb.value);
+
+    const groupe   = cb.dataset.groupe;
+    const allItems = Array.from(document.querySelectorAll('#banque-checkboxes input.item-checkbox[data-groupe="' + groupe + '"]'));
+    const checked  = allItems.filter(c => c.checked).length;
+    const groupCb  = document.querySelector('#banque-checkboxes input.group-checkbox[data-groupe="' + groupe + '"]');
+    if (checked === 0)            { groupCb.checked = false; groupCb.indeterminate = false; }
+    else if (checked === allItems.length) { groupCb.checked = true;  groupCb.indeterminate = false; }
+    else                          { groupCb.checked = false; groupCb.indeterminate = true;  }
+
+    updateBanqueButton(); filtrerTout();
+}
+
+function toggleBanquePanel() {
+    const panel  = document.getElementById('banque-panel');
+    const arrow  = document.getElementById('banque-btn-arrow');
+    const btn    = document.getElementById('banque-toggle-btn');
+    const hidden = panel.classList.toggle('hidden');
+    arrow.textContent = hidden ? '▼' : '▲';
+    btn.setAttribute('aria-expanded', String(!hidden));
+}
+
+function toutSelectionnerBanques() {
+    document.querySelectorAll('#banque-checkboxes input.item-checkbox').forEach(cb => { cb.checked = true; selectedBanqueTypes.add(cb.value); });
+    document.querySelectorAll('#banque-checkboxes input.group-checkbox').forEach(cb => { cb.checked = true; cb.indeterminate = false; });
+    updateBanqueButton(); filtrerTout();
+}
+
+function toutDeselectionnerBanques() {
+    selectedBanqueTypes.clear();
+    document.querySelectorAll('#banque-checkboxes input.item-checkbox').forEach(cb => cb.checked = false);
+    document.querySelectorAll('#banque-checkboxes input.group-checkbox').forEach(cb => { cb.checked = false; cb.indeterminate = false; });
+    updateBanqueButton(); filtrerTout();
+}
+
+function updateBanqueButton() {
+    const label = document.getElementById('banque-btn-label');
+    if (selectedBanqueTypes.size === 0) {
+        label.textContent = 'Toutes les banques';
+        label.className   = 'text-gray-500 truncate';
+    } else {
+        const names       = Array.from(selectedBanqueTypes);
+        label.textContent = names.length <= 2 ? names.join(', ') : names.length + ' types sélectionnés';
+        label.className   = 'text-emerald-700 font-bold truncate';
+    }
+}
+
+// ================================================================
+// FILIÈRE
+// ================================================================
+function changerFiliere(filiere) {
+    filiereSelectionnee = filiere;
+    ['btn-all-filieres','btn-bcpst','btn-tb'].forEach(id => {
+        const b = document.getElementById(id);
+        b.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-bold bg-white text-gray-700 border border-gray-200 shadow-sm transition-all hover:bg-gray-100';
+        b.setAttribute('aria-pressed', 'false');
+    });
+    const activeId = filiere === 'TOUT' ? 'btn-all-filieres' : filiere === 'BCPST' ? 'btn-bcpst' : 'btn-tb';
+    const activeBtn = document.getElementById(activeId);
+    activeBtn.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-bold bg-emerald-700 text-white shadow-sm transition-all';
+    activeBtn.setAttribute('aria-pressed', 'true');
+    mettreAJourBanques();
+    filtrerTout();
+}
+
+// ================================================================
+// RANGE SLIDER
+// ================================================================
+function updateRangeSlider(fromStart) {
+    const startEl = document.getElementById('filter-year-start');
+    const endEl   = document.getElementById('filter-year-end');
+    let s = parseInt(startEl.value), e = parseInt(endEl.value);
+    if (fromStart && s > e) { startEl.value = e; s = e; }
+    if (!fromStart && e < s) { endEl.value  = s; e = s; }
+    const min = 2015, max = 2026, range = max - min;
+    const leftPct  = ((s - min) / range) * 100;
+    const rightPct = 100 - ((e - min) / range) * 100;
+    const fill = document.getElementById('range-fill');
+    fill.style.left  = 'calc(8px + ' + leftPct  + '% * (100% - 16px) / 100)';
+    fill.style.right = 'calc(8px + ' + rightPct + '% * (100% - 16px) / 100)';
+    document.getElementById('year-range-label').innerText = (s === e) ? s : s + ' – ' + e;
+    filtrerTout();
+}
+
+// ================================================================
+// FILTRE PRINCIPAL
+// ================================================================
+function elevesFiltresPourEcole(ecole, anneeDebut, anneeFin) {
+    return ecole.anciens.filter(a => {
+        const matchFiliere = (filiereSelectionnee === 'TOUT') || (a.classe && a.classe.includes(filiereSelectionnee));
+        const matchAnnee   = a.annee >= anneeDebut && a.annee <= anneeFin;
+        let matchBanque    = true;
+        if (selectedBanqueTypes.size > 0) {
+            if      (a.classe && a.classe.includes('BCPST')) matchBanque = selectedBanqueTypes.has(ecole.type_bcpst);
+            else if (a.classe && a.classe.includes('TB'))    matchBanque = selectedBanqueTypes.has(ecole.type_tb);
+            else matchBanque = selectedBanqueTypes.has(ecole.type_bcpst) || selectedBanqueTypes.has(ecole.type_tb);
+        }
+        return matchFiliere && matchAnnee && matchBanque;
+    });
+}
+
+function filtrerTout() {
+    const query      = document.getElementById('search-bar').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const anneeDebut = parseInt(document.getElementById('filter-year-start').value);
+    const anneeFin   = parseInt(document.getElementById('filter-year-end').value);
+    let ecolesCount  = 0, elevesCount = 0;
+
+    markers.forEach(item => {
+        const e          = item.ecole;
+        const hasNoAlumni = e.anciens.length === 0;
+        const normalize  = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+        const matchTexte = normalize(e.nom).includes(query) || normalize(e.ville).includes(query);
+        const filtres    = elevesFiltresPourEcole(e, anneeDebut, anneeFin);
+
+        const schoolMatchesBanque = selectedBanqueTypes.size === 0 ||
+            selectedBanqueTypes.has(e.type_bcpst) || selectedBanqueTypes.has(e.type_tb);
+        const schoolMatchesFiliere = (filiereSelectionnee === 'TOUT') ||
+            (filiereSelectionnee === 'BCPST' ? !!e.banque_bcpst : !!e.banque_tb);
+        // Apparaît en transparent si aucun ancien ne correspond aux filtres,
+        // mais que l'école appartient bien à la banque/filière sélectionnée
+        const showFaded = filtres.length === 0 && matchTexte && schoolMatchesBanque && schoolMatchesFiliere;
+
+        const visible = matchTexte && (filtres.length > 0 || showFaded);
+        item.visible = visible;
+        item.faded   = showFaded;
+
+        if (visible) {
+            clusterGroup.addLayer(item.marker);
+            item.marker.setStyle({ fillOpacity: showFaded ? 0.3 : 0.9, opacity: showFaded ? 0.5 : 1 });
+            if (!showFaded) { ecolesCount++; elevesCount += filtres.length; }
+        } else {
+            clusterGroup.removeLayer(item.marker);
+        }
+    });
+
+    const txtE = ecolesCount > 1 ? 'écoles' : 'école';
+    const txtA = elevesCount > 1 ? 'anciens élèves' : 'ancien élève';
+    document.getElementById('stats-counter').innerHTML = '📊 <b>' + ecolesCount + '</b> ' + txtE + ' et <b>' + elevesCount + '</b> ' + txtA + ' correspondent';
+
+    if (ecoleActuelleObj) {
+        const encoreVisible = markers.some(item => item.ecole.nom === ecoleActuelleObj.nom && item.visible);
+        encoreVisible ? afficherEcole(ecoleActuelleObj) : fermerEcole();
+    }
+
+    mettreAJourLegende();
+    mettreAJourGraphique();
+    mettreAJourListeVue();
+    sauvegarderEtat();
+}
+
+// ================================================================
+// LÉGENDE
+// ================================================================
+function toggleLegend() {
+    const body   = document.getElementById('legend-body');
+    const arrow  = document.getElementById('legend-arrow');
+    const btn    = document.getElementById('legend-toggle');
+    const hidden = body.classList.toggle('hidden');
+    arrow.textContent = hidden ? '▼' : '▲';
+    btn.setAttribute('aria-expanded', String(!hidden));
+}
+
+function mettreAJourLegende() {
+    const body = document.getElementById('legend-body');
+    const typesVis = new Set();
+    let hasEmpty   = false;
+
+    markers.forEach(item => {
+        if (!item.visible) return;
+        const e    = item.ecole;
+        const type = typeColors[e.type_bcpst] ? e.type_bcpst :
+                     typeColors[e.type_tb]    ? e.type_tb    : null;
+        if (item.faded) hasEmpty = true;
+        if (type) typesVis.add(type);
+        else typesVis.add('__autres__');
+    });
+
+    body.innerHTML = '';
+    const ordre = ["Agro","Véto","Polytech","ENS","G2E","INSA","PC-BIO","Centrale-Supélec","Centrale","Mines-Pont","ENSTIB","X-BIO","Fac"];
+    ordre.forEach(type => {
+        if (!typesVis.has(type)) return;
+        const color = typeColors[type];
+        const div   = document.createElement('div');
+        div.className = 'flex items-center space-x-2';
+        div.setAttribute('role', 'listitem');
+        div.innerHTML = '<span class="w-3 h-3 rounded-full shrink-0" style="background:' + color + ';border:1.5px solid #fff;box-shadow:0 0 0 1px ' + color + ';" aria-hidden="true"></span><span class="text-gray-700">' + type + '</span>';
+        body.appendChild(div);
+    });
+    if (typesVis.has('__autres__')) {
+        const div = document.createElement('div');
+        div.className = 'flex items-center space-x-2'; div.setAttribute('role','listitem');
+        div.innerHTML = '<span class="w-3 h-3 rounded-full shrink-0" style="background:#6b7280;border:1.5px solid #fff;box-shadow:0 0 0 1px #6b7280;" aria-hidden="true"></span><span class="text-gray-700">Autres</span>';
+        body.appendChild(div);
+    }
+    if (hasEmpty) {
+        const div = document.createElement('div');
+        div.className = 'flex items-center space-x-2 border-t border-gray-100 pt-1.5 mt-0.5'; div.setAttribute('role','listitem');
+        div.innerHTML = '<span class="w-3 h-3 rounded-full shrink-0 opacity-40" style="background:#6b7280;border:1.5px solid #fff;box-shadow:0 0 0 1px #6b7280;" aria-hidden="true"></span><span class="text-gray-400 italic">Sans ancien</span>';
+        body.appendChild(div);
+    }
+}
+
+// ================================================================
+// FICHE ÉCOLE
+// ================================================================
+function afficherEcole(ecole) {
+    document.getElementById('placeholder-message').classList.add('hidden');
+    document.getElementById('school-info').classList.remove('hidden');
+
+    document.getElementById('school-name').innerText = ecole.nom;
+    document.getElementById('school-city').innerText = ecole.ville;
+    document.getElementById('school-desc').innerText = ecole.descriptif || "Aucun descriptif fourni.";
+    document.getElementById('school-link').href = ecole.lien_site;
+
+    // Badges type + banque
+    const badgesEl = document.getElementById('school-badges');
+    badgesEl.innerHTML = '';
+    const typeKey  = typeColors[ecole.type_bcpst] ? ecole.type_bcpst :
+                     typeColors[ecole.type_tb]    ? ecole.type_tb    : null;
+    const color    = typeKey ? typeColors[typeKey] : '#6b7280';
+    if (typeKey) {
+        badgesEl.innerHTML += '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full text-white" style="background:' + color + '" title="Type d\'école">' + typeKey + '</span>';
+    }
+    const banque = ecole.banque_bcpst || ecole.banque_tb;
+    if (banque) {
+        badgesEl.innerHTML += '<span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 border border-gray-200" title="Banque de concours">' + banque + '</span>';
+    }
+    if (ecole.anciens.length === 0) {
+        badgesEl.innerHTML += '<span class="text-[10px] italic px-2 py-0.5 rounded-full bg-amber-50 text-amber-600 border border-amber-200">Aucun ancien recensé</span>';
+    }
+
+    // Mini-carte localisation
+    const miniMapEl = document.getElementById('school-mini-map');
+    miniMapEl.classList.remove('hidden');
+    if (!miniMap) {
+        miniMap = L.map('school-mini-map', {
+            zoomControl: false, dragging: false, scrollWheelZoom: false,
+            doubleClickZoom: false, keyboard: false, attributionControl: false
+        });
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png').addTo(miniMap);
+    }
+    if (miniMarker) miniMap.removeLayer(miniMarker);
+    miniMarker = L.circleMarker(ecole.coords, {
+        radius: 8, fillColor: color, color: '#fff', weight: 2, fillOpacity: 1
+    }).addTo(miniMap);
+    miniMap.setView(ecole.coords, 11);
+    setTimeout(() => miniMap.invalidateSize(), 80);
+
+    // Image
+    const imgEl = document.getElementById('school-image');
+    if (ecole.image && ecole.image.trim() !== "" && ecole.image !== "nan") {
+        imgEl.src = ecole.image; imgEl.alt = 'Photo de ' + ecole.nom;
+        imgEl.classList.remove('hidden');
+    } else { imgEl.classList.add('hidden'); }
+
+    if (!ecoleActuelleObj || ecoleActuelleObj.nom !== ecole.nom) {
+        document.getElementById('video-block').classList.add('hidden');
+        document.getElementById('video-player').src = "";
+    }
+    ecoleActuelleObj = ecole;
+
+    // Liste élèves
+    const anneeDebut    = parseInt(document.getElementById('filter-year-start').value);
+    const anneeFin      = parseInt(document.getElementById('filter-year-end').value);
+    const elevesFiltres = elevesFiltresPourEcole(ecole, anneeDebut, anneeFin);
+    const list          = document.getElementById('students-list');
+    list.innerHTML      = '';
+
+    if (elevesFiltres.length === 0) {
+        list.innerHTML = '<li class="text-sm text-gray-400 italic" role="listitem">Aucun élève ne correspond aux critères actuels.</li>';
+    } else {
+        elevesFiltres.forEach(eleve => {
+            const li = document.createElement('li');
+            li.className = 'flex items-center justify-between p-2.5 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-all';
+            li.setAttribute('role','listitem');
+            const hasVideo = eleve.lien_video && eleve.lien_video.toString().trim() !== "" && eleve.lien_video !== "nan" && eleve.lien_video !== "undefined";
+            li.innerHTML =
+                '<div class="text-sm"><span class="font-bold text-gray-800">' + eleve.prenom + ' ' + eleve.initiale_nom + '.</span>' +
+                '<span class="text-xs text-gray-500 ml-1">(' + eleve.classe + ' - ' + eleve.annee + ')</span></div>' +
+                (hasVideo ?
+                    '<button onclick="lancerVideo(\'' + eleve.lien_video + '\', \'' + eleve.prenom + '\')" ' +
+                    'aria-label="Voir le témoignage de ' + eleve.prenom + '" ' +
+                    'class="group relative bg-[#cc0000] hover:bg-[#ff0000] text-white text-[11px] px-3 py-1.5 rounded-full flex items-center font-bold shadow-md transition-all active:scale-95 overflow-hidden">' +
+                    '<svg class="w-3.5 h-3.5 mr-1.5 fill-current z-10" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>' +
+                    '<span class="z-10 tracking-wide uppercase">Voir</span>' +
+                    '<div class="absolute inset-0 h-full w-full bg-white/20 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div></button>'
+                : '');
+            list.appendChild(li);
+        });
+    }
+}
+
+function fermerEcole() {
+    document.getElementById('school-info').classList.add('hidden');
+    document.getElementById('placeholder-message').classList.remove('hidden');
+    fermerVideo();
+    ecoleActuelleObj = null;
+    const miniMapEl = document.getElementById('school-mini-map');
+    miniMapEl.classList.add('hidden');
+    map.setView([46.6, 2.2], 5, { animate: true, duration: 1 });
+    sauvegarderEtat();
+}
+
+// ================================================================
+// VIDÉOS
+// ================================================================
+function extraireIdYoutube(url) {
+    if (!url) return "";
+    const m = url.toString().match(/^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=|shorts\/)([^#&?]*).*/);
+    return (m && m[2].length === 11) ? m[2] : "";
+}
+
+function lancerVideo(lien, prenom) {
+    const videoId = extraireIdYoutube(lien);
+    if (videoId) {
+        document.getElementById('current-video-author').innerText = prenom;
+        document.getElementById('video-player').src = "https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1&rel=0";
+        const block = document.getElementById('video-block');
+        block.classList.remove('hidden');
+        block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else { window.open(lien, '_blank'); }
+}
+
+function fermerVideo() {
+    document.getElementById('video-player').src = "";
+    document.getElementById('video-block').classList.add('hidden');
+}
+
+function ouvrirModalGlobale(lien, titre) {
+    const videoId = extraireIdYoutube(lien);
+    if (videoId) {
+        document.getElementById('global-video-title-text').innerText = titre;
+        document.getElementById('global-video-player').src = "https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1&rel=0";
+        document.getElementById('global-video-modal').classList.remove('hidden');
+        document.getElementById('global-video-modal').focus();
+    } else { window.open(lien, '_blank'); }
+}
+
+function fermerModalGlobale() {
+    document.getElementById('global-video-modal').classList.add('hidden');
+    document.getElementById('global-video-player').src = "";
+}
+
+// ================================================================
+// RÉINITIALISATION
+// ================================================================
+function reinitialiserFiltres() {
+    document.getElementById('search-bar').value = "";
+    document.getElementById('filter-year-start').value = "2015";
+    document.getElementById('filter-year-end').value   = "2026";
+    updateRangeSlider(true);
+    toutDeselectionnerBanques();
+    fermerEcole();
+    changerFiliere('TOUT');
+}
+
+// ================================================================
+// VIDÉOS GÉNÉRALES
+// ================================================================
+function initialiserVideosGenerales() {
+    const container = document.getElementById('general-videos-list');
+    container.innerHTML = "";
+
+    VIDEOS_CATEGORISEES.forEach((groupe, idx) => {
+        const isFirst = idx === 0;
+
+        // Bouton d'en-tête de catégorie
+        const header = document.createElement('button');
+        header.className = "w-full flex items-center justify-between mt-3 mb-1 px-1 text-left group";
+        header.setAttribute('aria-expanded', String(isFirst));
+        header.setAttribute('aria-controls', 'video-group-' + idx);
+        header.innerHTML =
+            '<span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest group-hover:text-emerald-700 transition-colors">' + groupe.categorie + '</span>' +
+            '<span class="cat-arrow text-[9px] text-gray-400 group-hover:text-emerald-600 transition-colors ml-2 shrink-0" aria-hidden="true">' + (isFirst ? '▲' : '▼') + '</span>';
+        header.onclick = function() { toggleVideoCategorie(this); };
+        container.appendChild(header);
+
+        // Groupe de vidéos
+        const group = document.createElement('div');
+        group.id = 'video-group-' + idx;
+        group.className = 'video-group space-y-1.5' + (isFirst ? '' : ' collapsed');
+        group.setAttribute('role', 'list');
+
+        groupe.videos.forEach(vid => {
+            const btn = document.createElement('button');
+            btn.className = "w-full group/btn relative bg-white hover:bg-gray-50 border border-emerald-100 text-emerald-900 text-[11px] px-3 py-2 rounded-lg flex items-center justify-between font-bold shadow-sm transition-all active:scale-95 overflow-hidden";
+            btn.setAttribute('role', 'listitem');
+            btn.setAttribute('aria-label', 'Lire : ' + vid.titre);
+            btn.innerHTML =
+                '<span class="flex items-center z-10 text-left">' +
+                '<svg class="w-3.5 h-3.5 mr-2 text-red-600 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>' +
+                '<span class="truncate">' + vid.titre + '</span></span>' +
+                '<span class="text-[9px] text-emerald-500 font-normal z-10 ml-2 shrink-0 uppercase tracking-wide" aria-hidden="true">Play ↗</span>' +
+                '<div class="absolute inset-0 h-full w-full bg-emerald-50/50 -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite]" aria-hidden="true"></div>';
+            btn.onclick = () => ouvrirModalGlobale(vid.lien, vid.titre);
+            group.appendChild(btn);
+        });
+
+        // Hauteur initiale : ouverte pour la première catégorie
+        if (isFirst) {
+            // On laisse le navigateur calculer après insertion
+            requestAnimationFrame(() => {
+                group.style.maxHeight = group.scrollHeight + 'px';
+            });
+        } else {
+            group.style.maxHeight = '0';
+        }
+
+        container.appendChild(group);
+    });
+}
+
+function initialiserVideosAnciens() {
+            const container = document.getElementById('all-students-videos-list');
+            if (!container) return;
+            
+            let toutesLesVideos = [];
+
+            // 1. Extraire toutes les vidéos de ecolesData
+            ecolesData.forEach(ecole => {
+                if (ecole.anciens) {
+                    ecole.anciens.forEach(eleve => {
+                        if (eleve.lien_video && eleve.lien_video.toString().trim() !== "" && eleve.lien_video !== "nan") {
+                            toutesLesVideos.push({
+                                ecole: ecole.nom,
+                                prenom: eleve.prenom,
+                                initiale: eleve.initiale_nom || "",
+                                annee: eleve.annee,
+                                lien: eleve.lien_video
+                            });
+                        }
+                    });
+                }
+            });
+
+            // 2. Trier de la plus récente à la plus ancienne
+            toutesLesVideos.sort((a, b) => b.annee - a.annee);
+
+            if (toutesLesVideos.length === 0) {
+                container.innerHTML = `<p class="text-[10px] text-gray-500 italic text-center">Aucun témoignage disponible.</p>`;
+                return;
+            }
+
+            // 3. Générer les boutons
+            toutesLesVideos.forEach(vid => {
+                const btn = document.createElement('button');
+                btn.className = "w-full group relative bg-white hover:bg-amber-100/50 border border-amber-100 text-amber-950 text-[11px] px-3 py-2 rounded-lg flex items-center justify-between font-bold shadow-sm transition-all active:scale-95 overflow-hidden mb-1.5";
+                btn.innerHTML = `
+                    <span class="flex flex-col z-10 text-left w-full overflow-hidden">
+                        <span class="flex items-center">
+                            <svg class="w-3.5 h-3.5 mr-1.5 text-red-600 fill-current shrink-0" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                            <span class="truncate">${vid.prenom} ${vid.initiale}.</span>
+                        </span>
+                        <span class="text-[9px] text-gray-500 font-normal mt-0.5 ml-5 truncate w-11/12">${vid.ecole} (${vid.annee})</span>
+                    </span>
+                    <span class="text-[9px] text-amber-600 font-bold z-10 shrink-0 uppercase tracking-wide ml-1">Play ↗</span>
+                    <div class="absolute inset-0 h-full w-full bg-amber-100/50 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+                `;
+                
+                // Ouvre la vidéo dans la fenêtre modale (celle déjà utilisée pour les conférences)
+                btn.onclick = () => ouvrirModalGlobale(vid.lien, `Témoignage : ${vid.prenom} - ${vid.ecole}`);
+                container.appendChild(btn);
+            });
+        }
+		
+function toggleVideoCategorie(btn) {
+    const group  = btn.nextElementSibling;
+    const arrow  = btn.querySelector('.cat-arrow');
+    const isOpen = btn.getAttribute('aria-expanded') === 'true';
+
+    if (isOpen) {
+        // Fermer : fixer la hauteur actuelle avant d'animer vers 0
+        group.style.maxHeight = group.scrollHeight + 'px';
+        group.classList.add('collapsed');
+        requestAnimationFrame(() => { group.style.maxHeight = '0'; });
+        btn.setAttribute('aria-expanded', 'false');
+        arrow.textContent = '▼';
+    } else {
+        // Ouvrir
+        group.classList.remove('collapsed');
+        group.style.maxHeight = group.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded', 'true');
+        arrow.textContent = '▲';
+        // Nettoyage après transition : laisser la hauteur libre pour le scroll interne
+        group.addEventListener('transitionend', () => {
+            if (btn.getAttribute('aria-expanded') === 'true') {
+                group.style.maxHeight = '240px'; // scroll interne au-delà de 240px
+            }
+        }, { once: true });
+    }
+}
+
+// ================================================================
+// INITIALISATION
+// ================================================================
+mettreAJourBanques();
+initialiserVideosGenerales();
+initialiserVideosAnciens();
+
+ecolesData.forEach(ecole => {
+    const color  = typeColors[ecole.type_bcpst] || typeColors[ecole.type_tb] || "#6b7280";
+    const marker = L.circleMarker(ecole.coords, {
+        radius: 9, fillColor: color, color: '#ffffff', weight: 2, opacity: 1, fillOpacity: 0.9,
+        alt: ecole.nom
+    });
+    marker.bindTooltip('<b>' + ecole.nom + '</b><br><span style="font-size:11px;color:#666">' + ecole.ville + '</span>');
+    marker.on('click', () => {
+        afficherEcole(ecole);
+        map.setView(ecole.coords, 12, { animate: true, duration: 1 });
+    });
+    markers.push({ ecole, marker, visible: true });
+    clusterGroup.addLayer(marker);
+});
+
+// Fermer panneau banque en cliquant dehors
+document.addEventListener('click', ev => {
+    const btn   = document.getElementById('banque-toggle-btn');
+    const panel = document.getElementById('banque-panel');
+    if (btn && panel && !btn.contains(ev.target) && !panel.contains(ev.target)) {
+        if (!panel.classList.contains('hidden')) {
+            panel.classList.add('hidden');
+            document.getElementById('banque-btn-arrow').textContent = '▼';
+            btn.setAttribute('aria-expanded', 'false');
+        }
+    }
+});
+
+// Navigation clavier globale
+document.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape') {
+        const panel = document.getElementById('banque-panel');
+        if (!panel.classList.contains('hidden')) {
+            toggleBanquePanel();
+            document.getElementById('banque-toggle-btn').focus();
+            return;
+        }
+        const modal = document.getElementById('global-video-modal');
+        if (!modal.classList.contains('hidden')) { fermerModalGlobale(); return; }
+        if (ecoleActuelleObj) { fermerEcole(); }
+    }
+});
+
+document.getElementById('search-bar').addEventListener('input', filtrerTout);
+
+updateRangeSlider(true);
+filtrerTout();
+chargerEtat(); // Charger l'état depuis l'URL hash après initialisation
+
+</script>
+</body>
+
+<!-- ÉCRAN D'AUTHENTIFICATION -->
+<div id="auth-screen" class="fixed inset-0 bg-emerald-900 flex items-center justify-center z-[99999]">
+    <div class="bg-white rounded-xl p-8 shadow-2xl max-w-sm w-full mx-4 text-center">
+        <img src="logo.jpg" alt="Logo" class="h-16 mx-auto mb-4 rounded-lg">
+        <h1 class="text-lg font-bold text-emerald-900 mb-1">Accès réservé</h1>
+        <p class="text-xs text-gray-400 mb-5">Lycée Le Chesnoy — BCPST &amp; TB</p>
+        <input type="password" id="pw-input" placeholder="Mot de passe…"
+               class="w-full p-3 border border-gray-200 rounded-lg text-sm mb-3 focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+               onkeydown="if(event.key==='Enter') verifierMDP()">
+        <button onclick="verifierMDP()"
+                class="w-full bg-emerald-700 text-white font-bold py-2.5 rounded-lg hover:bg-emerald-800 transition-colors">
+            Accéder →
+        </button>
+        <p id="pw-error" class="text-red-500 text-xs mt-2 hidden">Mot de passe incorrect.</p>
+    </div>
+</div>
+<script>
+    const MDP = "chesnoy2025"; // ← Personnalisez ici
+    function verifierMDP() {
+        if (document.getElementById('pw-input').value === MDP) {
+            document.getElementById('auth-screen').remove();
+            localStorage.setItem('chesnoy-ok', MDP);
+        } else {
+            document.getElementById('pw-error').classList.remove('hidden');
+        }
+    }
+    // Déjà authentifié = on saute l'écran
+    if (localStorage.getItem('chesnoy-ok') === MDP) {
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('auth-screen')?.remove();
+        });
+    }
+</script>
+</html>
+
 
         /* Range slider */
         .range-slider-thumb {
