@@ -63,7 +63,6 @@
 </head>
 <body class="bg-gray-50 font-sans h-full flex flex-col">
 
-<!-- ===== HEADER ===== -->
 <header class="bg-emerald-800 text-white p-3 shadow-md flex items-center justify-between z-10 border-b-4 border-amber-400">
     <div class="flex items-center space-x-3">
         <img src="logo.jpg" alt="Logo Le Chesnoy" class="h-12 w-12 rounded-lg bg-white p-0.5 object-contain shadow">
@@ -72,21 +71,28 @@
             <p class="text-xs opacity-90 font-medium text-white">Parcours des Anciens Étudiants BCPST &amp; TB</p>
         </div>
     </div>
-    <button id="view-toggle-btn" onclick="toggleVue()"
-            aria-label="Basculer vers la vue liste"
-            class="text-xs font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shrink-0">
-        <span id="view-toggle-icon" aria-hidden="true">📋</span>
-        <span id="view-toggle-label" class="hidden sm:inline">Vue liste</span>
-    </button>
+    
+    <div class="flex items-center gap-2 shrink-0">
+        <button id="btn-retour-accueil" onclick="fermerEcole()" 
+                aria-label="Retour à la liste des écoles"
+                class="hidden text-xs font-bold text-emerald-950 bg-amber-400 hover:bg-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow">
+            <span aria-hidden="true">←</span>
+            <span>Retour à l'accueil</span>
+        </button>
+
+        <button id="view-toggle-btn" onclick="toggleVue()"
+                aria-label="Basculer vers la vue liste"
+                class="text-xs font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5">
+            <span id="view-toggle-icon" aria-hidden="true">📋</span>
+            <span id="view-toggle-label" class="hidden sm:inline">Vue liste</span>
+        </button>
+    </div>
 </header>
 
-<!-- ===== MAIN ===== -->
 <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
 
-    <!-- CARTE -->
     <div id="map-container" class="w-full h-2/5 md:h-full md:w-3/5 bg-gray-200 shadow-inner relative">
         <div id="map" class="w-full h-full"></div>
-        <!-- Légende dynamique -->
         <div id="map-legend" class="absolute bottom-8 left-2 z-[1000] bg-white/95 backdrop-blur-sm rounded-lg shadow-md border border-gray-200 text-xs overflow-hidden" style="min-width:120px;" role="complementary" aria-label="Légende de la carte">
             <button id="legend-toggle" onclick="toggleLegend()" aria-expanded="false" aria-controls="legend-body"
                     class="w-full flex items-center justify-between px-2.5 py-1.5 font-bold text-gray-600 bg-gray-50 hover:bg-gray-100 border-b border-gray-100 transition-colors text-[10px] uppercase tracking-wide">
@@ -97,7 +103,6 @@
         </div>
     </div>
 
-    <!-- VUE LISTE -->
     <div id="list-view" class="hidden w-full h-2/5 md:h-full md:w-3/5 overflow-y-auto bg-gray-50 border-r border-gray-200 flex flex-col" role="region" aria-label="Liste des écoles">
         <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-4 py-2 z-10">
             <p id="list-header-text" class="text-[11px] text-gray-500"></p>
@@ -105,10 +110,8 @@
         <div id="list-content" class="p-3 space-y-2 flex-1" role="list"></div>
     </div>
 
-    <!-- PANNEAU DROITE -->
     <div id="details-panel" class="w-full h-3/5 md:h-full md:w-2/5 bg-white p-4 md:p-6 overflow-y-auto border-t-2 md:border-t-0 md:border-l border-gray-200 flex flex-col">
 
-        <!-- FILTRES -->
         <div class="space-y-3 mb-4 bg-gray-50 p-3 rounded-xl border border-gray-100 shadow-sm" role="search" aria-label="Filtres de recherche">
 
             <input type="text" id="search-bar" placeholder="🔍 Rechercher une école, une ville..."
@@ -124,7 +127,6 @@
                         class="flex-1 py-1.5 px-3 rounded-lg text-xs font-bold bg-white text-gray-700 border border-gray-200 shadow-sm transition-all hover:bg-gray-100">TB</button>
             </div>
 
-            <!-- BANQUE DROPDOWN -->
             <div>
                 <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1" id="banque-label">Banque de concours :</label>
                 <button id="banque-toggle-btn" onclick="toggleBanquePanel()" aria-expanded="false"
@@ -142,7 +144,6 @@
                 </div>
             </div>
 
-            <!-- RANGE ANNÉES -->
             <div>
                 <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1" id="period-label">
                     Période d'intégration :
@@ -173,13 +174,11 @@
             </div>
         </div>
 
-        <!-- PLACEHOLDER -->
         <div id="placeholder-message" class="flex-1 flex flex-col items-center text-center my-auto py-2">
             <p class="text-4xl mb-3 animate-bounce" aria-hidden="true">📍</p>
             <p class="text-base font-bold text-emerald-950">Explorez les intégrations du Chesnoy</p>
-            <p class="text-xs px-4 mt-1 text-gray-500 mb-4">Cliquez sur une école de la carte (ou dans la liste) pour en découvrir davantage.</p>
+            <p class="text-xs px-4 mt-1 text-gray-500 mb-4">Cliquez sur une école de la carte (or dans la liste) pour en découvrir davantage.</p>
 
-            <!-- GRAPHIQUE PAR ANNÉE -->
             <div class="w-full max-w-sm mb-4 bg-emerald-50 rounded-xl p-4 border border-emerald-100 shadow-sm">
                 <h3 class="text-xs font-bold text-emerald-900 mb-3 uppercase tracking-wide flex items-center justify-center border-b border-emerald-200/50 pb-2">
                     <span class="mr-2" aria-hidden="true">📈</span> Intégrations par année
@@ -187,7 +186,6 @@
                 <div id="chart-container" class="w-full" style="height:84px;" role="img" aria-label="Histogramme des intégrations par année"></div>
             </div>
 
-            <!-- VIDÉOS GÉNÉRALES -->
             <div class="w-full max-w-sm bg-emerald-50 rounded-xl p-4 border border-emerald-100 shadow-sm overflow-hidden">
                 <h3 class="text-xs font-bold text-emerald-900 mb-1 uppercase tracking-wide flex items-center justify-center border-b border-emerald-200/50 pb-2">
                     <span class="mr-2 text-base" aria-hidden="true">🎓</span> Conférences et Forums
@@ -204,21 +202,13 @@
                 </div>
         </div>
 
-        <!-- FICHE ÉCOLE -->
         <div id="school-info" class="hidden flex-1 flex flex-col">
-            <button onclick="fermerEcole()" aria-label="Retour à la liste des écoles"
-                    class="mb-3 flex items-center text-[11px] font-bold text-gray-500 hover:text-emerald-700 bg-gray-50 hover:bg-emerald-50 border border-gray-200 px-3 py-1.5 rounded-lg transition-colors w-fit shadow-sm">
-                <span class="mr-1.5 text-sm leading-none" aria-hidden="true">←</span> Retour à l'accueil
-            </button>
-
             <div class="border-b border-gray-100 pb-3 mb-4">
                 <h2 id="school-name" class="text-xl font-extrabold text-emerald-950 leading-tight">Nom de l'école</h2>
                 <p id="school-city" class="text-xs font-semibold text-amber-600 uppercase tracking-wider mt-1">Ville</p>
 
-                <!-- Badges type + banque -->
                 <div id="school-badges" class="flex flex-wrap gap-1.5 mt-2" aria-label="Catégorie de l'école"></div>
 
-                <!-- Mini-carte -->
                 <div id="school-mini-map" class="hidden w-full rounded-lg overflow-hidden border border-gray-100 mt-3" style="height:96px;" aria-label="Localisation sur la carte"></div>
 
                 <img id="school-image" src="" alt="" class="hidden w-full h-40 object-cover rounded-xl mt-3 mb-2 shadow-sm border border-gray-100">
@@ -248,11 +238,7 @@
             </div>
         </div>
 
-    </div><!-- /details-panel -->
-</main><!-- /main -->
-
-<!-- MODAL VIDÉO GLOBALE -->
-<div id="global-video-modal" class="hidden fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
+    </div></main><div id="global-video-modal" class="hidden fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
      role="dialog" aria-modal="true" aria-labelledby="global-video-title-text">
     <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col border border-gray-700">
         <div class="flex justify-between items-center p-4 bg-emerald-900 text-white">
@@ -270,7 +256,6 @@
     </div>
 </div>
 
-<!-- ===== SCRIPTS ===== -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="data.js"></script>
@@ -748,8 +733,7 @@ function filtrerTout() {
             selectedBanqueTypes.has(e.type_bcpst) || selectedBanqueTypes.has(e.type_tb);
         const schoolMatchesFiliere = (filiereSelectionnee === 'TOUT') ||
             (filiereSelectionnee === 'BCPST' ? !!e.banque_bcpst : !!e.banque_tb);
-        // Apparaît en transparent si aucun ancien ne correspond aux filtres,
-        // mais que l'école appartient bien à la banque/filière sélectionnée
+        
         const showFaded = filtres.length === 0 && matchTexte && schoolMatchesBanque && schoolMatchesFiliere;
 
         const visible = matchTexte && (filtres.length > 0 || showFaded);
@@ -838,6 +822,9 @@ function mettreAJourLegende() {
 function afficherEcole(ecole) {
     document.getElementById('placeholder-message').classList.add('hidden');
     document.getElementById('school-info').classList.remove('hidden');
+    
+    // FAIT APPARAÎTRE LE BOUTON RETOUR DANS L'EN-TÊTE
+    document.getElementById('btn-retour-accueil').classList.remove('hidden');
 
     document.getElementById('school-name').innerText = ecole.nom;
     document.getElementById('school-city').innerText = ecole.ville;
@@ -925,6 +912,10 @@ function afficherEcole(ecole) {
 function fermerEcole() {
     document.getElementById('school-info').classList.add('hidden');
     document.getElementById('placeholder-message').classList.remove('hidden');
+    
+    // MASQUE LE BOUTON RETOUR DANS L'EN-TÊTE
+    document.getElementById('btn-retour-accueil').classList.add('hidden');
+
     fermerVideo();
     ecoleActuelleObj = null;
     const miniMapEl = document.getElementById('school-mini-map');
@@ -1028,9 +1019,7 @@ function initialiserVideosGenerales() {
             group.appendChild(btn);
         });
 
-        // Hauteur initiale : ouverte pour la première catégorie
         if (isFirst) {
-            // On laisse le navigateur calculer après insertion
             requestAnimationFrame(() => {
                 group.style.maxHeight = group.scrollHeight + 'px';
             });
@@ -1048,7 +1037,6 @@ function initialiserVideosAnciens() {
             
             let toutesLesVideos = [];
 
-            // 1. Extraire toutes les vidéos de ecolesData
             ecolesData.forEach(ecole => {
                 if (ecole.anciens) {
                     ecole.anciens.forEach(eleve => {
@@ -1065,7 +1053,6 @@ function initialiserVideosAnciens() {
                 }
             });
 
-            // 2. Trier de la plus récente à la plus ancienne
             toutesLesVideos.sort((a, b) => b.annee - a.annee);
 
             if (toutesLesVideos.length === 0) {
@@ -1073,7 +1060,6 @@ function initialiserVideosAnciens() {
                 return;
             }
 
-            // 3. Générer les boutons
             toutesLesVideos.forEach(vid => {
                 const btn = document.createElement('button');
                 btn.className = "w-full group relative bg-white hover:bg-amber-100/50 border border-amber-100 text-amber-950 text-[11px] px-3 py-2 rounded-lg flex items-center justify-between font-bold shadow-sm transition-all active:scale-95 overflow-hidden mb-1.5";
@@ -1089,7 +1075,6 @@ function initialiserVideosAnciens() {
                     <div class="absolute inset-0 h-full w-full bg-amber-100/50 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
                 `;
                 
-                // Ouvre la vidéo dans la fenêtre modale (celle déjà utilisée pour les conférences)
                 btn.onclick = () => ouvrirModalGlobale(vid.lien, `Témoignage : ${vid.prenom} - ${vid.ecole}`);
                 container.appendChild(btn);
             });
@@ -1101,22 +1086,19 @@ function toggleVideoCategorie(btn) {
     const isOpen = btn.getAttribute('aria-expanded') === 'true';
 
     if (isOpen) {
-        // Fermer : fixer la hauteur actuelle avant d'animer vers 0
         group.style.maxHeight = group.scrollHeight + 'px';
         group.classList.add('collapsed');
         requestAnimationFrame(() => { group.style.maxHeight = '0'; });
         btn.setAttribute('aria-expanded', 'false');
         arrow.textContent = '▼';
     } else {
-        // Ouvrir
         group.classList.remove('collapsed');
         group.style.maxHeight = group.scrollHeight + 'px';
         btn.setAttribute('aria-expanded', 'true');
         arrow.textContent = '▲';
-        // Nettoyage après transition : laisser la hauteur libre pour le scroll interne
         group.addEventListener('transitionend', () => {
             if (btn.getAttribute('aria-expanded') === 'true') {
-                group.style.maxHeight = '240px'; // scroll interne au-delà de 240px
+                group.style.maxHeight = '240px';
             }
         }, { once: true });
     }
@@ -1144,7 +1126,6 @@ ecolesData.forEach(ecole => {
     clusterGroup.addLayer(marker);
 });
 
-// Fermer panneau banque en cliquant dehors
 document.addEventListener('click', ev => {
     const btn   = document.getElementById('banque-toggle-btn');
     const panel = document.getElementById('banque-panel');
@@ -1157,7 +1138,6 @@ document.addEventListener('click', ev => {
     }
 });
 
-// Navigation clavier globale
 document.addEventListener('keydown', ev => {
     if (ev.key === 'Escape') {
         const panel = document.getElementById('banque-panel');
@@ -1176,12 +1156,11 @@ document.getElementById('search-bar').addEventListener('input', filtrerTout);
 
 updateRangeSlider(true);
 filtrerTout();
-chargerEtat(); // Charger l'état depuis l'URL hash après initialisation
+chargerEtat();
 
 </script>
 </body>
 
-<!-- ÉCRAN D'AUTHENTIFICATION -->
 <div id="auth-screen" class="fixed inset-0 bg-emerald-900 flex items-center justify-center z-[99999]">
     <div class="bg-white rounded-xl p-8 shadow-2xl max-w-sm w-full mx-4 text-center">
         <img src="logo.jpg" alt="Logo" class="h-16 mx-auto mb-4 rounded-lg">
@@ -1198,7 +1177,7 @@ chargerEtat(); // Charger l'état depuis l'URL hash après initialisation
     </div>
 </div>
 <script>
-    const MDP = "chesnoy2025"; // ← Personnalisez ici
+    const MDP = "chesnoy2025";
     function verifierMDP() {
         if (document.getElementById('pw-input').value === MDP) {
             document.getElementById('auth-screen').remove();
@@ -1207,7 +1186,6 @@ chargerEtat(); // Charger l'état depuis l'URL hash après initialisation
             document.getElementById('pw-error').classList.remove('hidden');
         }
     }
-    // Déjà authentifié = on saute l'écran
     if (localStorage.getItem('chesnoy-ok') === MDP) {
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('auth-screen')?.remove();
