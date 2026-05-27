@@ -73,16 +73,14 @@
     </div>
     
     <div class="flex items-center gap-2 shrink-0">
-        <button id="btn-retour-accueil" onclick="fermerEcole()" 
-                aria-label="Retour à la liste des écoles"
-                class="hidden text-xs font-bold text-emerald-950 bg-amber-400 hover:bg-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow">
-            <span aria-hidden="true">←</span>
-            <span>Retour à l'accueil</span>
-        </button>
+        <button id="btn-retour-accueil" onclick="reinitialiserFiltres()" 
+                aria-label="Retour"
+                class="hidden text-xs font-bold text-emerald-950 bg-amber-400 hover:bg-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow shrink-0">
+            </button>
 
         <button id="view-toggle-btn" onclick="toggleVue()"
                 aria-label="Basculer vers la vue liste"
-                class="text-xs font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5">
+                class="text-xs font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shrink-0">
             <span id="view-toggle-icon" aria-hidden="true">📋</span>
             <span id="view-toggle-label" class="hidden sm:inline">Vue liste</span>
         </button>
@@ -177,7 +175,7 @@
         <div id="placeholder-message" class="flex-1 flex flex-col items-center text-center my-auto py-2">
             <p class="text-4xl mb-3 animate-bounce" aria-hidden="true">📍</p>
             <p class="text-base font-bold text-emerald-950">Explorez les intégrations du Chesnoy</p>
-            <p class="text-xs px-4 mt-1 text-gray-500 mb-4">Cliquez sur une école de la carte (or dans la liste) pour en découvrir davantage.</p>
+            <p class="text-xs px-4 mt-1 text-gray-500 mb-4">Cliquez sur une école de la carte (ou dans la liste) pour en découvrir davantage.</p>
 
             <div class="w-full max-w-sm mb-4 bg-emerald-50 rounded-xl p-4 border border-emerald-100 shadow-sm">
                 <h3 class="text-xs font-bold text-emerald-900 mb-3 uppercase tracking-wide flex items-center justify-center border-b border-emerald-200/50 pb-2">
@@ -203,6 +201,7 @@
         </div>
 
         <div id="school-info" class="hidden flex-1 flex flex-col">
+
             <div class="border-b border-gray-100 pb-3 mb-4">
                 <h2 id="school-name" class="text-xl font-extrabold text-emerald-950 leading-tight">Nom de l'école</h2>
                 <p id="school-city" class="text-xs font-semibold text-amber-600 uppercase tracking-wider mt-1">Ville</p>
@@ -344,6 +343,54 @@ const clusterGroup = L.markerClusterGroup({
     chunkedLoading: true
 });
 map.addLayer(clusterGroup);
+
+// ================================================================
+// GESTION DU BOUTON ACCUEIL DYNAMIQUE
+// ================================================================
+function verifierEtatInitial() {
+    const search = document.getElementById('search-bar').value.trim();
+    const start  = document.getElementById('filter-year-start').value;
+    const end    = document.getElementById('filter-year-end').value;
+    
+    // Vérifie l'état de la carte (coordonnées et zoom par défaut)
+    const center = map.getCenter();
+    const zoom = map.getZoom();
+    const isMapInitial = (zoom === 5) && 
+                         (Math.abs(center.lat - 46.6) < 0.1) && 
+                         (Math.abs(center.lng - 2.2) < 0.1);
+    
+    // Vérifie si TOUT est à sa valeur par défaut
+    const isInitial = (
+        search === "" &&
+        start === "2015" &&
+        end === "2026" &&
+        filiereSelectionnee === "TOUT" &&
+        selectedBanqueTypes.size === 0 &&
+        ecoleActuelleObj === null &&
+        isMapInitial
+    );
+    
+    const btn = document.getElementById('btn-retour-accueil');
+    
+    if (isInitial) {
+        btn.classList.add('hidden');
+    } else {
+        btn.classList.remove('hidden');
+        
+        // Comportement intelligent du bouton
+        if (ecoleActuelleObj !== null) {
+            // Une école est ouverte : le bouton ferme l'école
+            btn.onclick = fermerEcole;
+            btn.innerHTML = '<span aria-hidden="true" class="text-sm leading-none">←</span><span class="hidden sm:inline">Fermer la fiche</span>';
+            btn.setAttribute('aria-label', 'Fermer la fiche école');
+        } else {
+            // Aucune école ouverte, mais des filtres sont actifs OU la carte a été déplacée/zoomée
+            btn.onclick = reinitialiserFiltres; // Cette fonction remet tout à zéro, y compris la carte
+            btn.innerHTML = '<span aria-hidden="true" class="text-sm leading-none">🏠</span><span class="hidden sm:inline">Retour à l\'accueil</span>';
+            btn.setAttribute('aria-label', 'Réinitialiser l\'affichage et la carte');
+        }
+    }
+}
 
 // ================================================================
 // VUE LISTE / CARTE
@@ -489,6 +536,8 @@ function chargerEtat() {
         const item = markers.find(m => m.ecole.nom === s);
         if (item) { afficherEcole(item.ecole); map.setView(item.ecole.coords, 12); }
     }
+    
+    verifierEtatInitial();
 }
 
 // ================================================================
@@ -762,6 +811,9 @@ function filtrerTout() {
     mettreAJourGraphique();
     mettreAJourListeVue();
     sauvegarderEtat();
+    
+    // Met à jour la visibilité du bouton "Retour"
+    verifierEtatInitial();
 }
 
 // ================================================================
@@ -822,9 +874,6 @@ function mettreAJourLegende() {
 function afficherEcole(ecole) {
     document.getElementById('placeholder-message').classList.add('hidden');
     document.getElementById('school-info').classList.remove('hidden');
-    
-    // FAIT APPARAÎTRE LE BOUTON RETOUR DANS L'EN-TÊTE
-    document.getElementById('btn-retour-accueil').classList.remove('hidden');
 
     document.getElementById('school-name').innerText = ecole.nom;
     document.getElementById('school-city').innerText = ecole.ville;
@@ -907,21 +956,24 @@ function afficherEcole(ecole) {
             list.appendChild(li);
         });
     }
+
+    // Met à jour la visibilité du bouton "Retour"
+    verifierEtatInitial();
 }
 
 function fermerEcole() {
     document.getElementById('school-info').classList.add('hidden');
     document.getElementById('placeholder-message').classList.remove('hidden');
     
-    // MASQUE LE BOUTON RETOUR DANS L'EN-TÊTE
-    document.getElementById('btn-retour-accueil').classList.add('hidden');
-
     fermerVideo();
     ecoleActuelleObj = null;
     const miniMapEl = document.getElementById('school-mini-map');
     miniMapEl.classList.add('hidden');
     map.setView([46.6, 2.2], 5, { animate: true, duration: 1 });
     sauvegarderEtat();
+    
+    // Met à jour la visibilité du bouton "Retour"
+    verifierEtatInitial();
 }
 
 // ================================================================
@@ -973,7 +1025,7 @@ function reinitialiserFiltres() {
     document.getElementById('filter-year-end').value   = "2026";
     updateRangeSlider(true);
     toutDeselectionnerBanques();
-    fermerEcole();
+    fermerEcole(); // ferme la fiche et remet la vue de la carte par défaut
     changerFiliere('TOUT');
 }
 
@@ -1126,6 +1178,9 @@ ecolesData.forEach(ecole => {
     clusterGroup.addLayer(marker);
 });
 
+// Écoute les mouvements de la carte pour afficher le bouton de retour au besoin
+map.on('moveend', verifierEtatInitial);
+
 document.addEventListener('click', ev => {
     const btn   = document.getElementById('banque-toggle-btn');
     const panel = document.getElementById('banque-panel');
@@ -1193,3 +1248,5 @@ chargerEtat();
     }
 </script>
 </html>
+
+```
