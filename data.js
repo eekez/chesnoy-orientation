@@ -20,7 +20,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -28,7 +30,9 @@ const ecolesData = [
                 "initiale_nom": "A",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -36,7 +40,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "PRUGNEAU",
@@ -44,7 +50,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2024,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "LEBON",
@@ -52,7 +60,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2024,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "REVEILLARD",
@@ -60,7 +70,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "AUROUX",
@@ -68,7 +80,9 @@ const ecolesData = [
                 "initiale_nom": "A",
                 "annee": 2020,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "DUMEZ",
@@ -76,7 +90,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2017,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BARDON",
@@ -84,7 +100,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "ZIMMERMANN",
@@ -92,7 +110,9 @@ const ecolesData = [
                 "initiale_nom": "Z",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -117,7 +137,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -125,7 +147,9 @@ const ecolesData = [
                 "initiale_nom": "N",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -133,7 +157,9 @@ const ecolesData = [
                 "initiale_nom": "N",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -141,7 +167,9 @@ const ecolesData = [
                 "initiale_nom": "S",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -149,7 +177,9 @@ const ecolesData = [
                 "initiale_nom": "S",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "SEMHOUN",
@@ -157,7 +187,9 @@ const ecolesData = [
                 "initiale_nom": "S",
                 "annee": 2025,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BHATTI",
@@ -165,7 +197,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2024,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "GUEDON",
@@ -173,7 +207,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2024,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "HEREMBERT",
@@ -181,7 +217,9 @@ const ecolesData = [
                 "initiale_nom": "H",
                 "annee": 2024,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "MOKRANI",
@@ -189,7 +227,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2024,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BOUTET",
@@ -197,7 +237,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "LEBLOND",
@@ -205,7 +247,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "THAUVIN",
@@ -213,7 +257,9 @@ const ecolesData = [
                 "initiale_nom": "T",
                 "annee": 2018,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "VOLENA",
@@ -221,7 +267,9 @@ const ecolesData = [
                 "initiale_nom": "V",
                 "annee": 2018,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "FOUGERE",
@@ -229,7 +277,9 @@ const ecolesData = [
                 "initiale_nom": "F",
                 "annee": 2017,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -254,7 +304,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -262,7 +314,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -270,7 +324,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -278,7 +334,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -286,7 +344,9 @@ const ecolesData = [
                 "initiale_nom": "E",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "WALCZAK",
@@ -294,7 +354,9 @@ const ecolesData = [
                 "initiale_nom": "W",
                 "annee": 2025,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "TURPIN",
@@ -302,7 +364,9 @@ const ecolesData = [
                 "initiale_nom": "T",
                 "annee": 2025,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "SAUTET",
@@ -310,7 +374,9 @@ const ecolesData = [
                 "initiale_nom": "S",
                 "annee": 2023,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "LECLOUX",
@@ -318,7 +384,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2017,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -343,7 +411,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -351,7 +421,9 @@ const ecolesData = [
                 "initiale_nom": "DS",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -359,7 +431,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -367,7 +441,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -375,7 +451,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -383,7 +461,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -391,7 +471,9 @@ const ecolesData = [
                 "initiale_nom": "N",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -399,7 +481,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "GAUTIER",
@@ -407,7 +491,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2025,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "EL-TAIB",
@@ -415,7 +501,9 @@ const ecolesData = [
                 "initiale_nom": "E",
                 "annee": 2024,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "GEBER",
@@ -423,7 +511,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2023,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "KENFAR",
@@ -431,7 +521,9 @@ const ecolesData = [
                 "initiale_nom": "K",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "PETEL",
@@ -439,7 +531,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "CHASSIN",
@@ -447,7 +541,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2020,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "ROGERON",
@@ -455,7 +551,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2019,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "VIRAPIN",
@@ -463,7 +561,9 @@ const ecolesData = [
                 "initiale_nom": "V",
                 "annee": 2017,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "RIVET",
@@ -471,7 +571,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -496,7 +598,9 @@ const ecolesData = [
                 "initiale_nom": "F",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -504,7 +608,9 @@ const ecolesData = [
                 "initiale_nom": "H",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -512,7 +618,9 @@ const ecolesData = [
                 "initiale_nom": "V",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -520,7 +628,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -528,7 +638,9 @@ const ecolesData = [
                 "initiale_nom": "F",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -536,7 +648,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": "fonctionnaire"
             },
             {
                 "nom": "",
@@ -544,7 +658,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": "fonctionnaire"
             },
             {
                 "nom": "",
@@ -552,7 +668,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": "fonctionnaire"
             },
             {
                 "nom": "",
@@ -560,7 +678,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -568,7 +688,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -576,7 +698,9 @@ const ecolesData = [
                 "initiale_nom": "V",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -584,7 +708,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": "fonctionnaire"
             },
             {
                 "nom": "",
@@ -592,7 +718,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": "fonctionnaire"
             },
             {
                 "nom": "",
@@ -600,7 +728,9 @@ const ecolesData = [
                 "initiale_nom": "J",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "SPAGNOL",
@@ -608,7 +738,9 @@ const ecolesData = [
                 "initiale_nom": "S",
                 "annee": 2025,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "ROLLAND",
@@ -616,7 +748,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2024,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "DROIN",
@@ -624,7 +758,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2023,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "RENAULT",
@@ -632,7 +768,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "MORRETTON",
@@ -640,7 +778,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2020,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "VIARD",
@@ -648,7 +788,9 @@ const ecolesData = [
                 "initiale_nom": "V",
                 "annee": 2019,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "GUY",
@@ -656,7 +798,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2018,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "POIRRIER",
@@ -664,7 +808,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BORIE",
@@ -672,7 +818,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2014,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -697,7 +845,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2025,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "LAURENT",
@@ -705,7 +855,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "ROUQUIE",
@@ -713,7 +865,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2019,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "Herthault",
@@ -721,7 +875,9 @@ const ecolesData = [
                 "initiale_nom": "H",
                 "annee": 2019,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "PAYEN",
@@ -729,7 +885,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "D'ANDRIA",
@@ -737,7 +895,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2014,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "MODE",
@@ -745,7 +905,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2014,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -770,7 +932,9 @@ const ecolesData = [
                 "initiale_nom": "J",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -778,7 +942,9 @@ const ecolesData = [
                 "initiale_nom": "S",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -786,7 +952,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -794,7 +962,9 @@ const ecolesData = [
                 "initiale_nom": "J",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -802,7 +972,9 @@ const ecolesData = [
                 "initiale_nom": "K",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -810,7 +982,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -818,7 +992,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -826,7 +1002,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "FAGNIOT",
@@ -834,7 +1012,9 @@ const ecolesData = [
                 "initiale_nom": "F",
                 "annee": 2023,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "VALETTE",
@@ -842,7 +1022,9 @@ const ecolesData = [
                 "initiale_nom": "V",
                 "annee": 2023,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BERTHAULT",
@@ -850,7 +1032,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2023,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "CAILLETTE",
@@ -858,7 +1042,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "CRÉTÉ",
@@ -866,7 +1052,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "POUPA",
@@ -874,7 +1062,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "RENARD",
@@ -882,7 +1072,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2018,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -907,7 +1099,9 @@ const ecolesData = [
                 "initiale_nom": "W",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -915,7 +1109,9 @@ const ecolesData = [
                 "initiale_nom": "H",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "FOUCAULT",
@@ -923,7 +1119,9 @@ const ecolesData = [
                 "initiale_nom": "F",
                 "annee": 2017,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BALOUX",
@@ -931,7 +1129,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -956,7 +1156,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -964,7 +1166,9 @@ const ecolesData = [
                 "initiale_nom": "T",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "DOUSSAN",
@@ -972,7 +1176,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2020,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BREANT",
@@ -980,7 +1186,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2018,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "SARCOU",
@@ -988,7 +1196,9 @@ const ecolesData = [
                 "initiale_nom": "S",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "VANDENBAVIERE",
@@ -996,7 +1206,9 @@ const ecolesData = [
                 "initiale_nom": "V",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1021,7 +1233,9 @@ const ecolesData = [
                 "initiale_nom": "J",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1046,7 +1260,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1071,7 +1287,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "SPAGNOL",
@@ -1079,7 +1297,9 @@ const ecolesData = [
                 "initiale_nom": "S",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "PLET",
@@ -1087,7 +1307,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2018,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "CHARBONNEAU",
@@ -1095,7 +1317,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "MICHOUX",
@@ -1103,7 +1327,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1128,7 +1354,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "JEANROY",
@@ -1136,7 +1364,9 @@ const ecolesData = [
                 "initiale_nom": "J",
                 "annee": 2023,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "AUDOUARD",
@@ -1144,7 +1374,9 @@ const ecolesData = [
                 "initiale_nom": "A",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "VIANEY",
@@ -1152,7 +1384,9 @@ const ecolesData = [
                 "initiale_nom": "V",
                 "annee": 2020,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1177,7 +1411,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "DETROYAT",
@@ -1185,7 +1421,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2025,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "ESTEVE",
@@ -1193,7 +1431,9 @@ const ecolesData = [
                 "initiale_nom": "E",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BADIER",
@@ -1201,7 +1441,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2018,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BORGNE",
@@ -1209,7 +1451,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2017,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "FOCH",
@@ -1217,7 +1461,9 @@ const ecolesData = [
                 "initiale_nom": "F",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "DUCARNE",
@@ -1225,7 +1471,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1250,7 +1498,9 @@ const ecolesData = [
                 "initiale_nom": "A",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1275,7 +1525,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -1283,7 +1535,9 @@ const ecolesData = [
                 "initiale_nom": "T",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1308,7 +1562,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -1316,7 +1572,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "URBINI",
@@ -1324,7 +1582,9 @@ const ecolesData = [
                 "initiale_nom": "U",
                 "annee": 2025,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "DUBOC",
@@ -1332,7 +1592,9 @@ const ecolesData = [
                 "initiale_nom": "D",
                 "annee": 2018,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "MARTINS",
@@ -1340,7 +1602,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "POMARES",
@@ -1348,7 +1612,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1373,7 +1639,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1398,7 +1666,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "RAULT",
@@ -1406,7 +1676,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2024,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "REMOND",
@@ -1414,7 +1686,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "AZZOUN",
@@ -1422,7 +1696,9 @@ const ecolesData = [
                 "initiale_nom": "A",
                 "annee": 2020,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1447,7 +1723,9 @@ const ecolesData = [
                 "initiale_nom": "A",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -1455,7 +1733,9 @@ const ecolesData = [
                 "initiale_nom": "F",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -1463,7 +1743,9 @@ const ecolesData = [
                 "initiale_nom": "N",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -1471,7 +1753,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -1479,7 +1763,9 @@ const ecolesData = [
                 "initiale_nom": "T",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1504,7 +1790,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1545,7 +1833,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "LEWANDOWSKI",
@@ -1553,7 +1843,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2019,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1594,7 +1886,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1619,7 +1913,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -1627,7 +1923,9 @@ const ecolesData = [
                 "initiale_nom": "J",
                 "annee": 2024,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "PAVARD",
@@ -1635,7 +1933,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1660,7 +1960,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1685,7 +1987,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2023,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "MAUGER-BIROCHEAU",
@@ -1693,7 +1997,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2020,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "COLVE",
@@ -1701,7 +2007,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2019,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1726,7 +2034,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2023,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BARDIN",
@@ -1734,7 +2044,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1759,7 +2071,9 @@ const ecolesData = [
                 "initiale_nom": "F",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "LEBEAU",
@@ -1767,7 +2081,9 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1792,7 +2108,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "VANTOMME",
@@ -1800,7 +2118,9 @@ const ecolesData = [
                 "initiale_nom": "V",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "MONNIER",
@@ -1808,7 +2128,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1833,7 +2155,9 @@ const ecolesData = [
                 "initiale_nom": "W",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1858,7 +2182,9 @@ const ecolesData = [
                 "initiale_nom": "A",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -1866,7 +2192,9 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "CANEVET",
@@ -1874,7 +2202,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2019,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1899,7 +2229,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2018,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "GIBERT",
@@ -1907,7 +2239,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2017,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1932,7 +2266,9 @@ const ecolesData = [
                 "initiale_nom": "H",
                 "annee": 2017,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "GODEST",
@@ -1940,7 +2276,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1965,7 +2303,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -1990,7 +2330,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -2015,7 +2357,9 @@ const ecolesData = [
                 "initiale_nom": "O",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -2040,7 +2384,9 @@ const ecolesData = [
                 "initiale_nom": "W",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -2065,7 +2411,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -2090,7 +2438,9 @@ const ecolesData = [
                 "initiale_nom": "F",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BLANCHARD",
@@ -2098,7 +2448,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2014,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -2123,7 +2475,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -2340,7 +2694,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -2557,7 +2913,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     },
@@ -2582,7 +2940,9 @@ const ecolesData = [
                 "initiale_nom": "H",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -2590,7 +2950,9 @@ const ecolesData = [
                 "initiale_nom": "A",
                 "annee": 2022,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "",
@@ -2598,7 +2960,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2021,
                 "classe": "BCPST",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "BOMPART",
@@ -2606,7 +2970,9 @@ const ecolesData = [
                 "initiale_nom": "B",
                 "annee": 2025,
                 "classe": "TB",
-                "lien_video": "https://youtu.be/z25K_8EWzlU"
+                "lien_video": "https://youtu.be/z25K_8EWzlU",
+                "lien_fiche_poste": "https://github.com/eekez/chesnoy-orientation/blob/main/fiches/Cours_1_Suitesrevisions_Eleve.pdf",
+                "fonctionnaire": ""
             },
             {
                 "nom": "FOUQUET",
@@ -2614,7 +2980,9 @@ const ecolesData = [
                 "initiale_nom": "F",
                 "annee": 2025,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "GOUIN",
@@ -2622,7 +2990,9 @@ const ecolesData = [
                 "initiale_nom": "G",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "MORATA",
@@ -2630,7 +3000,9 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "PLANTARD",
@@ -2638,7 +3010,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "PRESTREAU",
@@ -2646,7 +3020,9 @@ const ecolesData = [
                 "initiale_nom": "P",
                 "annee": 2020,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             },
             {
                 "nom": "CROIBIER-MUSCAT",
@@ -2654,7 +3030,9 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2016,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
             }
         ]
     }
