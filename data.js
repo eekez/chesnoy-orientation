@@ -1422,7 +1422,7 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2021,
                 "classe": "TB",
-                "lien_video": ""
+                "lien_video": "https://youtube.com/shorts/-Ft-YouRkKg"
             },
             {
                 "nom": "AZZOUN",
