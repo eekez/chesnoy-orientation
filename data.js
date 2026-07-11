@@ -1642,8 +1642,8 @@ const ecolesData = [
         "nom": "Polytech Angers",
         "ville": "Angers",
         "coords": [
-            0,
-            0
+            45.76111,
+            -0.5584
         ],
         "type_bcpst": "Polytech",
         "type_tb": "Polytech",
