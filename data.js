@@ -1357,8 +1357,8 @@ const ecolesData = [
         "nom": "ONIRIS Nantes Véto",
         "ville": "Nantes",
         "coords": [
-            0,
-            0
+            47.289464,
+            -1.52275
         ],
         "type_bcpst": "Véto",
         "type_tb": "Véto",
@@ -1414,8 +1414,8 @@ const ecolesData = [
         "nom": "ENGEES",
         "ville": "Strasbourg",
         "coords": [
-            0,
-            0
+            48.5839,
+            7.74553
         ],
         "type_bcpst": "G2E",
         "type_tb": "",
@@ -1846,8 +1846,8 @@ const ecolesData = [
         "nom": "INSA Toulouse",
         "ville": "Toulouse",
         "coords": [
-            0,
-            0
+            43.56896,
+            1.46597
         ],
         "type_bcpst": "INSA",
         "type_tb": "INSA",
@@ -1883,8 +1883,8 @@ const ecolesData = [
         "nom": "INSA Strasbourg",
         "ville": "Strasbourg",
         "coords": [
-            0,
-            0
+            48.582316,
+            7.764806
         ],
         "type_bcpst": "INSA",
         "type_tb": "INSA",
@@ -1899,8 +1899,8 @@ const ecolesData = [
         "nom": "ESITECH",
         "ville": "Esitech",
         "coords": [
-            0,
-            0
+            49.38733,
+            1.06848
         ],
         "type_bcpst": "INSA",
         "type_tb": "INSA",
@@ -2750,8 +2750,8 @@ const ecolesData = [
         "nom": "Centrale Lyon",
         "ville": "Écully (Lyon)",
         "coords": [
-            0,
-            0
+            45.7773,
+            4.7787
         ],
         "type_bcpst": "Centrale",
         "type_tb": "",
@@ -2830,8 +2830,8 @@ const ecolesData = [
         "nom": "Bordeaux INP",
         "ville": "Bordeaux",
         "coords": [
-            0,
-            0
+            44.80196,
+            -0.60897
         ],
         "type_bcpst": "PC-BIO",
         "type_tb": "",
@@ -2878,8 +2878,8 @@ const ecolesData = [
         "nom": "ENSC Montpellier",
         "ville": "Montpellier",
         "coords": [
-            0,
-            0
+            43.6353,
+            3.8629
         ],
         "type_bcpst": "PC-BIO",
         "type_tb": "",
@@ -2910,8 +2910,8 @@ const ecolesData = [
         "nom": "ENSIC",
         "ville": "Vandoeuvre-lès-Nancy",
         "coords": [
-            0,
-            0
+            48.6996,
+            6.1801
         ],
         "type_bcpst": "PC-BIO",
         "type_tb": "",
