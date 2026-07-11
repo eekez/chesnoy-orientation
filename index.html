@@ -198,7 +198,15 @@
                     <div id="all-students-videos-list" class="space-y-1 mt-2 text-left max-h-48 overflow-y-auto pr-1">
                         </div>
                 </div>
+			<div class="w-full max-w-sm bg-blue-50 rounded-xl p-4 border border-blue-100 shadow-sm overflow-hidden mt-4">
+                <h3 class="text-xs font-bold text-blue-900 mb-1 uppercase tracking-wide flex items-center justify-center border-b border-blue-200/50 pb-2 ">
+                    <span class="mr-2 text-base">📄</span> Toutes les fiches de poste
+                </h3>
+                <div id="all-job-sheets-list" class="space-y-1 mt-2 text-left max-h-48 overflow-y-auto pr-1">
+						</div>
+				</div>
         </div>
+
 
         <div id="school-info" class="hidden flex-1 flex flex-col">
 
@@ -1138,7 +1146,62 @@ function initialiserVideosAnciens() {
                 container.appendChild(btn);
             });
         }
-		
+
+function initialiserFichesDePoste() {
+    const container = document.getElementById('all-job-sheets-list');
+    if (!container) return;
+    
+    let toutesLesFiches = [];
+
+    // On parcourt les données pour extraire toutes les fiches de poste
+    ecolesData.forEach(ecole => {
+        if (ecole.anciens) {
+            ecole.anciens.forEach(eleve => {
+                if (eleve.lien_fiche_poste && eleve.lien_fiche_poste.toString().trim() !== "" && eleve.lien_fiche_poste !== "nan" && eleve.lien_fiche_poste !== "undefined") {
+                    toutesLesFiches.push({
+                        ecole: ecole.nom,
+                        prenom: eleve.prenom,
+                        initiale: eleve.initiale_nom || "",
+                        annee: eleve.annee,
+                        lien: eleve.lien_fiche_poste
+                    });
+                }
+            });
+        }
+    });
+
+    // Tri par année décroissante
+    toutesLesFiches.sort((a, b) => b.annee - a.annee);
+
+    if (toutesLesFiches.length === 0) {
+        container.innerHTML = `<p class="text-[10px] text-gray-500 italic text-center">Aucune fiche de poste disponible.</p>`;
+        return;
+    }
+
+    // Création des boutons HTML (liens cliquables)
+    toutesLesFiches.forEach(fiche => {
+        const btn = document.createElement('a');
+        btn.href = fiche.lien;
+        btn.target = "_blank"; // Ouvre le PDF dans un nouvel onglet
+        btn.rel = "noopener noreferrer";
+        btn.className = "w-full group relative bg-white hover:bg-blue-100/50 border border-blue-100 text-blue-950 text-[11px] px-3 py-2 rounded-lg flex items-center justify-between font-bold shadow-sm transition-all active:scale-95 overflow-hidden mb-1.5 block";
+        btn.innerHTML = `
+            <div class="flex justify-between items-center w-full z-10 relative">
+                <span class="flex flex-col text-left w-full overflow-hidden">
+                    <span class="flex items-center">
+                        <span class="text-xs mr-1.5 shrink-0" aria-hidden="true">📄</span>
+                        <span class="truncate">${fiche.prenom} ${fiche.initiale}.</span>
+                    </span>
+                    <span class="text-[9px] text-gray-500 font-normal mt-0.5 ml-5 truncate w-11/12">${fiche.ecole} (${fiche.annee})</span>
+                </span>
+                <span class="text-[9px] text-blue-600 font-bold shrink-0 uppercase tracking-wide ml-1">Ouvrir ↗</span>
+            </div>
+            <div class="absolute inset-0 h-full w-full bg-blue-100/50 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
+        `;
+        container.appendChild(btn);
+    });
+}
+
 function toggleVideoCategorie(btn) {
     const group  = btn.nextElementSibling;
     const arrow  = btn.querySelector('.cat-arrow');
@@ -1169,6 +1232,7 @@ function toggleVideoCategorie(btn) {
 mettreAJourBanques();
 initialiserVideosGenerales();
 initialiserVideosAnciens();
+initialiserFichesDePoste();
 
 ecolesData.forEach(ecole => {
     const color  = typeColors[ecole.type_bcpst] || typeColors[ecole.type_tb] || "#6b7280";
