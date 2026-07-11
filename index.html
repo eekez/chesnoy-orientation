@@ -59,21 +59,6 @@
             opacity: 1;
         }
         .video-group.collapsed { opacity: 0; }
-
-        /* Modale fiche de poste PDF */
-        #pdf-modal {
-            display: none;
-        }
-        #pdf-modal.open {
-            display: flex;
-        }
-        #pdf-modal-inner {
-            animation: modal-in 0.22s ease;
-        }
-        @keyframes modal-in {
-            from { opacity: 0; transform: translateY(18px) scale(0.97); }
-            to   { opacity: 1; transform: translateY(0) scale(1); }
-        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans h-full flex flex-col">
@@ -213,16 +198,7 @@
                     <div id="all-students-videos-list" class="space-y-1 mt-2 text-left max-h-48 overflow-y-auto pr-1">
                         </div>
                 </div>
-				
-			<div class="w-full max-w-sm bg-blue-50 rounded-xl p-4 border border-blue-100 shadow-sm overflow-hidden mt-4">
-				<h3 class="text-xs font-bold text-blue-900 mb-1 uppercase tracking-wide flex items-center justify-center border-b border-blue-200/50 pb-2 ">
-					<span class="mr-2 text-base">📄</span> Toutes les fiches de poste
-				</h3>
-				<div id="all-students-fiches-list" class="space-y-1 mt-2 text-left max-h-48 overflow-y-auto pr-1">
-				</div>
-			</div>
         </div>
-
 
         <div id="school-info" class="hidden flex-1 flex flex-col">
 
@@ -261,46 +237,7 @@
             </div>
         </div>
 
-    </div></main><div id="pdf-modal" class="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm items-center justify-center p-4 md:p-8"
-     role="dialog" aria-modal="true" aria-labelledby="pdf-modal-title-text">
-    <div id="pdf-modal-inner" class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col border border-gray-700" style="height:90vh; max-height:90vh;">
-        <div class="flex justify-between items-center p-4 bg-emerald-900 text-white shrink-0">
-            <h3 class="font-bold text-sm md:text-base tracking-wide flex items-center gap-2 min-w-0">
-                <svg class="w-5 h-5 text-amber-400 shrink-0 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/>
-                </svg>
-                <span id="pdf-modal-title-text" class="truncate">Fiche de poste</span>
-            </h3>
-            <div class="flex items-center gap-2 shrink-0 ml-2">
-                <a id="pdf-open-link" href="#" target="_blank" rel="noopener noreferrer"
-                   class="text-amber-300 hover:text-amber-200 text-xs font-bold flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-amber-400/40 hover:border-amber-300/60 transition-all"
-                   title="Ouvrir dans un nouvel onglet">
-                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-                    <span class="hidden sm:inline">Ouvrir</span>
-                </a>
-                <button onclick="fermerModalPDF()" aria-label="Fermer la fiche de poste"
-                        class="text-white hover:text-amber-400 text-2xl leading-none font-bold transition-colors px-1">&times;</button>
-            </div>
-        </div>
-        <div class="flex-1 bg-gray-100 overflow-hidden relative">
-            <iframe id="pdf-viewer-frame" class="w-full h-full border-0" src="" title="Fiche de poste PDF"></iframe>
-            <div id="pdf-fallback" class="hidden absolute inset-0 flex flex-col items-center justify-center gap-4 p-8 text-center bg-gray-50">
-                <svg class="w-16 h-16 text-gray-300 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/>
-                </svg>
-                <p class="text-sm font-semibold text-gray-600">Aperçu non disponible dans le navigateur.</p>
-                <p class="text-xs text-gray-400">Ce fichier peut être protégé ou hébergé sur un domaine externe.</p>
-                <a id="pdf-fallback-link" href="#" target="_blank" rel="noopener noreferrer"
-                   class="inline-flex items-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold px-5 py-2.5 rounded-lg transition-all shadow">
-                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 19H5V5h7V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-                    Ouvrir le PDF
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="global-video-modal" class="hidden fixed inset-0 z-[9998] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
+    </div></main><div id="global-video-modal" class="hidden fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
      role="dialog" aria-modal="true" aria-labelledby="global-video-title-text">
     <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col border border-gray-700">
         <div class="flex justify-between items-center p-4 bg-emerald-900 text-white">
@@ -846,7 +783,14 @@ function filtrerTout() {
         const schoolMatchesFiliere = (filiereSelectionnee === 'TOUT') ||
             (filiereSelectionnee === 'BCPST' ? !!e.banque_bcpst : !!e.banque_tb);
         
-        const showFaded = filtres.length === 0 && matchTexte && schoolMatchesBanque && schoolMatchesFiliere;
+	// On vérifie si la période est celle par défaut (2015 à 2026)
+	const periodeComplete = (anneeDebut === 2015 && anneeFin === 2026);
+
+	// L'école est affichée fanée SI :
+	// 1. Elle n'a pas d'élèves DANS LA PÉRIODE SÉLECTIONNÉE (filtres.length === 0)
+	// 2. Elle correspond au texte, banque et filière
+	// 3. ET la période sélectionnée est la période COMPLÈTE.
+	const showFaded = filtres.length === 0 && matchTexte && schoolMatchesBanque && 	schoolMatchesFiliere && periodeComplete;
 
         const visible = matchTexte && (filtres.length > 0 || showFaded);
         item.visible = visible;
@@ -1002,58 +946,20 @@ function afficherEcole(ecole) {
     } else {
         elevesFiltres.forEach(eleve => {
             const li = document.createElement('li');
+            li.className = 'flex items-center justify-between p-2.5 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-all';
+            li.setAttribute('role','listitem');
             const hasVideo = eleve.lien_video && eleve.lien_video.toString().trim() !== "" && eleve.lien_video !== "nan" && eleve.lien_video !== "undefined";
-            const hasFiche = eleve.lien_fiche_poste && eleve.lien_fiche_poste.toString().trim() !== "" && eleve.lien_fiche_poste !== "nan" && eleve.lien_fiche_poste !== "undefined";
-            const isFonctionnaire = eleve.fonctionnaire && eleve.fonctionnaire.toString().toLowerCase().trim() === "fonctionnaire";
-
-            li.className = 'flex items-center justify-between gap-2 px-2.5 py-2 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-all';
-            li.setAttribute('role', 'listitem');
-
-            // Identité (côté gauche) — nom + classe/année + badge fonctionnaire éventuel
-            const identity =
-                '<div class="min-w-0 flex-1 flex items-center flex-wrap gap-x-1.5 gap-y-0.5">' +
-                '<span class="font-bold text-sm text-gray-800">' + eleve.prenom + ' ' + eleve.initiale_nom + '.</span>' +
-                '<span class="text-xs text-gray-500">(' + eleve.classe + ' \u2013 ' + eleve.annee + ')</span>' +
-                (isFonctionnaire
-                    ? '<span title="Fonctionnaire d\u0027\u00e9tat" class="inline-flex items-center gap-0.5 text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-wide">' +
-                      '<svg class="w-2.5 h-2.5 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/><path d="M12 1C5.935 1 1 5.935 1 12s4.935 11 11 11 11-4.935 11-11S18.065 1 12 1zm0 20c-4.963 0-9-4.037-9-9s4.037-9 9-9 9 4.037 9 9-4.037 9-9 9z"/></svg>' +
-                      'Fonct.' +
-                      '</span>'
-                    : '') +
-                '</div>';
-
-            // Icônes (côté droit) — pilules avec icône + texte court
-            var icons = '<div class="flex items-center gap-1.5 shrink-0">';
-
-            if (hasVideo) {
-                var lienVideoEsc = eleve.lien_video.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-                var prenomEscV   = eleve.prenom.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-                icons +=
-                    '<button onclick="lancerVideo(\'' + lienVideoEsc + '\', \'' + prenomEscV + '\')" ' +
-                    'title="T\u00e9moignage de ' + eleve.prenom + '" ' +
-                    'aria-label="Voir le t\u00e9moignage de ' + eleve.prenom + '" ' +
-                    'class="flex items-center gap-1 px-2 py-1 rounded-full bg-[#cc0000] hover:bg-[#ff0000] text-white shadow-sm transition-all active:scale-90 hover:scale-105">' +
-                    '<svg class="w-3 h-3 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>' +
-                    '<span class="text-[10px] font-bold uppercase tracking-wide">Vid\u00e9o</span>' +
-                    '</button>';
-            }
-
-            if (hasFiche) {
-                var lienFicheEsc = eleve.lien_fiche_poste.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-                var prenomEscF   = eleve.prenom.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-                icons +=
-                    '<button onclick="ouvrirFichePoste(\'' + lienFicheEsc + '\', \'' + prenomEscF + '\')" ' +
-                    'title="Fiche de poste de ' + eleve.prenom + '" ' +
-                    'aria-label="Voir la fiche de poste de ' + eleve.prenom + '" ' +
-                    'class="flex items-center gap-1 px-2 py-1 rounded-full bg-amber-500 hover:bg-amber-600 text-white shadow-sm transition-all active:scale-90 hover:scale-105">' +
-                    '<svg class="w-3 h-3 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>' +
-                    '<span class="text-[10px] font-bold uppercase tracking-wide">Fiche</span>' +
-                    '</button>';
-            }
-
-            icons += '</div>';
-
-            li.innerHTML = identity + icons;
+            li.innerHTML =
+                '<div class="text-sm"><span class="font-bold text-gray-800">' + eleve.prenom + ' ' + eleve.initiale_nom + '.</span>' +
+                '<span class="text-xs text-gray-500 ml-1">(' + eleve.classe + ' - ' + eleve.annee + ')</span></div>' +
+                (hasVideo ?
+                    '<button onclick="lancerVideo(\'' + eleve.lien_video + '\', \'' + eleve.prenom + '\')" ' +
+                    'aria-label="Voir le témoignage de ' + eleve.prenom + '" ' +
+                    'class="group relative bg-[#cc0000] hover:bg-[#ff0000] text-white text-[11px] px-3 py-1.5 rounded-full flex items-center font-bold shadow-md transition-all active:scale-95 overflow-hidden">' +
+                    '<svg class="w-3.5 h-3.5 mr-1.5 fill-current z-10" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>' +
+                    '<span class="z-10 tracking-wide uppercase">Voir</span>' +
+                    '<div class="absolute inset-0 h-full w-full bg-white/20 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div></button>'
+                : '');
             list.appendChild(li);
         });
     }
@@ -1115,82 +1021,6 @@ function ouvrirModalGlobale(lien, titre) {
 function fermerModalGlobale() {
     document.getElementById('global-video-modal').classList.add('hidden');
     document.getElementById('global-video-player').src = "";
-}
-
-// ================================================================
-// FICHE DE POSTE (PDF)
-// ================================================================
-function ouvrirFichePoste(lien, prenom) {
-    const modal     = document.getElementById('pdf-modal');
-    const frame     = document.getElementById('pdf-viewer-frame');
-    const fallback  = document.getElementById('pdf-fallback');
-    const titleEl   = document.getElementById('pdf-modal-title-text');
-    const openLink  = document.getElementById('pdf-open-link');
-    const fbLink    = document.getElementById('pdf-fallback-link');
-
-    // Titre
-    titleEl.textContent = 'Fiche de poste — ' + prenom;
-
-    // Liens
-    openLink.href = lien;
-    fbLink.href   = lien;
-
-    // Réinitialiser l'état
-    fallback.classList.add('hidden');
-    frame.src = "";
-
-    // Ouvrir la modale
-    modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-
-    // Tenter l'affichage inline ; si le PDF vient de Google Drive ou Dropbox,
-    // transformer en URL d'aperçu embarqué
-    const url = transformerUrlPDF(lien);
-    frame.src = url;
-
-    // Détecter si la frame ne charge pas (domaine bloqué)
-    const timeout = setTimeout(() => {
-        if (!frame.contentDocument) {
-            fallback.classList.remove('hidden');
-        }
-    }, 4000);
-
-    frame.onload = () => {
-        clearTimeout(timeout);
-        // Si le contenu est vide ou inaccessible, afficher le fallback
-        try {
-            const doc = frame.contentDocument || frame.contentWindow.document;
-            if (!doc || doc.body.innerHTML === '') fallback.classList.remove('hidden');
-        } catch (e) {
-            // Cross-origin : on ne peut pas inspecter, on laisse l'iframe s'afficher
-        }
-    };
-}
-
-function transformerUrlPDF(url) {
-    // Google Drive : transformer /file/d/{id}/view en /file/d/{id}/preview
-    const gdriveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
-    if (gdriveMatch) {
-        return 'https://drive.google.com/file/d/' + gdriveMatch[1] + '/preview';
-    }
-    // Dropbox : forcer dl=0 pour l'aperçu
-    if (url.includes('dropbox.com')) {
-        return url.replace(/[?&]dl=1/, '').replace('dl=0', '') + (url.includes('?') ? '&' : '?') + 'raw=1';
-    }
-    // Correction GitHub : Utiliser la visionneuse Google pour contourner le blocage
-    if (url.includes('github.com') || url.includes('raw.githubusercontent.com')) {
-        let rawUrl = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
-        return 'https://docs.google.com/viewer?url=' + encodeURIComponent(rawUrl) + '&embedded=true';
-    }
-    return url;
-}
-
-function fermerModalPDF() {
-    const modal = document.getElementById('pdf-modal');
-    modal.classList.remove('open');
-    document.body.style.overflow = '';
-    document.getElementById('pdf-viewer-frame').src = "";
-    document.getElementById('pdf-fallback').classList.add('hidden');
 }
 
 // ================================================================
@@ -1333,63 +1163,12 @@ function toggleVideoCategorie(btn) {
     }
 }
 
-function initialiserFichesPoste() {
-    const container = document.getElementById('all-students-fiches-list');
-    if (!container) return;
-    
-    let toutesLesFiches = [];
-
-    ecolesData.forEach(ecole => {
-        if (ecole.anciens) {
-            ecole.anciens.forEach(eleve => {
-                if (eleve.lien_fiche_poste && eleve.lien_fiche_poste.toString().trim() !== "" && eleve.lien_fiche_poste !== "nan") {
-                    toutesLesFiches.push({
-                        ecole: ecole.nom,
-                        prenom: eleve.prenom,
-                        initiale: eleve.initiale_nom || "",
-                        annee: eleve.annee,
-                        lien: eleve.lien_fiche_poste
-                    });
-                }
-            });
-        }
-    });
-
-    // Tri de la plus récente à la plus ancienne
-    toutesLesFiches.sort((a, b) => b.annee - a.annee);
-
-    if (toutesLesFiches.length === 0) {
-        container.innerHTML = `<p class="text-[10px] text-gray-500 italic text-center">Aucune fiche de poste disponible.</p>`;
-        return;
-    }
-
-    toutesLesFiches.forEach(fiche => {
-        const btn = document.createElement('button');
-        btn.className = "w-full group relative bg-white hover:bg-blue-100/50 border border-blue-100 text-blue-950 text-[11px] px-3 py-2 rounded-lg flex items-center justify-between font-bold shadow-sm transition-all active:scale-95 overflow-hidden mb-1.5";
-        btn.innerHTML = `
-            <span class="flex flex-col z-10 text-left w-full overflow-hidden">
-                <span class="flex items-center">
-                    <svg class="w-3.5 h-3.5 mr-1.5 text-amber-500 fill-current shrink-0" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
-                    <span class="truncate">${fiche.prenom} ${fiche.initiale}.</span>
-                </span>
-                <span class="text-[9px] text-gray-500 font-normal mt-0.5 ml-5 truncate w-11/12">${fiche.ecole} (${fiche.annee})</span>
-            </span>
-            <span class="text-[9px] text-blue-600 font-bold z-10 shrink-0 uppercase tracking-wide ml-1">Ouvrir ↗</span>
-            <div class="absolute inset-0 h-full w-full bg-blue-100/50 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-        `;
-        
-        btn.onclick = () => ouvrirFichePoste(fiche.lien, `${fiche.prenom} - ${fiche.ecole}`);
-        container.appendChild(btn);
-    });
-}
-
 // ================================================================
 // INITIALISATION
 // ================================================================
 mettreAJourBanques();
 initialiserVideosGenerales();
 initialiserVideosAnciens();
-initialiserFichesPoste();
 
 ecolesData.forEach(ecole => {
     const color  = typeColors[ecole.type_bcpst] || typeColors[ecole.type_tb] || "#6b7280";
@@ -1429,8 +1208,6 @@ document.addEventListener('keydown', ev => {
             document.getElementById('banque-toggle-btn').focus();
             return;
         }
-        const pdfModal = document.getElementById('pdf-modal');
-        if (pdfModal.classList.contains('open')) { fermerModalPDF(); return; }
         const modal = document.getElementById('global-video-modal');
         if (!modal.classList.contains('hidden')) { fermerModalGlobale(); return; }
         if (ecoleActuelleObj) { fermerEcole(); }
