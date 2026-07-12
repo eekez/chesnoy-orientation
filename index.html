@@ -894,19 +894,7 @@ function afficherEcole(ecole) {
     document.getElementById('school-city').innerText = ecole.ville;
     document.getElementById('school-desc').innerText = ecole.descriptif || "Aucun descriptif fourni.";
     document.getElementById('school-link').href = ecole.lien_site;
-	<div class="mt-3 p-2 bg-amber-50/50 rounded-lg border border-amber-200/60 text-xs">
-		<p class="font-bold text-amber-900 mb-1 flex items-center">
-			<span class="mr-1 text-sm">📊</span> Sélectivité (Rapports 2025) :
-		</p>
-		<ul class="space-y-1 text-amber-950/80 ml-1">
-			${ecole.rang_bcpst ? `<li>• <b>BCPST :</b> ${ecole.rang_bcpst}</li>` : ''}
-			${ecole.rang_tb ? `<li>• <b>TB :</b> ${ecole.rang_tb}</li>` : ''}
-			${ecole.rang_g2e ? `<li>• <b>G2E :</b> ${ecole.rang_g2e}</li>` : ''}
-			
-			${(!ecole.rang_bcpst && !ecole.rang_tb && !ecole.rang_g2e) ? 
-			  `<li class="italic text-gray-500">Aucune donnée d'intégration SCEI trouvée pour cette école.</li>` : ''}
-		</ul>
-	</div>
+
     // Badges type + banque
     const badgesEl = document.getElementById('school-badges');
     badgesEl.innerHTML = '';
