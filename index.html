@@ -222,6 +222,7 @@
                 <p id="school-desc" class="text-sm text-gray-600 mt-2 italic bg-gray-50 p-2.5 rounded-lg border-l-4 border-emerald-600">Descriptif…</p>
                 <a id="school-link" href="#" target="_blank" rel="noopener noreferrer"
                    class="inline-block mt-2 text-xs font-bold text-emerald-700 hover:underline">Visiter le site officiel ↗</a>
+                <div id="school-rang" class="hidden mt-3 p-2 bg-amber-50/50 rounded-lg border border-amber-200/60 text-xs"></div>
             </div>
 
             <div id="video-block" class="hidden mb-5 bg-emerald-50 p-3 rounded-xl border border-emerald-100">
@@ -895,6 +896,68 @@ function afficherEcole(ecole) {
     document.getElementById('school-desc').innerText = ecole.descriptif || "Aucun descriptif fourni.";
     document.getElementById('school-link').href = ecole.lien_site;
 
+    // Bloc sélectivité (rangs SCEI par spécialité)
+    const rangEl = document.getElementById('school-rang');
+    const hasRang = (ecole.specs_bcpst && ecole.specs_bcpst.length) ||
+                    (ecole.specs_tb    && ecole.specs_tb.length)    ||
+                    ecole.rang_bcpst   || ecole.rang_tb;   // rétrocompat ancienne structure
+
+    function renderSpecs(specs, filiere) {
+        if (!specs || !specs.length) return '';
+        // Trier par rang croissant (plus sélectif en premier)
+        const sorted = [...specs].sort((a, b) => a.rg - b.rg);
+        const filiereLabel = '<span class="inline-block text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded mr-1.5 ' +
+            (filiere === 'BCPST'
+                ? 'bg-emerald-100 text-emerald-800'
+                : 'bg-blue-100 text-blue-800') + '">' + filiere + '</span>';
+
+        if (sorted.length === 1 && !sorted[0].spec) {
+            // École sans spécialité distincte — affichage compact
+            const s = sorted[0];
+            return '<div class="flex items-center gap-1 py-1">' + filiereLabel +
+                '<span class="text-amber-900">Rg médian <b>' + s.rg + '</b>' +
+                (s.places ? ' <span class="text-gray-500">(' + s.places + ' places)</span>' : '') +
+                '</span></div>';
+        }
+
+        // École multi-spécialités — liste indentée
+        let html = '<div class="mb-1">' +
+            '<div class="flex items-center gap-1 mb-0.5">' + filiereLabel + '</div>' +
+            '<ul class="ml-2 space-y-0.5">';
+        sorted.forEach(s => {
+            const specLabel = s.spec
+                ? '<span class="text-gray-700 italic">' + s.spec + '</span> — '
+                : '';
+            html += '<li class="flex items-start gap-1 text-amber-900">' +
+                '<span class="mt-0.5 text-amber-400 shrink-0">›</span>' +
+                '<span>' + specLabel +
+                'Rg médian <b>' + s.rg + '</b>' +
+                (s.places ? ' <span class="text-gray-500">(' + s.places + ' pl.)</span>' : '') +
+                '</span></li>';
+        });
+        html += '</ul></div>';
+        return html;
+    }
+
+    if (hasRang) {
+        rangEl.classList.remove('hidden');
+        let contenu = '<p class="font-bold text-amber-900 mb-1.5 flex items-center gap-1">' +
+            '<span class="text-sm">📊</span> Sélectivité SCEI 2025</p>';
+
+        // Nouvelle structure (specs_bcpst / specs_tb)
+        if (ecole.specs_bcpst || ecole.specs_tb) {
+            contenu += renderSpecs(ecole.specs_bcpst, 'BCPST');
+            contenu += renderSpecs(ecole.specs_tb,    'TB');
+        } else {
+            // Rétrocompatibilité ancienne structure (rang_bcpst string)
+            if (ecole.rang_bcpst) contenu += '<div>• <b>BCPST :</b> ' + ecole.rang_bcpst + '</div>';
+            if (ecole.rang_tb)    contenu += '<div>• <b>TB :</b> '    + ecole.rang_tb    + '</div>';
+        }
+        rangEl.innerHTML = contenu;
+    } else {
+        rangEl.classList.add('hidden');
+        rangEl.innerHTML = '';
+    }
     // Badges type + banque
     const badgesEl = document.getElementById('school-badges');
     badgesEl.innerHTML = '';
