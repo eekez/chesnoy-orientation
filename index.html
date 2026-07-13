@@ -921,8 +921,8 @@ function afficherEcole(ecole) {
 
         function renderRangs(s) {
             const parts = [];
-            if (s.dernier   != null) parts.push('Der.\u00a0: <b>' + s.dernier   + '</b>');
             if (s.rg_median != null) parts.push('M\u00e9d.\u00a0: <b>' + s.rg_median + '</b>');
+            if (s.dernier   != null) parts.push('Der.\u00a0: <b>' + s.dernier   + '</b>');
             const placesStr = s.places ? ' <span class="text-gray-400 text-[9px]">(' + s.places + '\u00a0pl.)</span>' : '';
             return parts.join('\u2002·\u2002') + placesStr;
         }

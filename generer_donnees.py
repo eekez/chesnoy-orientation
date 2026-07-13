@@ -233,6 +233,31 @@ RANGS_OFFICIELS_G2E = {
     ]},
 }
 
+# Écoles Polytech/ISIFC/ENSTIB : pas de rapport jury officiel avec premier/dernier,
+# mais présentes dans SCEI. On les stocke ici avec dernier=None pour n'afficher que le médian.
+RANGS_OFFICIELS_POLYTECH = {
+    "Enstib":                  {"specs": [{"spec": None, "dernier": None, "n": 13}]},
+    "ESIAB":                   {"specs": [{"spec": "Microbiologie et Qualité / Production Biotechnologies", "dernier": None, "n": 5}]},
+    "ESIR":                    {"specs": [{"spec": "Technologies de l'information pour la santé", "dernier": None, "n": 2}]},
+    "ISIFC":                   {"specs": [{"spec": "Génie Biomédical", "dernier": None, "n": 13}]},
+    "Polytech Angers":         {"specs": [{"spec": "Génie Biologique et Santé", "dernier": None, "n": 4}]},
+    "Polytech Clermont":       {"specs": [{"spec": "Génie Biologique", "dernier": None, "n": 8}]},
+    "Polytech Grenoble":       {"specs": [{"spec": "Géotechnique et génie civil", "dernier": None, "n": 2},
+                                          {"spec": "Technologies de l'information pour la santé", "dernier": None, "n": 1}]},
+    "Polytech Lille":          {"specs": [{"spec": "Génie biologique et alimentaire", "dernier": None, "n": 5}]},
+    "Polytech Marseille":      {"specs": [{"spec": "Génie Biologique, Biotechnologie", "dernier": None, "n": 4},
+                                          {"spec": "Génie Biomédical", "dernier": None, "n": 5}]},
+    "Polytech Nantes":         {"specs": [{"spec": "Génie des Procédés et Bioprocédés", "dernier": None, "n": 3}]},
+    "Polytech Nice":           {"specs": [{"spec": "Génie biologique", "dernier": None, "n": 12}]},
+    "Polytech Orléans":        {"specs": [{"spec": "Génie industriel", "dernier": None, "n": 1}]},
+    "Polytech Sorbonne":       {"specs": [{"spec": "Agroalimentaire", "dernier": None, "n": 5},
+                                          {"spec": "Matériaux", "dernier": None, "n": 1},
+                                          {"spec": "Sciences de la Terre", "dernier": None, "n": 2}]},
+    "Polytech Tours":          {"specs": [{"spec": "Génie de l'aménagement et de l'environnement", "dernier": None, "n": 4}]},
+    "EPISEN":                  {"specs": [{"spec": "Génie Biomédical et santé", "dernier": None, "n": 3}]},
+    "ESBS":                    {"specs": [{"spec": None, "dernier": None, "n": 9}]},
+}
+
 # ================================================================
 # Correspondance noms Excel → clés des tables de rangs
 # ================================================================
@@ -262,6 +287,23 @@ CORRESPONDANCE_BCPST = {
     "ESPCI Paris":                                   "ESPCI Paris",
     "ENSIC":                                         "ENSIC Nancy",
     "École Polytechnique":                           "Ecole Polytechnique",
+    # Polytech / ISIFC / ENSTIB (rang médian SCEI uniquement)
+    "Enstib":                    "Enstib",
+    "ESIR":                      "ESIR",
+    "ESIAB":                     "ESIAB",
+    "ISIFC":                     "ISIFC",
+    "Polytech Angers":           "Polytech Angers",
+    "Polytech Clermont":         "Polytech Clermont",
+    "Polytech Tours":            "Polytech Tours",
+    "Polytech Nice":             "Polytech Nice",
+    "EPISEN":                    "EPISEN",
+    "Polytech Lille":            "Polytech Lille",
+    "ESBS":                      "ESBS",
+    "Polytech Grenoble":         "Polytech Grenoble",
+    "Polytech Marseille":        "Polytech Marseille",
+    "Polytech Sorbonne":         "Polytech Sorbonne",
+    "Polytech Orléans":          "Polytech Orléans",
+    "Polytech Nantes":           "Polytech Nantes",
 }
 
 CORRESPONDANCE_TB = {
@@ -282,19 +324,6 @@ CORRESPONDANCE_TB = {
     "ENGEES":                                        "ENGEES TB",
 }
 
-CORRESPONDANCE_G2E = {
-    "EIVP Paris":                                    "EIVP Civil",
-    "ENGEES":                                        "ENGEES Civil",
-    "ENSG Géologie Nancy":                           "ENSG Nancy",
-    "ENTPE Lyon":                                    "ENTPE Civil",
-    "EOST Strasbourg":                               "EOST Strasbourg",
-    "IMT Mines Albi":                                "IMT Mines Albi",
-    "IMT Mines Alès":                                "IMT Mines Alès",
-    "IMT Nord-Europe (Mines)":                       "IMT Nord Europe",
-    "ENSAIA":                                        "ENSEGID Bordeaux",   # non — ENSAIA ≠ ENSEGID
-}
-
-# Correction — ENSAIA ne fait pas partie de G2E
 CORRESPONDANCE_G2E = {
     "EIVP Paris":             "EIVP Civil",
     "ENGEES":                 "ENGEES Civil",
@@ -330,7 +359,7 @@ COL_PLACES = 16
 
 SKIP_PREFIXES = ('ecole - concours','nb','inscrits','concours ','cpge ','groupe ',
                  'statistiques','bcpst','tb -','les tableaux','pour les','x bio',
-                 'ens ','centrale-','lorraine inp -','g2e','polytech bcpst',
+                 'ens ','centrale-','g2e','polytech bcpst',
                  'polytech tb','groupe insa','insa ')
 
 MOTS_SPEC = ['cursus','spécialité','génie','biotechnologie','chimie','physique','alimentation',
@@ -339,7 +368,8 @@ MOTS_SPEC = ['cursus','spécialité','génie','biotechnologie','chimie','physiqu
              'microbiologie','géotechnique','procédés','aménagement','ingénieur','technologies']
 
 NOMS_COMPOSES = ['angers','rennes','dijon','montpellier','paris','lyon','bordeaux',
-                 'toulouse','nantes','strasbourg','nancy','lille','géomatique','metz']
+                 'toulouse','nantes','strasbourg','nancy','lille','géomatique','metz',
+                 'enstib','ensic','ensmac','ensegid','esbs']
 
 def contient_spec(t):
     tl = t.lower()
@@ -380,11 +410,10 @@ def lire_stats_scei(excel_path, nom_onglet):
             continue
         if any(nom.lower().startswith(p) for p in SKIP_PREFIXES):
             continue
-        try:
-            if 0 < float(row.iloc[2]) < 1:
-                continue
-        except (TypeError, ValueError, IndexError):
-            pass
+        # Ignorer les lignes de totaux de concours : elles ont un nom très court
+        # ou commencent par des mots-clés supplémentaires
+        if len(nom) < 6 or nom.lower().startswith(('total','sous-total','dont','nb ')):
+            continue
 
         try:
             rg = int(float(row.iloc[COL_RG_MED])) if not pd.isna(row.iloc[COL_RG_MED]) else None
@@ -413,11 +442,18 @@ def rapprocher_medians(nom_excel, stats_scei, seuil=75):
 
 def fusionner_specs(specs_medians, specs_officiels):
     """
-    Construit la liste finale des spécialités à partir des données PDF officielles UNIQUEMENT.
-    Le rang médian SCEI est associé à chaque spécialité PDF par fuzzy matching sur le libellé.
-    Le rang 'premier' est supprimé — on ne conserve que 'dernier' et 'rg_median'.
-    Si aucune donnée PDF officielle, retourne None (pas de rang SCEI seul).
+    Construit la liste finale des spécialités.
+    - Source de vérité : specs_officiels (rapports PDF jury) pour premier/dernier/n
+    - Le rang médian SCEI est associé par fuzzy matching sur le libellé de spécialité
+    - Si specs_officiels est None mais specs_medians existe (cas Polytech/ISIFC),
+      on retourne directement les données SCEI avec dernier=None
+    - Ne conserve que 'dernier' et 'rg_median' (pas de 'premier')
     """
+    # Cas Polytech/ISIFC : données SCEI uniquement, pas de rapport jury
+    if not specs_officiels and specs_medians:
+        return [{"spec": s.get("spec"), "dernier": None, "rg_median": s.get("rg_median"), "places": s.get("places")}
+                for s in specs_medians]
+
     if not specs_officiels:
         return None
 
@@ -434,18 +470,28 @@ def fusionner_specs(specs_medians, specs_officiels):
         dernier    = s.get("dernier")
         places     = s.get("n")
 
-        # Chercher le rang médian SCEI correspondant par fuzzy matching sur le libellé
+        # Rang médian SCEI : correspondance exacte d'abord, puis fuzzy
         rg_median = None
         if med_index:
             cle_pdf = (spec_label or "").strip()
+            # Chercher aussi sous la clé None (école sans spécialité distincte)
             if cle_pdf in med_index:
-                # Correspondance exacte
                 rg_median = med_index[cle_pdf]
+            elif None in med_index and not cle_pdf:
+                rg_median = med_index[None]
+            elif "" in med_index and not cle_pdf:
+                rg_median = med_index[""]
+            elif not cle_pdf and len(med_index) == 1:
+                # Une seule entrée dans le dict : c'est forcément la bonne
+                rg_median = list(med_index.values())[0]
             else:
-                # Fuzzy matching
-                match = fuzz_process.extractOne(cle_pdf, list(med_index.keys()))
+                match = fuzz_process.extractOne(cle_pdf, [k for k in med_index if k])
                 if match and match[1] >= 80:
                     rg_median = med_index[match[0]]
+
+        # Si 1 seule place : médian = dernier par définition
+        if places == 1 and dernier is not None:
+            rg_median = dernier
 
         resultat.append({
             "spec":      spec_label,
@@ -454,12 +500,12 @@ def fusionner_specs(specs_medians, specs_officiels):
             "places":    places,
         })
 
-    # Trier par rang dernier croissant (plus sélectif en premier)
     resultat.sort(key=lambda x: (x.get("dernier") or x.get("rg_median") or 9999))
     return resultat if resultat else None
 
 
 # Types d'écoles sans rapport officiel jury → pas de données de sélectivité
+# Note : Polytech et ENSTIB ont des données SCEI (rang médian uniquement)
 TYPES_SANS_RANG = {'Fac', 'INSA', 'ENS', 'Centrale', 'Centrale-Supélec', 'Mines-Pont', 'X-BIO', ''}
 
 # ================================================================
@@ -541,7 +587,8 @@ for _, ecole in ecoles.iterrows():
         cle_tb    = CORRESPONDANCE_TB.get(nom_ecole)
         cle_g2e   = CORRESPONDANCE_G2E.get(nom_ecole)
 
-        off_bcpst = RANGS_OFFICIELS_BCPST.get(cle_bcpst, {}).get("specs") if cle_bcpst else None
+        off_bcpst = (RANGS_OFFICIELS_BCPST.get(cle_bcpst, {}).get("specs")
+                     or RANGS_OFFICIELS_POLYTECH.get(cle_bcpst, {}).get("specs")) if cle_bcpst else None
         off_tb    = RANGS_OFFICIELS_TB.get(cle_tb,    {}).get("specs") if cle_tb    else None
         off_g2e   = RANGS_OFFICIELS_G2E.get(cle_g2e,  {}).get("specs") if cle_g2e  else None
 

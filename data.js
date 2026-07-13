@@ -151,7 +151,7 @@ const ecolesData = [
             {
                 "spec": null,
                 "dernier": 2206,
-                "rg_median": null,
+                "rg_median": 1998,
                 "places": 23
             }
         ],
@@ -159,7 +159,7 @@ const ecolesData = [
             {
                 "spec": null,
                 "dernier": 105,
-                "rg_median": null,
+                "rg_median": 98,
                 "places": 4
             }
         ],
@@ -693,7 +693,7 @@ const ecolesData = [
             {
                 "spec": "Cursus agronome (civil)",
                 "dernier": 60,
-                "rg_median": 71,
+                "rg_median": 60,
                 "places": 1
             },
             {
@@ -1239,8 +1239,22 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs spécialisée en bois et matériaux durables.",
         "lien_site": "https://www.enstib.univ-lorraine.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fprofix.wurth.fr%2Fmedia%2Fpictures%2Fwuerth_profix%2Fnews%2FWTD_ENSTIB_slider_res_wl2_frontpage_1200.png&f=1&nofb=1&ipt=9a15a53ac80506bb3d6f9681814c75842c67d4998e2ff7bc4b93d0a476c30cf9",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 30,
+                "places": 13
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 3,
+                "places": 2
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -1515,7 +1529,7 @@ const ecolesData = [
             {
                 "spec": null,
                 "dernier": 10,
-                "rg_median": null,
+                "rg_median": 8,
                 "places": 2
             }
         ],
@@ -1591,7 +1605,7 @@ const ecolesData = [
             {
                 "spec": null,
                 "dernier": 363,
-                "rg_median": null,
+                "rg_median": 1998,
                 "places": 68
             }
         ],
@@ -1599,7 +1613,7 @@ const ecolesData = [
             {
                 "spec": null,
                 "dernier": 11,
-                "rg_median": null,
+                "rg_median": 98,
                 "places": 2
             }
         ],
@@ -1788,7 +1802,14 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs en systèmes électroniques et informatiques.",
         "lien_site": "https://www.esir.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fidesir.bzh%2Fwp-content%2Fuploads%2F2022%2F07%2Fecole-superieure-ingenieurs-rennes-esir-3-scaled.jpg&f=1&nofb=1&ipt=91227bbc63819af6516ca6382229a18a60ec85dd0eb036d21e1bed66ec16621d",
-        "specs_bcpst": null,
+        "specs_bcpst": [
+            {
+                "spec": "Technologies de l'information pour la santé",
+                "dernier": null,
+                "rg_median": 733,
+                "places": 2
+            }
+        ],
         "specs_tb": null,
         "specs_g2e": null,
         "anciens": [
@@ -1828,8 +1849,22 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs en sciences de la santé et instrumentation médicale.",
         "lien_site": "https://www.isifc.univ-fcomte.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fisifc.univ-fcomte.fr%2Fwp-content%2Fuploads%2F2021%2F12%2FIMG_1217-scaled.jpg&f=1&nofb=1&ipt=37dfb4377d1dfe8ddac8cb939261a59be8de26d80e38235cb3bc244ff9b54d82",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie Biomédical",
+                "dernier": null,
+                "rg_median": 821,
+                "places": 13
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": "Génie Biomédical",
+                "dernier": null,
+                "rg_median": 55,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -1908,8 +1943,22 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs généraliste proposant diverses spécialités.",
         "lien_site": "https://www.polytech-angers.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.lesechos.com%2Fapi%2Fv1%2Fimages%2Fview%2F65281245cf64d06b960dd200%2F1280x720%2F0902741976329-web-tete.jpg&f=1&nofb=1&ipt=caacb499cf8cb913b77c575be00b2f781f1349152342f0be56bcce5a897d63c7",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie Biologique et Santé",
+                "dernier": null,
+                "rg_median": 828,
+                "places": 4
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": "Génie Biologique et Santé",
+                "dernier": null,
+                "rg_median": 52,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -1948,8 +1997,22 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs généraliste en sciences et technologies.",
         "lien_site": "https://www.polytech-clermont.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%2Fid%2FOIP.cgAO9ZXZhx3ZW75NqWlgcQHaCe%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=da2d4fd171db6ed2245429b1c685438444686716f6a9bc631f45f8ee652e7571&ipo=images",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie Biologique",
+                "dernier": null,
+                "rg_median": 817,
+                "places": 8
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": "Génie Biologique",
+                "dernier": null,
+                "rg_median": 48,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -2008,8 +2071,22 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs généraliste proposant différentes spécialités techniques.",
         "lien_site": "https://www.polytech-tours.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.emmanuelle-colboc.com%2Fwp-content%2Fuploads%2Fcol-tour-pol-vue-entree-loin-hd-05-1600x914.jpg&f=1&nofb=1&ipt=1a1e6c2e7443180d125edcf48dce781bdd7273bf8c54239bcdb434d00e225a30",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie de l'aménagement et de l'environnement",
+                "dernier": null,
+                "rg_median": 910,
+                "places": 4
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 62,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -2296,8 +2373,22 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs généraliste proposant différentes spécialités techniques.",
         "lien_site": "https://polytech.univ-cotedazur.fr/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.polytech-reseau.org%2Fwp-content%2Fuploads%2F2021%2F11%2F476554597.jpg&f=1&nofb=1&ipt=3d403dba376a2746fcc521fa3b0af78f4271487c244104dafbf6473c3ad0e536",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie biologique",
+                "dernier": null,
+                "rg_median": 612,
+                "places": 12
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": "Sophia - Génie biologique",
+                "dernier": null,
+                "rg_median": 26,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -2346,8 +2437,22 @@ const ecolesData = [
         "descriptif": "Ecole publique d'ingénieurs de la santé et du numérique",
         "lien_site": "https://episen.u-pec.fr/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.u-pec.fr%2Fmedias%2Fphoto%2F7-episen-campus-st-simon-modification-29mars2023_1680861840219-jpg&f=1&nofb=1&ipt=72006281de6bc5e9b29a88547f138706ca3075668e70f54b6ee7e1385210b4bd",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie Biomédical et santé",
+                "dernier": null,
+                "rg_median": 678,
+                "places": 3
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": "Génie Biomédical et santé (ISBS)",
+                "dernier": null,
+                "rg_median": 64,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -2386,8 +2491,22 @@ const ecolesData = [
         "descriptif": "École quii forme des ingénieurs dans des secteurs stratégiques où la qualité, la sécurité sanitaire et l’innovation sont des enjeux essentiels.",
         "lien_site": "https://www.univ-brest.fr/esiab/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.univ-brest.fr%2Fesiab%2Fsites%2Fesiab.www.univ-brest.fr%2Ffiles%2F2024-09%2Fformat_pour_passer_sur_internet-4.png&f=1&nofb=1&ipt=8249a142353d2d477efc36ace32a8d9341fa40c0893f06d1f928373c745c28c7",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Microbiologie et Qualité / Production Biotechnologies",
+                "dernier": null,
+                "rg_median": 904,
+                "places": 5
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": "Microbiologie et Qualité / Production, Innovation , Biotechnologies en agro-alimentaire",
+                "dernier": null,
+                "rg_median": 30,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -2426,8 +2545,22 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs généraliste proposant différentes spécialités techniques.",
         "lien_site": "https://www.polytech-lille.fr/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.polytech-lille.fr%2Fwp-content%2Fuploads%2F2025%2F03%2Fecole_facade-768x432.jpg&f=1&nofb=1&ipt=f3bbddd90681e86fccb4902a5a0adbb0b5a65648a769406d1ce4ac2276893389",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie biologique et alimentaire",
+                "dernier": null,
+                "rg_median": 834,
+                "places": 5
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": "Génie biologique et alimentaire",
+                "dernier": null,
+                "rg_median": 49,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -2570,8 +2703,22 @@ const ecolesData = [
         "descriptif": "Les enseignements de cette école portent entre autres sur le génie génétique, la microbiologie, la bioinformatique, la bioproduction, la modélisation.",
         "lien_site": "https://esbs.unistra.fr/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fesbs.unistra.fr%2Fwebsites%2F_processed_%2F8%2Fc%2Fcsm_IMG_1421_418bbc3fef.jpg&f=1&nofb=1&ipt=f3947e491c7a02f77a667fd794a0b0ba9883d6cd46996147c416268e57253563",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 283,
+                "places": 9
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 1,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -2610,8 +2757,28 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs généraliste proposant différentes spécialités techniques.",
         "lien_site": "https://polytech.grenoble-inp.fr/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.geipi-polytech.org%2Fsites%2Fdefault%2Ffiles%2Fphotos%2Fpolytech-grenoble-presentation2021.jpg&f=1&nofb=1&ipt=73e11ce502837195d5f67da6b1b980322541b1ec275900d23580d55bee332cea",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Technologies de l'information pour la santé",
+                "dernier": null,
+                "rg_median": 982,
+                "places": 1
+            },
+            {
+                "spec": "Géotechnique et génie civil",
+                "dernier": null,
+                "rg_median": 1021,
+                "places": 2
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": "Technologies de l'information pour la santé",
+                "dernier": null,
+                "rg_median": 56,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -2800,8 +2967,28 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs généraliste proposant différentes spécialités techniques.",
         "lien_site": "http://polytech.univ-amu.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%2Fid%2FOIP.RBf5GW4HQJhcG51Y5B-kYwHaD4%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=882bf95bbd8894f2d8ee3aab3819badf611aa7fb8278ffb0273dda68975973ab&ipo=images",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie Biologique, Biotechnologie",
+                "dernier": null,
+                "rg_median": 489,
+                "places": 4
+            },
+            {
+                "spec": "Génie Biomédical",
+                "dernier": null,
+                "rg_median": 770,
+                "places": 5
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 62,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
@@ -2934,7 +3121,14 @@ const ecolesData = [
         "descriptif": "École des Mines / IMT, formation ingénieur en énergétique, environnement, matériaux.",
         "lien_site": "https://imt-mines-albi.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.DQqWIABQbY8HBTNOcWM4UAHaEd%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=6381431d55592d40cc99ca5cd7f2a3d558404531e852aed73f0c34b5d748efd7&ipo=images",
-        "specs_bcpst": null,
+        "specs_bcpst": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 219,
+                "places": 7
+            }
+        ],
         "specs_tb": null,
         "specs_g2e": [
             {
@@ -2960,7 +3154,14 @@ const ecolesData = [
         "descriptif": "Ingénierie des ressources naturelles, environnement, matériaux.",
         "lien_site": "https://www.imt-mines-ales.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%2Fid%2FOIP._WH0BS1HtfLNJ1n73xcMIQHaE8%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=9979da58e75a05adb3bb910ee9c170dfcf02af87fe4756756b96cfcb6192516f&ipo=images",
-        "specs_bcpst": null,
+        "specs_bcpst": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 137,
+                "places": 6
+            }
+        ],
         "specs_tb": null,
         "specs_g2e": [
             {
@@ -2986,7 +3187,14 @@ const ecolesData = [
         "descriptif": "Campus Mines du Nord, ingénierie énergétique, environnement, numérique.",
         "lien_site": "https://imt-nord-europe.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimt-nord-europe.fr%2Fwp-content%2Fuploads%2F2019%2F04%2FIMT-Nord-Europe-Campus-VdA-2048x1366.jpg&f=1&nofb=1&ipt=4596d50c1823a6d76a0c88f5acdaed551cacad31041bd196b4795224ddf7440c",
-        "specs_bcpst": null,
+        "specs_bcpst": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 150,
+                "places": 4
+            }
+        ],
         "specs_tb": null,
         "specs_g2e": [
             {
@@ -3012,8 +3220,22 @@ const ecolesData = [
         "descriptif": "Ingénierie environnementale, développement durable, aménagement territorial.",
         "lien_site": "Chambéry",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.polytech.univ-smb.fr%2Ffileadmin%2FPolytech_Internet%2FCommunication%2FActus%2F2019%2FPolytech_site_Annecy_vu_du_ciel_bis.jpg&f=1&nofb=1&ipt=e4f36724d1237f0de7793edf46199c56ca493ce19b3d9a40d1200a0001e6ed58",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie Biologique et Santé",
+                "dernier": null,
+                "rg_median": 828,
+                "places": 4
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": "Génie Biologique et Santé",
+                "dernier": null,
+                "rg_median": 52,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": []
     },
@@ -3031,8 +3253,34 @@ const ecolesData = [
         "descriptif": "Parcours Aménagement, Risques, Géo-Énergies, Sciences de la Terre.",
         "lien_site": "https://polytech-sorbonne.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.ulFCLqokzx1DS8aTfR7OBQHaEc%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=18274e25a3c81f60a71d29d71f099508e7b2da256715e0ad734470d65f567d4f&ipo=images",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Matériaux",
+                "dernier": null,
+                "rg_median": 761,
+                "places": 1
+            },
+            {
+                "spec": "Sciences de la Terre",
+                "dernier": null,
+                "rg_median": 765,
+                "places": 2
+            },
+            {
+                "spec": "Agroalimentaire",
+                "dernier": null,
+                "rg_median": 1000,
+                "places": 5
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 62,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": []
     },
@@ -3050,8 +3298,22 @@ const ecolesData = [
         "descriptif": "Ingénieur civil, infrastructures, environnement.",
         "lien_site": "https://www.polytech-orleans.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.Rdm7esG5RErcgeI9SDTBoQHaEK%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=5cd3800985e1e7c1ac206a0337a7f788e76af6a1649c688fc4e2e64550e2f607&ipo=images",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie industriel",
+                "dernier": null,
+                "rg_median": 1025,
+                "places": 1
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 62,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": []
     },
@@ -3069,7 +3331,14 @@ const ecolesData = [
         "descriptif": "École du génie civil, environnement, aménagement des territoires.",
         "lien_site": "https://www.entpe.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fice-ingenierie.fr%2Fwp-content%2Fuploads%2F2017%2F07%2FENTPE-2.jpg&f=1&nofb=1&ipt=2daa6fda816a63e2467fdf56d01df10813621b357b5a59d3719e2fe8a600f234",
-        "specs_bcpst": null,
+        "specs_bcpst": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 467,
+                "places": 23
+            }
+        ],
         "specs_tb": null,
         "specs_g2e": [
             {
@@ -3095,7 +3364,20 @@ const ecolesData = [
         "descriptif": "École des ingénieurs de la Ville de Paris, génie urbain.",
         "lien_site": "https://www.eivp-paris.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.euro-graduation-access.org%2Fwp-content%2Fuploads%2F2019%2F09%2FFacade_EIVP.jpg&f=1&nofb=1&ipt=0d1970cd99e222b0b2cb3b087b75c97225d4865a37907c40c5ed4849434569af",
-        "specs_bcpst": null,
+        "specs_bcpst": [
+            {
+                "spec": "apprentissage",
+                "dernier": null,
+                "rg_median": 629,
+                "places": 3
+            },
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 539,
+                "places": 5
+            }
+        ],
         "specs_tb": null,
         "specs_g2e": [
             {
@@ -3121,7 +3403,14 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs spécialisée en sciences de la Terre et géologie.",
         "lien_site": "https://eost.unistra.fr/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.BUVKfd6UqMqNETZqSz2K_gHaE8%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=20c7eeadb15df6d294ca97c3301a0b39f99d6dfa0b263b87e38bf633b9edac4b&ipo=images",
-        "specs_bcpst": null,
+        "specs_bcpst": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 205,
+                "places": 13
+            }
+        ],
         "specs_tb": null,
         "specs_g2e": [
             {
@@ -3147,7 +3436,14 @@ const ecolesData = [
         "descriptif": "Ingénierie géologique, ressources naturelles et risques.",
         "lien_site": "https://www.groupe-inp.fr/la-prepa-des-inp/ensg-geol-ecole-nationale-superieure-de-geologie",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.pv9j6Bsty9Xu3R-5cl4u8gHaFZ%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=c3d65733f3b1ec15ff94676f9cc0025a9a497a4e33474b7b6f2ab4d1d49d55f9&ipo=images",
-        "specs_bcpst": null,
+        "specs_bcpst": [
+            {
+                "spec": null,
+                "dernier": null,
+                "rg_median": 190,
+                "places": 70
+            }
+        ],
         "specs_tb": null,
         "specs_g2e": [
             {
@@ -3302,7 +3598,7 @@ const ecolesData = [
             {
                 "spec": null,
                 "dernier": 684,
-                "rg_median": null,
+                "rg_median": 556,
                 "places": 9
             }
         ],
@@ -3432,7 +3728,7 @@ const ecolesData = [
             {
                 "spec": null,
                 "dernier": 522,
-                "rg_median": 410,
+                "rg_median": 512,
                 "places": 3
             }
         ],
@@ -3454,8 +3750,22 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs généraliste proposant différentes spécialités techniques.",
         "lien_site": "https://polytech.univ-nantes.fr/",
         "image": "data:image/jpeg;base64,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",
-        "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_bcpst": [
+            {
+                "spec": "Génie des Procédés et Bioprocédés",
+                "dernier": null,
+                "rg_median": 784,
+                "places": 3
+            }
+        ],
+        "specs_tb": [
+            {
+                "spec": "Génie des Procédés et Bioprocédés",
+                "dernier": null,
+                "rg_median": 72,
+                "places": 1
+            }
+        ],
         "specs_g2e": null,
         "anciens": [
             {
