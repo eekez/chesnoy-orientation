@@ -16,17 +16,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 457,
+                "premier": 19,
+                "dernier": 721,
+                "rg_median": 457,
                 "places": 272
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 19,
+                "premier": 8,
+                "dernier": 47,
+                "rg_median": 19,
                 "places": 12
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "MORANDO",
@@ -146,18 +151,37 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.7iKVNkyuqz9XXqFY_k0icAHaE9%3Fcb%3Ducfimgc2%26pid%3DApi&f=1&ipt=7677d923c88d6af0d6f570d61defb3848891196e433af8ff630288cf5a77c7e3&ipo=images",
         "specs_bcpst": [
             {
+                "spec": null,
+                "premier": 489,
+                "dernier": 2206,
+                "rg_median": null,
+                "places": 23
+            },
+            {
                 "spec": "Cursus alimentation",
-                "rg": 1998,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1998,
                 "places": 45
             }
         ],
         "specs_tb": [
             {
+                "spec": null,
+                "premier": 79,
+                "dernier": 105,
+                "rg_median": null,
+                "places": 4
+            },
+            {
                 "spec": "Cursus alimentation",
-                "rg": 98,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 98,
                 "places": 8
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "LELEU--RIOU",
@@ -328,17 +352,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 1500,
+                "premier": 810,
+                "dernier": 1796,
+                "rg_median": 1500,
                 "places": 90
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 82,
+                "premier": 33,
+                "dernier": 100,
+                "rg_median": 82,
                 "places": 6
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "DELAITRE",
@@ -459,17 +488,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 1773,
+                "premier": 767,
+                "dernier": 2000,
+                "rg_median": 1773,
                 "places": 90
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 80,
+                "premier": 38,
+                "dernier": 97,
+                "rg_median": 80,
                 "places": 7
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "LOAËC",
@@ -660,32 +694,78 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Cursus ingénieur, spécialité agronomie (civil)",
-                "rg": 1544,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1544,
                 "places": 23
             },
             {
+                "spec": "Cursus ingénieur, spécialité agronomie (fonctionnaire)",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1858,
+                "places": 41
+            },
+            {
                 "spec": "Cursus ingénieur, spécialité agroalimentaire (cursus en alimentation durable)",
-                "rg": 2006,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 2006,
                 "places": 42
             },
             {
-                "spec": "Cursus ingénieur, spécialité agronomie (fonctionnaire)",
-                "rg": 1858,
-                "places": 41
+                "spec": "Cursus agronome (civil)",
+                "premier": 296,
+                "dernier": 1824,
+                "rg_median": null,
+                "places": 30
+            },
+            {
+                "spec": "Cursus agroalimentaire",
+                "premier": 1094,
+                "dernier": 2212,
+                "rg_median": null,
+                "places": 28
+            },
+            {
+                "spec": "Cursus agronome (fonctionnaire)",
+                "premier": 754,
+                "dernier": 2161,
+                "rg_median": null,
+                "places": 40
             }
         ],
         "specs_tb": [
             {
+                "spec": "Cursus ingénieur, spécialité agronomie (civil)",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 60,
+                "places": 2
+            },
+            {
                 "spec": "Cursus ingénieur, spécialité agroalimentaire (cursus en alimentation durable)",
-                "rg": 71,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 71,
                 "places": 3
             },
             {
-                "spec": "Cursus ingénieur, spécialité agronomie (civil)",
-                "rg": 60,
-                "places": 2
+                "spec": "Cursus agronome (civil)",
+                "premier": 60,
+                "dernier": 60,
+                "rg_median": null,
+                "places": 1
+            },
+            {
+                "spec": "Cursus agroalimentaire",
+                "premier": 23,
+                "dernier": 99,
+                "rg_median": null,
+                "places": 3
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "FEVRE",
@@ -936,27 +1016,50 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Cursus ingénieur spécialité agronomie – Rennes",
-                "rg": 1142,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1142,
                 "places": 134
             },
             {
                 "spec": "Cursus ingénieur spécialité horticulture et paysage – Angers",
-                "rg": 1886,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1886,
                 "places": 56
+            },
+            {
+                "spec": "Cursus agronome",
+                "premier": 207,
+                "dernier": 1474,
+                "rg_median": null,
+                "places": 137
             }
         ],
         "specs_tb": [
             {
                 "spec": "Cursus ingénieur spécialité agronomie – Rennes",
-                "rg": 27,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 27,
                 "places": 4
             },
             {
                 "spec": "Cursus ingénieur spécialité horticulture et paysage – Angers",
-                "rg": 98,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 98,
+                "places": 4
+            },
+            {
+                "spec": "Cursus agronome",
+                "premier": 1,
+                "dernier": 30,
+                "rg_median": null,
                 "places": 4
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "CHOMPRET",
@@ -1047,22 +1150,36 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 1500,
+                "premier": 997,
+                "dernier": 2210,
+                "rg_median": 1500,
                 "places": 90
             }
         ],
         "specs_tb": [
             {
-                "spec": "Cursus ingénieur, spécialité agronomie et agroalimentaire (SAADS)",
-                "rg": 81,
+                "spec": null,
+                "premier": 31,
+                "dernier": 98,
+                "rg_median": null,
                 "places": 5
             },
             {
                 "spec": "Cursus ingénieur, spécialité agronomie",
-                "rg": 50,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 50,
                 "places": 4
+            },
+            {
+                "spec": "Cursus ingénieur, spécialité agronomie et agroalimentaire (SAADS)",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 81,
+                "places": 5
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "JOSEPH-EDOUARD",
@@ -1233,17 +1350,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Biotechnologie",
-                "rg": 422,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 422,
                 "places": 18
             }
         ],
         "specs_tb": [
             {
                 "spec": "Biotechnologie",
-                "rg": 27,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 27,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "WIETRICH",
@@ -1314,27 +1436,64 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Cursus ingénieur, spécialité agronomie",
-                "rg": 891,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 891,
                 "places": 113
             },
             {
                 "spec": "Cursus ingénieur, spécialité agronomie et agroalimentaire (SAADS)",
-                "rg": 1009,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1009,
                 "places": 11
+            },
+            {
+                "spec": "Cursus SAADS",
+                "premier": 117,
+                "dernier": 1240,
+                "rg_median": null,
+                "places": 11
+            },
+            {
+                "spec": "Cursus agronome",
+                "premier": 71,
+                "dernier": 1239,
+                "rg_median": null,
+                "places": 113
             }
         ],
         "specs_tb": [
             {
+                "spec": "Cursus ingénieur, spécialité agronomie",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 50,
+                "places": 4
+            },
+            {
                 "spec": "Cursus ingénieur, spécialité agronomie et agroalimentaire (SAADS)",
-                "rg": 81,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 81,
                 "places": 5
             },
             {
-                "spec": "Cursus ingénieur, spécialité agronomie",
-                "rg": 50,
+                "spec": "Cursus SAADS",
+                "premier": 52,
+                "dernier": 101,
+                "rg_median": null,
+                "places": 6
+            },
+            {
+                "spec": "Cursus agronome",
+                "premier": 17,
+                "dernier": 61,
+                "rg_median": null,
                 "places": 4
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "DROUAUD",
@@ -1415,17 +1574,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 126,
+                "premier": 4,
+                "dernier": 282,
+                "rg_median": 126,
                 "places": 68
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 10,
+                "premier": 8,
+                "dernier": 12,
+                "rg_median": 10,
                 "places": 2
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "JACQUET",
@@ -1456,17 +1620,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 161,
+                "premier": 11,
+                "dernier": 295,
+                "rg_median": 161,
                 "places": 68
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 3,
+                "premier": 2,
+                "dernier": 6,
+                "rg_median": 3,
                 "places": 3
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "BOURDOUNE",
@@ -1497,17 +1666,29 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 44,
+                "premier": 5,
+                "dernier": 306,
+                "rg_median": 44,
                 "places": 5
             }
         ],
         "specs_tb": [
             {
+                "spec": null,
+                "premier": 5,
+                "dernier": 10,
+                "rg_median": null,
+                "places": 2
+            },
+            {
                 "spec": "cursus vétérinaire",
-                "rg": 8,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 8,
                 "places": 2
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "BOURGEOIS",
@@ -1577,18 +1758,37 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fconnectpro.oniris-nantes.fr%2Fpluginfile.php%2F5436%2Fmod_page%2Fcontent%2F33%2Faccueil%2520oniris.JPG&f=1&nofb=1&ipt=d28831edeca258365fc1aa524b2554995d22a23344173c39528a8f76ff224ad6",
         "specs_bcpst": [
             {
+                "spec": null,
+                "premier": 17,
+                "dernier": 363,
+                "rg_median": null,
+                "places": 68
+            },
+            {
                 "spec": "Cursus alimentation",
-                "rg": 1998,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1998,
                 "places": 45
             }
         ],
         "specs_tb": [
             {
+                "spec": null,
+                "premier": 7,
+                "dernier": 11,
+                "rg_median": null,
+                "places": 2
+            },
+            {
                 "spec": "Cursus alimentation",
-                "rg": 98,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 98,
                 "places": 8
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "LEMOINE",
@@ -1647,7 +1847,24 @@ const ecolesData = [
         "lien_site": "https://engees.unistra.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fengees.unistra.fr%2Ffileadmin%2F_processed_%2Fa%2F1%2Fcsm_Engees_Exterieur_21_1bfc55a174.jpg&f=1&nofb=1&ipt=62c94274162b05301b97f5d3dd5138120a70d45dfab3c62b9d0cedc32fa0cb90",
         "specs_bcpst": null,
-        "specs_tb": null,
+        "specs_tb": [
+            {
+                "spec": null,
+                "premier": 48,
+                "dernier": 103,
+                "rg_median": null,
+                "places": 3
+            }
+        ],
+        "specs_g2e": [
+            {
+                "spec": null,
+                "premier": 51,
+                "dernier": 383,
+                "rg_median": null,
+                "places": 8
+            }
+        ],
         "anciens": [
             {
                 "nom": "ROUSTAN",
@@ -1737,6 +1954,7 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.concours-mines-telecom.fr%2Fwp-content%2Fuploads%2F2022%2F06%2FLD-PH660001JLD-856x450.jpg&f=1&nofb=1&ipt=90d8ba49221c6ab43bb43815f8c5a78c54d6b10db9d90d2ab22fdea74a21476c",
         "specs_bcpst": null,
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "AUCHERE",
@@ -1767,11 +1985,14 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Technologies de l'information pour la santé",
-                "rg": 733,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 733,
                 "places": 2
             }
         ],
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "PREGERMAIN",
@@ -1812,17 +2033,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie Biomédical",
-                "rg": 821,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 821,
                 "places": 13
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie Biomédical",
-                "rg": 55,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 55,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "BOUFDI",
@@ -1903,17 +2129,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie Biologique et Santé",
-                "rg": 828,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 828,
                 "places": 4
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie Biologique et Santé",
-                "rg": 52,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 52,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "LESIEUR",
@@ -1954,17 +2185,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie Biologique",
-                "rg": 817,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 817,
                 "places": 8
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie Biologique",
-                "rg": 48,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 48,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "CARTERON",
@@ -2025,17 +2261,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie de l'aménagement et de l'environnement",
-                "rg": 910,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 910,
                 "places": 4
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 62,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 62,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "AMOUR",
@@ -2106,17 +2347,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "cursus vétérinaire",
-                "rg": 189,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 189,
                 "places": 68
             }
         ],
         "specs_tb": [
             {
                 "spec": "cursus vétérinaire",
-                "rg": 8,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 8,
                 "places": 2
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "LESSIRE",
@@ -2146,6 +2392,7 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.insa-rouen.fr%2Fsites%2Fdefault%2Ffiles%2Fstyles%2Fmax_1300x1300%2Fpublic%2F2024-04%2Fbatiment-rouen-magellan.jpg%3Fitok%3DIs58tZUC&f=1&nofb=1&ipt=c722937fafcc4eaa3348b8ca016d6db253d92af319032f13946d3dd328c17d5b",
         "specs_bcpst": null,
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -2165,17 +2412,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 161,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 161,
                 "places": 68
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 3,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 3,
                 "places": 3
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "BARBIER",
@@ -2216,17 +2468,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 327,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 327,
                 "places": 6
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 65,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 65,
                 "places": 3
             }
         ],
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -2245,17 +2502,22 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.NxtShy9kjVP64Y4Fnjd5lQHaEo%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=733c513e8f837036b67ebabf9b05f37b7a571aad949c58f55379c7bb05916272",
         "specs_bcpst": [
             {
-                "spec": "Physique pour la Santé",
-                "rg": 257,
-                "places": 6
+                "spec": "Technologies du Vivant",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 157,
+                "places": 3
             },
             {
-                "spec": "Technologies du Vivant",
-                "rg": 157,
-                "places": 3
+                "spec": "Physique pour la Santé",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 257,
+                "places": 6
             }
         ],
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "GAUTIER",
@@ -2286,17 +2548,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 126,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 126,
                 "places": 68
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 10,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 10,
                 "places": 2
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "COLLIN",
@@ -2347,17 +2614,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 1984,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1984,
                 "places": 5
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 65,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 65,
                 "places": 3
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "PINQUIER",
@@ -2388,17 +2660,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Sophia - Génie biologique",
-                "rg": 612,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 612,
                 "places": 12
             }
         ],
         "specs_tb": [
             {
                 "spec": "Sophia - Génie biologique",
-                "rg": 26,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 26,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "LOPES",
@@ -2449,17 +2726,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie Biomédical et santé (ISBS)",
-                "rg": 678,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 678,
                 "places": 3
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie Biomédical et santé (ISBS)",
-                "rg": 64,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 64,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "PRESA",
@@ -2500,17 +2782,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Microbiologie et Qualité / Production, Innovation , Biotechnologies en agro-alimentaire",
-                "rg": 904,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 904,
                 "places": 5
             }
         ],
         "specs_tb": [
             {
                 "spec": "Microbiologie et Qualité / Production, Innovation , Biotechnologies en agro-alimentaire",
-                "rg": 30,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 30,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "FRERE",
@@ -2551,17 +2838,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie biologique et alimentaire",
-                "rg": 834,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 834,
                 "places": 5
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie biologique et alimentaire",
-                "rg": 49,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 49,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "PENOCHET",
@@ -2611,6 +2903,7 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.lF5Ctq8AowvOspisjsKdPgHaE8%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=78ad1e552b4c3e1c7b3b922f4696bd9e7e56e7b6160009de4cbed7141017c2e3&ipo=images",
         "specs_bcpst": null,
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "WITKOWSKI",
@@ -2641,17 +2934,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 1773,
+                "premier": 16,
+                "dernier": 1768,
+                "rg_median": 1773,
                 "places": 90
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 80,
+                "premier": 15,
+                "dernier": 55,
+                "rg_median": 80,
                 "places": 7
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "AMARY",
@@ -2702,17 +3000,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 283,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 283,
                 "places": 9
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 1,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "MARCHEVAL",
@@ -2752,23 +3055,30 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.geipi-polytech.org%2Fsites%2Fdefault%2Ffiles%2Fphotos%2Fpolytech-grenoble-presentation2021.jpg&f=1&nofb=1&ipt=73e11ce502837195d5f67da6b1b980322541b1ec275900d23580d55bee332cea",
         "specs_bcpst": [
             {
-                "spec": "Géotechnique et génie civil",
-                "rg": 1021,
-                "places": 2
+                "spec": "Technologies de l'information pour la santé",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 982,
+                "places": 1
             },
             {
-                "spec": "Technologies de l'information pour la santé",
-                "rg": 982,
-                "places": 1
+                "spec": "Géotechnique et génie civil",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1021,
+                "places": 2
             }
         ],
         "specs_tb": [
             {
                 "spec": "Technologies de l'information pour la santé",
-                "rg": 56,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 56,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "HEISSLER",
@@ -2809,17 +3119,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 161,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 161,
                 "places": 68
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 65,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 65,
                 "places": 3
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "MARET",
@@ -2850,27 +3165,36 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Cursus ingénieur spécialité agronomie – Rennes",
-                "rg": 1142,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1142,
                 "places": 134
             },
             {
                 "spec": "Cursus ingénieur spécialité horticulture et paysage – Angers",
-                "rg": 1886,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1886,
                 "places": 56
             }
         ],
         "specs_tb": [
             {
                 "spec": "Cursus ingénieur spécialité agronomie – Rennes",
-                "rg": 27,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 27,
                 "places": 4
             },
             {
                 "spec": "Cursus ingénieur spécialité horticulture et paysage – Angers",
-                "rg": 98,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 98,
                 "places": 4
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "MERISSI",
@@ -2901,17 +3225,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 161,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 161,
                 "places": 68
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 65,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 65,
                 "places": 3
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "ORTUSO",
@@ -2942,17 +3271,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 126,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 126,
                 "places": 68
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 10,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 10,
                 "places": 2
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "WYSOCKI",
@@ -2983,17 +3317,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 126,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 126,
                 "places": 68
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 10,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 10,
                 "places": 2
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "DETOURNAY",
@@ -3024,22 +3363,29 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie Biologique, Biotechnologie",
-                "rg": 489,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 489,
                 "places": 4
             },
             {
                 "spec": "Génie Biomédical",
-                "rg": 770,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 770,
                 "places": 5
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 62,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 62,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "FIGUIER",
@@ -3080,17 +3426,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 44,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 44,
                 "places": 5
             }
         ],
         "specs_tb": [
             {
                 "spec": "cursus vétérinaire",
-                "rg": 8,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 8,
                 "places": 2
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "PICQ",
@@ -3120,6 +3471,7 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%2Fid%2FOIP.KkGqSGrQkvRhRqaGsxlYvAHaEK%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=448562bcec33bf84bc564881daf57696e15f3ebf054b4b473471cc5e738f4500&ipo=images",
         "specs_bcpst": null,
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3138,6 +3490,7 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.pKtFHySyjw51Eyr1EiYLOgHaCv%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=a11771f9680369a252fa5bf670ba27dffd2c5e4786f8475bc64e46728884b77b&ipo=images",
         "specs_bcpst": null,
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3157,11 +3510,14 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 1984,
+                "premier": 1984,
+                "dernier": 1984,
+                "rg_median": 1984,
                 "places": 5
             }
         ],
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3181,11 +3537,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 219,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 219,
                 "places": 7
             }
         ],
         "specs_tb": null,
+        "specs_g2e": [
+            {
+                "spec": null,
+                "premier": 20,
+                "dernier": 198,
+                "rg_median": null,
+                "places": 7
+            }
+        ],
         "anciens": []
     },
     {
@@ -3205,11 +3572,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 137,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 137,
                 "places": 6
             }
         ],
         "specs_tb": null,
+        "specs_g2e": [
+            {
+                "spec": null,
+                "premier": 41,
+                "dernier": 297,
+                "rg_median": null,
+                "places": 5
+            }
+        ],
         "anciens": []
     },
     {
@@ -3229,11 +3607,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 150,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 150,
                 "places": 4
             }
         ],
         "specs_tb": null,
+        "specs_g2e": [
+            {
+                "spec": null,
+                "premier": 269,
+                "dernier": 463,
+                "rg_median": null,
+                "places": 3
+            }
+        ],
         "anciens": []
     },
     {
@@ -3253,17 +3642,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie Biologique et Santé",
-                "rg": 828,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 828,
                 "places": 4
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie Biologique et Santé",
-                "rg": 52,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 52,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3282,28 +3676,37 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.ulFCLqokzx1DS8aTfR7OBQHaEc%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=18274e25a3c81f60a71d29d71f099508e7b2da256715e0ad734470d65f567d4f&ipo=images",
         "specs_bcpst": [
             {
-                "spec": "Agroalimentaire",
-                "rg": 1000,
-                "places": 5
-            },
-            {
                 "spec": "Matériaux",
-                "rg": 761,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 761,
                 "places": 1
             },
             {
                 "spec": "Sciences de la Terre : Aménagement, Risques, géo-Energies",
-                "rg": 765,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 765,
                 "places": 2
+            },
+            {
+                "spec": "Agroalimentaire",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1000,
+                "places": 5
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 62,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 62,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3323,17 +3726,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie industriel",
-                "rg": 1025,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1025,
                 "places": 1
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 62,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 62,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3353,15 +3761,28 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "cursus vétérinaire",
-                "rg": 189,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 189,
                 "places": 68
             }
         ],
         "specs_tb": [
             {
                 "spec": "cursus vétérinaire",
-                "rg": 8,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 8,
                 "places": 2
+            }
+        ],
+        "specs_g2e": [
+            {
+                "spec": null,
+                "premier": 215,
+                "dernier": 581,
+                "rg_median": null,
+                "places": 20
             }
         ],
         "anciens": []
@@ -3382,17 +3803,30 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.euro-graduation-access.org%2Fwp-content%2Fuploads%2F2019%2F09%2FFacade_EIVP.jpg&f=1&nofb=1&ipt=0d1970cd99e222b0b2cb3b087b75c97225d4865a37907c40c5ed4849434569af",
         "specs_bcpst": [
             {
-                "spec": "apprentissage",
-                "rg": 629,
-                "places": 3
+                "spec": null,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 539,
+                "places": 5
             },
             {
-                "spec": null,
-                "rg": 539,
-                "places": 5
+                "spec": "apprentissage",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 629,
+                "places": 3
             }
         ],
         "specs_tb": null,
+        "specs_g2e": [
+            {
+                "spec": null,
+                "premier": 119,
+                "dernier": 643,
+                "rg_median": null,
+                "places": 5
+            }
+        ],
         "anciens": []
     },
     {
@@ -3412,15 +3846,28 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 283,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 283,
                 "places": 9
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 1,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1,
                 "places": 1
+            }
+        ],
+        "specs_g2e": [
+            {
+                "spec": null,
+                "premier": 441,
+                "dernier": 686,
+                "rg_median": null,
+                "places": 3
             }
         ],
         "anciens": []
@@ -3442,11 +3889,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 544,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 544,
                 "places": 3
             }
         ],
         "specs_tb": null,
+        "specs_g2e": [
+            {
+                "spec": null,
+                "premier": 132,
+                "dernier": 499,
+                "rg_median": null,
+                "places": 20
+            }
+        ],
         "anciens": [
             {
                 "nom": "GIMENEZ",
@@ -3477,17 +3935,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 1984,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1984,
                 "places": 5
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 65,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 65,
                 "places": 3
             }
         ],
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3507,11 +3970,14 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 44,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 44,
                 "places": 5
             }
         ],
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3531,17 +3997,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 52,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 52,
                 "places": 5
             }
         ],
         "specs_tb": [
             {
                 "spec": "Cursus alimentation",
-                "rg": 98,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 98,
                 "places": 8
             }
         ],
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3560,6 +4031,7 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.xla0o5bnbnGEXkhNgmBZ2wHaEK%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=5c8d0b05ca8782b259cc06f2752c75571c5a51dd40073634e1be4e15e1725502&ipo=images",
         "specs_bcpst": null,
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3579,11 +4051,14 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 23,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 23,
                 "places": 5
             }
         ],
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3603,17 +4078,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 51,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 51,
                 "places": 4
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 65,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 65,
                 "places": 3
             }
         ],
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3632,23 +4112,37 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.j3JMGLY1VQWFq-iIIpabmAHaE9%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=ad950da9deacca2b995626529051fc2c865c0b92f3b878c35fcf9e2a750d3893&ipo=images",
         "specs_bcpst": [
             {
-                "spec": "ENSMAC (ex ENSCBP) Agroalimentaire-Génie biologique",
-                "rg": 556,
-                "places": 7
+                "spec": null,
+                "premier": null,
+                "dernier": 684,
+                "rg_median": null,
+                "places": 9
             },
             {
                 "spec": "ENSMAC (ex ENSCBP) Chimie-Génie physique",
-                "rg": 313,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 313,
                 "places": 8
+            },
+            {
+                "spec": "ENSMAC (ex ENSCBP) Agroalimentaire-Génie biologique",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 556,
+                "places": 7
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "rg": 82,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 82,
                 "places": 6
             }
         ],
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3668,11 +4162,14 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 84,
+                "premier": null,
+                "dernier": 123,
+                "rg_median": 84,
                 "places": 3
             }
         ],
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3692,11 +4189,14 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 410,
+                "premier": null,
+                "dernier": 423,
+                "rg_median": 410,
                 "places": 5
             }
         ],
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3716,22 +4216,29 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 192,
+                "premier": null,
+                "dernier": 197,
+                "rg_median": 192,
                 "places": 2
             }
         ],
         "specs_tb": [
             {
-                "spec": "Cursus ingénieur, spécialité agronomie et agroalimentaire (SAADS)",
-                "rg": 81,
-                "places": 5
+                "spec": "Cursus ingénieur, spécialité agronomie",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 50,
+                "places": 4
             },
             {
-                "spec": "Cursus ingénieur, spécialité agronomie",
-                "rg": 50,
-                "places": 4
+                "spec": "Cursus ingénieur, spécialité agronomie et agroalimentaire (SAADS)",
+                "premier": null,
+                "dernier": null,
+                "rg_median": 81,
+                "places": 5
             }
         ],
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3751,11 +4258,14 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 12,
+                "premier": null,
+                "dernier": 16,
+                "rg_median": 12,
                 "places": 2
             }
         ],
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3775,11 +4285,14 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "rg": 410,
+                "premier": null,
+                "dernier": 522,
+                "rg_median": 410,
                 "places": 5
             }
         ],
         "specs_tb": null,
+        "specs_g2e": null,
         "anciens": []
     },
     {
@@ -3799,17 +4312,22 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie des Procédés et Bioprocédés",
-                "rg": 784,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 784,
                 "places": 3
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie des Procédés et Bioprocédés",
-                "rg": 72,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 72,
                 "places": 1
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "MALARD",
@@ -3840,27 +4358,50 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Cursus ingénieur spécialité agronomie – Rennes",
-                "rg": 1142,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1142,
                 "places": 134
             },
             {
                 "spec": "Cursus ingénieur spécialité horticulture et paysage – Angers",
-                "rg": 1886,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 1886,
                 "places": 56
+            },
+            {
+                "spec": "Cursus horticulture et paysage",
+                "premier": 852,
+                "dernier": 2188,
+                "rg_median": null,
+                "places": 43
             }
         ],
         "specs_tb": [
             {
                 "spec": "Cursus ingénieur spécialité agronomie – Rennes",
-                "rg": 27,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 27,
                 "places": 4
             },
             {
                 "spec": "Cursus ingénieur spécialité horticulture et paysage – Angers",
-                "rg": 98,
+                "premier": null,
+                "dernier": null,
+                "rg_median": 98,
                 "places": 4
+            },
+            {
+                "spec": "Cursus horticulture et paysage",
+                "premier": 93,
+                "dernier": 102,
+                "rg_median": null,
+                "places": 2
             }
         ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "HENRI",
