@@ -413,44 +413,54 @@ def rapprocher_medians(nom_excel, stats_scei, seuil=75):
 
 def fusionner_specs(specs_medians, specs_officiels):
     """
-    Fusionne les données SCEI (rang médian) avec les données PDF (premier/dernier).
-    Retourne une liste unifiée de spécialités avec tous les champs disponibles.
+    Construit la liste finale des spécialités à partir des données PDF officielles UNIQUEMENT.
+    Le rang médian SCEI est associé à chaque spécialité PDF par fuzzy matching sur le libellé.
+    Le rang 'premier' est supprimé — on ne conserve que 'dernier' et 'rg_median'.
+    Si aucune donnée PDF officielle, retourne None (pas de rang SCEI seul).
     """
-    if not specs_officiels and not specs_medians:
+    if not specs_officiels:
         return None
 
-    # Construire un index des spécialités officielles par libellé de spec
-    off_by_spec = {}
-    if specs_officiels:
-        for s in specs_officiels:
-            key = (s.get("spec") or "").lower().strip()
-            off_by_spec[key] = s
-
-    # Construire un index des médians par libellé de spec
-    med_by_spec = {}
+    # Index des médians SCEI par libellé (pour le matching)
+    med_index = {}
     if specs_medians:
         for s in specs_medians:
-            key = (s.get("spec") or "").lower().strip()
-            med_by_spec[key] = s
+            key = (s.get("spec") or "").strip()
+            med_index[key] = s.get("rg_median")
 
-    # Fusionner en itérant sur toutes les clés connues
-    toutes_cles = set(off_by_spec) | set(med_by_spec)
     resultat = []
-    for cle in toutes_cles:
-        off = off_by_spec.get(cle, {})
-        med = med_by_spec.get(cle, {})
-        spec_label = off.get("spec") or med.get("spec")
+    for s in specs_officiels:
+        spec_label = s.get("spec")
+        dernier    = s.get("dernier")
+        places     = s.get("n")
+
+        # Chercher le rang médian SCEI correspondant par fuzzy matching sur le libellé
+        rg_median = None
+        if med_index:
+            cle_pdf = (spec_label or "").strip()
+            if cle_pdf in med_index:
+                # Correspondance exacte
+                rg_median = med_index[cle_pdf]
+            else:
+                # Fuzzy matching
+                match = fuzz_process.extractOne(cle_pdf, list(med_index.keys()))
+                if match and match[1] >= 80:
+                    rg_median = med_index[match[0]]
+
         resultat.append({
-            "spec":       spec_label,
-            "premier":    off.get("premier"),
-            "dernier":    off.get("dernier"),
-            "rg_median":  med.get("rg_median"),
-            "places":     med.get("places") or off.get("n"),
+            "spec":      spec_label,
+            "dernier":   dernier,
+            "rg_median": rg_median,
+            "places":    places,
         })
 
-    # Trier : spécialités sans nom en premier, puis par rang médian croissant
-    resultat.sort(key=lambda x: (x["spec"] is not None, x.get("rg_median") or 9999))
+    # Trier par rang dernier croissant (plus sélectif en premier)
+    resultat.sort(key=lambda x: (x.get("dernier") or x.get("rg_median") or 9999))
     return resultat if resultat else None
+
+
+# Types d'écoles sans rapport officiel jury → pas de données de sélectivité
+TYPES_SANS_RANG = {'Fac', 'INSA', 'ENS', 'Centrale', 'Centrale-Supélec', 'Mines-Pont', 'X-BIO', ''}
 
 # ================================================================
 # SCRIPT PRINCIPAL
@@ -487,9 +497,11 @@ avec_rang = sans_rang = 0
 print("\n⚡ Traitement des écoles…")
 
 for _, ecole in ecoles.iterrows():
-    nom_ecole = safe_str(ecole['Nom'])
+    nom_ecole  = safe_str(ecole['Nom'])
     if not nom_ecole:
         continue
+    type_bcpst = safe_str(ecole.get('Type_BCPST'))
+    type_tb    = safe_str(ecole.get('Type_TB'))
 
     # GPS
     coords_raw = ecole.get("coords", "[0,0]")
@@ -518,22 +530,26 @@ for _, ecole in ecoles.iterrows():
             "fonctionnaire":    safe_str(eleve.get('Fonctionnaire')),
         })
 
-    # Rangs médians SCEI (onglets collés)
-    medians_bcpst = rapprocher_medians(nom_ecole, stats_bcpst_medians)
-    medians_tb    = rapprocher_medians(nom_ecole, stats_tb_medians)
+    # Rangs — uniquement pour les types avec rapport jury officiel
+    specs_bcpst = specs_tb = specs_g2e = None
 
-    # Rangs officiels PDF (premier / dernier)
-    cle_bcpst = CORRESPONDANCE_BCPST.get(nom_ecole)
-    cle_tb    = CORRESPONDANCE_TB.get(nom_ecole)
-    cle_g2e   = CORRESPONDANCE_G2E.get(nom_ecole)
+    if type_bcpst not in TYPES_SANS_RANG or type_tb not in TYPES_SANS_RANG:
+        medians_bcpst = rapprocher_medians(nom_ecole, stats_bcpst_medians)
+        medians_tb    = rapprocher_medians(nom_ecole, stats_tb_medians)
 
-    off_bcpst = RANGS_OFFICIELS_BCPST.get(cle_bcpst, {}).get("specs") if cle_bcpst else None
-    off_tb    = RANGS_OFFICIELS_TB.get(cle_tb,    {}).get("specs") if cle_tb    else None
-    off_g2e   = RANGS_OFFICIELS_G2E.get(cle_g2e,  {}).get("specs") if cle_g2e  else None
+        cle_bcpst = CORRESPONDANCE_BCPST.get(nom_ecole)
+        cle_tb    = CORRESPONDANCE_TB.get(nom_ecole)
+        cle_g2e   = CORRESPONDANCE_G2E.get(nom_ecole)
 
-    specs_bcpst = fusionner_specs(medians_bcpst, off_bcpst)
-    specs_tb    = fusionner_specs(medians_tb,    off_tb)
-    specs_g2e   = fusionner_specs(None,          off_g2e)
+        off_bcpst = RANGS_OFFICIELS_BCPST.get(cle_bcpst, {}).get("specs") if cle_bcpst else None
+        off_tb    = RANGS_OFFICIELS_TB.get(cle_tb,    {}).get("specs") if cle_tb    else None
+        off_g2e   = RANGS_OFFICIELS_G2E.get(cle_g2e,  {}).get("specs") if cle_g2e  else None
+
+        if type_bcpst not in TYPES_SANS_RANG:
+            specs_bcpst = fusionner_specs(medians_bcpst, off_bcpst)
+        if type_tb not in TYPES_SANS_RANG:
+            specs_tb = fusionner_specs(medians_tb, off_tb)
+        specs_g2e = fusionner_specs(None, off_g2e)
 
     if specs_bcpst or specs_tb or specs_g2e:
         avec_rang += 1
@@ -544,8 +560,8 @@ for _, ecole in ecoles.iterrows():
         "nom":          nom_ecole,
         "ville":        safe_str(ecole.get('Ville')),
         "coords":       coords,
-        "type_bcpst":   safe_str(ecole.get('Type_BCPST')),
-        "type_tb":      safe_str(ecole.get('Type_TB')),
+        "type_bcpst":   type_bcpst,
+        "type_tb":      type_tb,
         "banque_bcpst": safe_str(ecole.get('Banque_BCPST')),
         "banque_tb":    safe_str(ecole.get('Banque_TB')),
         "descriptif":   safe_str(ecole.get('Descriptif')),

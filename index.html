@@ -921,11 +921,10 @@ function afficherEcole(ecole) {
 
         function renderRangs(s) {
             const parts = [];
-            if (s.premier != null) parts.push('1<sup>er</sup>\u00a0: <b>' + s.premier + '</b>');
-            if (s.dernier  != null) parts.push('der.\u00a0: <b>' + s.dernier  + '</b>');
-            if (s.rg_median != null) parts.push('m\u00e9d.\u00a0: <b>' + s.rg_median + '</b>');
-			const placesStr = s.places ? ' <span class="text-gray-400 text-[9px]">(' + s.places + '\u00a0' + (s.places > 1 ? 'places' : 'place') + ')</span>' : '';
-            return parts.join('\u2002\u00b7\u2002') + placesStr;
+            if (s.dernier   != null) parts.push('Der.\u00a0: <b>' + s.dernier   + '</b>');
+            if (s.rg_median != null) parts.push('M\u00e9d.\u00a0: <b>' + s.rg_median + '</b>');
+            const placesStr = s.places ? ' <span class="text-gray-400 text-[9px]">(' + s.places + '\u00a0pl.)</span>' : '';
+            return parts.join('\u2002·\u2002') + placesStr;
         }
 
         if (sorted.length === 1 && !sorted[0].spec) {
