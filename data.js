@@ -16,17 +16,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 721,
                 "rg_median": 457,
-                "places": 274
+                "dernier": 721,
+                "places": 274,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "dernier": 47,
                 "rg_median": 19,
-                "places": 12
+                "dernier": 47,
+                "places": 12,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -150,17 +152,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 2206,
                 "rg_median": 1998,
-                "places": 23
+                "dernier": 2206,
+                "places": 23,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "dernier": 105,
                 "rg_median": 98,
-                "places": 4
+                "dernier": 105,
+                "places": 4,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -334,17 +338,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 1796,
                 "rg_median": 1500,
-                "places": 88
+                "dernier": 1796,
+                "places": 88,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "dernier": 100,
                 "rg_median": 82,
-                "places": 8
+                "dernier": 100,
+                "places": 8,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -468,17 +474,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 2000,
                 "rg_median": 1773,
-                "places": 89
+                "dernier": 2000,
+                "places": 89,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "dernier": 97,
                 "rg_median": 80,
-                "places": 10
+                "dernier": 97,
+                "places": 10,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -672,35 +680,40 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Cursus agronome (civil)",
-                "dernier": 1824,
                 "rg_median": 1544,
-                "places": 30
+                "dernier": 1824,
+                "places": 30,
+                "concours": "BCPST"
             },
             {
                 "spec": "Cursus agronome (fonctionnaire)",
+                "rg_median": 1858,
                 "dernier": 2161,
-                "rg_median": 2006,
-                "places": 40
+                "places": 40,
+                "concours": "BCPST"
             },
             {
                 "spec": "Cursus agroalimentaire",
+                "rg_median": 2006,
                 "dernier": 2212,
-                "rg_median": 1544,
-                "places": 28
+                "places": 28,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": "Cursus agronome (civil)",
-                "dernier": 60,
                 "rg_median": 60,
-                "places": 1
+                "dernier": 60,
+                "places": 1,
+                "concours": "TB"
             },
             {
                 "spec": "Cursus agroalimentaire",
-                "dernier": 99,
                 "rg_median": 71,
-                "places": 3
+                "dernier": 99,
+                "places": 3,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -954,17 +967,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Cursus agronome",
+                "rg_median": null,
                 "dernier": 1474,
-                "rg_median": 1142,
-                "places": 137
+                "places": 137,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": "Cursus agronome",
+                "rg_median": null,
                 "dernier": 30,
-                "rg_median": 27,
-                "places": 4
+                "places": 4,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -1058,17 +1073,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 2210,
                 "rg_median": 1500,
-                "places": 53
+                "dernier": 2210,
+                "places": 53,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
+                "rg_median": 27,
                 "dernier": 98,
-                "rg_median": null,
-                "places": 5
+                "places": 5,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -1242,17 +1259,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": null,
                 "rg_median": 30,
-                "places": 13
+                "dernier": null,
+                "places": 11,
+                "concours": "Concours ENSTIB"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "dernier": null,
                 "rg_median": 3,
-                "places": 2
+                "dernier": null,
+                "places": 1,
+                "concours": "Concours ENSTIB"
             }
         ],
         "specs_g2e": null,
@@ -1326,29 +1345,33 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Cursus agronome",
+                "rg_median": null,
                 "dernier": 1239,
-                "rg_median": 891,
-                "places": 113
+                "places": 113,
+                "concours": "BCPST"
             },
             {
                 "spec": "Cursus SAADS",
+                "rg_median": null,
                 "dernier": 1240,
-                "rg_median": 891,
-                "places": 11
+                "places": 11,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": "Cursus agronome",
+                "rg_median": null,
                 "dernier": 61,
-                "rg_median": 81,
-                "places": 4
+                "places": 4,
+                "concours": "TB"
             },
             {
                 "spec": "Cursus SAADS",
+                "rg_median": null,
                 "dernier": 101,
-                "rg_median": 81,
-                "places": 6
+                "places": 6,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -1432,17 +1455,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 282,
                 "rg_median": 126,
-                "places": 68
+                "dernier": 282,
+                "places": 68,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "dernier": 12,
                 "rg_median": 10,
-                "places": 2
+                "dernier": 12,
+                "places": 2,
+                "concours": "Concours ENSTIB"
             }
         ],
         "specs_g2e": null,
@@ -1476,17 +1501,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 295,
                 "rg_median": 161,
-                "places": 68
+                "dernier": 295,
+                "places": 68,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "dernier": 6,
                 "rg_median": 3,
-                "places": 3
+                "dernier": 6,
+                "places": 3,
+                "concours": "Concours ENSTIB"
             }
         ],
         "specs_g2e": null,
@@ -1520,17 +1547,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
+                "rg_median": 61,
                 "dernier": 306,
-                "rg_median": 44,
-                "places": 68
+                "places": 68,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
+                "rg_median": 70,
                 "dernier": 10,
-                "rg_median": 8,
-                "places": 2
+                "places": 2,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -1604,17 +1633,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 363,
                 "rg_median": 1998,
-                "places": 68
+                "dernier": 363,
+                "places": 68,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "dernier": 11,
                 "rg_median": 98,
-                "places": 2
+                "dernier": 11,
+                "places": 2,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -1680,9 +1711,10 @@ const ecolesData = [
         "specs_g2e": [
             {
                 "spec": null,
-                "dernier": 383,
                 "rg_median": null,
-                "places": 8
+                "dernier": 383,
+                "places": 8,
+                "concours": "G2E"
             }
         ],
         "anciens": [
@@ -1805,9 +1837,10 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Technologies de l'information pour la santé",
-                "dernier": null,
                 "rg_median": 733,
-                "places": 2
+                "dernier": null,
+                "places": 3,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_tb": null,
@@ -1852,17 +1885,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie Biomédical",
-                "dernier": null,
                 "rg_median": 821,
-                "places": 13
+                "dernier": null,
+                "places": 14,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie Biomédical",
-                "dernier": null,
                 "rg_median": 55,
-                "places": 1
+                "dernier": null,
+                "places": 1,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_g2e": null,
@@ -1946,17 +1981,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie Biologique et Santé",
-                "dernier": null,
                 "rg_median": 828,
-                "places": 4
+                "dernier": null,
+                "places": 3,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie Biologique et Santé",
-                "dernier": null,
                 "rg_median": 52,
-                "places": 1
+                "dernier": null,
+                "places": 1,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_g2e": null,
@@ -2000,17 +2037,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie Biologique",
-                "dernier": null,
                 "rg_median": 817,
-                "places": 8
+                "dernier": null,
+                "places": 8,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie Biologique",
-                "dernier": null,
                 "rg_median": 48,
-                "places": 1
+                "dernier": null,
+                "places": 1,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_g2e": null,
@@ -2074,19 +2113,13 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie de l'aménagement et de l'environnement",
-                "dernier": null,
                 "rg_median": 910,
-                "places": 4
-            }
-        ],
-        "specs_tb": [
-            {
-                "spec": null,
                 "dernier": null,
-                "rg_median": 62,
-                "places": 1
+                "places": 6,
+                "concours": "Polytech Réseau"
             }
         ],
+        "specs_tb": null,
         "specs_g2e": null,
         "anciens": [
             {
@@ -2375,18 +2408,20 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.polytech-reseau.org%2Fwp-content%2Fuploads%2F2021%2F11%2F476554597.jpg&f=1&nofb=1&ipt=3d403dba376a2746fcc521fa3b0af78f4271487c244104dafbf6473c3ad0e536",
         "specs_bcpst": [
             {
-                "spec": "Sophia - Génie biologique",
-                "dernier": null,
+                "spec": "Génie biologique",
                 "rg_median": 612,
-                "places": 12
+                "dernier": null,
+                "places": 9,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_tb": [
             {
-                "spec": "Sophia - Génie biologique",
-                "dernier": null,
+                "spec": "Génie biologique",
                 "rg_median": 26,
-                "places": 1
+                "dernier": null,
+                "places": 1,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_g2e": null,
@@ -2437,22 +2472,8 @@ const ecolesData = [
         "descriptif": "Ecole publique d'ingénieurs de la santé et du numérique",
         "lien_site": "https://episen.u-pec.fr/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.u-pec.fr%2Fmedias%2Fphoto%2F7-episen-campus-st-simon-modification-29mars2023_1680861840219-jpg&f=1&nofb=1&ipt=72006281de6bc5e9b29a88547f138706ca3075668e70f54b6ee7e1385210b4bd",
-        "specs_bcpst": [
-            {
-                "spec": "Génie Biomédical et santé (ISBS)",
-                "dernier": null,
-                "rg_median": 678,
-                "places": 3
-            }
-        ],
-        "specs_tb": [
-            {
-                "spec": "Génie Biomédical et santé (ISBS)",
-                "dernier": null,
-                "rg_median": 64,
-                "places": 1
-            }
-        ],
+        "specs_bcpst": null,
+        "specs_tb": null,
         "specs_g2e": null,
         "anciens": [
             {
@@ -2494,17 +2515,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Microbiologie et Qualité / Production, Innovation , Biotechnologies en agro-alimentaire",
-                "dernier": null,
                 "rg_median": 904,
-                "places": 5
+                "dernier": null,
+                "places": 6,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_tb": [
             {
                 "spec": "Microbiologie et Qualité / Production, Innovation , Biotechnologies en agro-alimentaire",
-                "dernier": null,
                 "rg_median": 30,
-                "places": 1
+                "dernier": null,
+                "places": 1,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_g2e": null,
@@ -2548,17 +2571,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie biologique et alimentaire",
-                "dernier": null,
                 "rg_median": 834,
-                "places": 5
+                "dernier": null,
+                "places": 6,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie biologique et alimentaire",
-                "dernier": null,
                 "rg_median": 49,
-                "places": 1
+                "dernier": null,
+                "places": 1,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_g2e": null,
@@ -2642,17 +2667,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 1768,
                 "rg_median": 1773,
-                "places": 88
+                "dernier": 1768,
+                "places": 88,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": null,
-                "dernier": 55,
                 "rg_median": 80,
-                "places": 8
+                "dernier": 55,
+                "places": 8,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,
@@ -2703,22 +2730,8 @@ const ecolesData = [
         "descriptif": "Les enseignements de cette école portent entre autres sur le génie génétique, la microbiologie, la bioinformatique, la bioproduction, la modélisation.",
         "lien_site": "https://esbs.unistra.fr/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fesbs.unistra.fr%2Fwebsites%2F_processed_%2F8%2Fc%2Fcsm_IMG_1421_418bbc3fef.jpg&f=1&nofb=1&ipt=f3947e491c7a02f77a667fd794a0b0ba9883d6cd46996147c416268e57253563",
-        "specs_bcpst": [
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 283,
-                "places": 9
-            }
-        ],
-        "specs_tb": [
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 1,
-                "places": 1
-            }
-        ],
+        "specs_bcpst": null,
+        "specs_tb": null,
         "specs_g2e": null,
         "anciens": [
             {
@@ -2760,25 +2773,13 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Géotechnique et génie civil",
-                "dernier": null,
                 "rg_median": 1021,
-                "places": 2
-            },
-            {
-                "spec": "Technologies de l'information pour la santé",
                 "dernier": null,
-                "rg_median": 982,
-                "places": 1
+                "places": 1,
+                "concours": "Polytech Réseau"
             }
         ],
-        "specs_tb": [
-            {
-                "spec": "Technologies de l'information pour la santé",
-                "dernier": null,
-                "rg_median": 56,
-                "places": 1
-            }
-        ],
+        "specs_tb": null,
         "specs_g2e": null,
         "anciens": [
             {
@@ -2970,25 +2971,13 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie Biologique, Biotechnologie",
-                "dernier": null,
                 "rg_median": 489,
-                "places": 4
-            },
-            {
-                "spec": "Génie Biomédical",
                 "dernier": null,
-                "rg_median": 770,
-                "places": 5
+                "places": 5,
+                "concours": "Polytech Réseau"
             }
         ],
-        "specs_tb": [
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 62,
-                "places": 1
-            }
-        ],
+        "specs_tb": null,
         "specs_g2e": null,
         "anciens": [
             {
@@ -3098,9 +3087,10 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 1984,
                 "rg_median": 1984,
-                "places": 1
+                "dernier": 1984,
+                "places": 1,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": null,
@@ -3121,21 +3111,15 @@ const ecolesData = [
         "descriptif": "École des Mines / IMT, formation ingénieur en énergétique, environnement, matériaux.",
         "lien_site": "https://imt-mines-albi.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%2Fid%2FOIP.DQqWIABQbY8HBTNOcWM4UAHaEd%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=6381431d55592d40cc99ca5cd7f2a3d558404531e852aed73f0c34b5d748efd7&ipo=images",
-        "specs_bcpst": [
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 219,
-                "places": 7
-            }
-        ],
+        "specs_bcpst": null,
         "specs_tb": null,
         "specs_g2e": [
             {
                 "spec": null,
-                "dernier": 198,
                 "rg_median": null,
-                "places": 7
+                "dernier": 198,
+                "places": 7,
+                "concours": "G2E"
             }
         ],
         "anciens": []
@@ -3154,21 +3138,15 @@ const ecolesData = [
         "descriptif": "Ingénierie des ressources naturelles, environnement, matériaux.",
         "lien_site": "https://www.imt-mines-ales.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%2Fid%2FOIP._WH0BS1HtfLNJ1n73xcMIQHaE8%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=9979da58e75a05adb3bb910ee9c170dfcf02af87fe4756756b96cfcb6192516f&ipo=images",
-        "specs_bcpst": [
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 137,
-                "places": 6
-            }
-        ],
+        "specs_bcpst": null,
         "specs_tb": null,
         "specs_g2e": [
             {
                 "spec": null,
-                "dernier": 297,
                 "rg_median": null,
-                "places": 5
+                "dernier": 297,
+                "places": 5,
+                "concours": "G2E"
             }
         ],
         "anciens": []
@@ -3187,21 +3165,15 @@ const ecolesData = [
         "descriptif": "Campus Mines du Nord, ingénierie énergétique, environnement, numérique.",
         "lien_site": "https://imt-nord-europe.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimt-nord-europe.fr%2Fwp-content%2Fuploads%2F2019%2F04%2FIMT-Nord-Europe-Campus-VdA-2048x1366.jpg&f=1&nofb=1&ipt=4596d50c1823a6d76a0c88f5acdaed551cacad31041bd196b4795224ddf7440c",
-        "specs_bcpst": [
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 150,
-                "places": 4
-            }
-        ],
+        "specs_bcpst": null,
         "specs_tb": null,
         "specs_g2e": [
             {
                 "spec": null,
-                "dernier": 463,
                 "rg_median": null,
-                "places": 3
+                "dernier": 463,
+                "places": 3,
+                "concours": "G2E"
             }
         ],
         "anciens": []
@@ -3220,22 +3192,8 @@ const ecolesData = [
         "descriptif": "Ingénierie environnementale, développement durable, aménagement territorial.",
         "lien_site": "Chambéry",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.polytech.univ-smb.fr%2Ffileadmin%2FPolytech_Internet%2FCommunication%2FActus%2F2019%2FPolytech_site_Annecy_vu_du_ciel_bis.jpg&f=1&nofb=1&ipt=e4f36724d1237f0de7793edf46199c56ca493ce19b3d9a40d1200a0001e6ed58",
-        "specs_bcpst": [
-            {
-                "spec": "Génie Biologique et Santé",
-                "dernier": null,
-                "rg_median": 828,
-                "places": 4
-            }
-        ],
-        "specs_tb": [
-            {
-                "spec": "Génie Biologique et Santé",
-                "dernier": null,
-                "rg_median": 52,
-                "places": 1
-            }
-        ],
+        "specs_bcpst": null,
+        "specs_tb": null,
         "specs_g2e": null,
         "anciens": []
     },
@@ -3256,31 +3214,13 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Agroalimentaire",
-                "dernier": null,
                 "rg_median": 1000,
-                "places": 5
-            },
-            {
-                "spec": "Matériaux",
                 "dernier": null,
-                "rg_median": 761,
-                "places": 1
-            },
-            {
-                "spec": "Sciences de la Terre : Aménagement, Risques, géo-Energies",
-                "dernier": null,
-                "rg_median": 765,
-                "places": 2
+                "places": 6,
+                "concours": "Polytech Réseau"
             }
         ],
-        "specs_tb": [
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 62,
-                "places": 1
-            }
-        ],
+        "specs_tb": null,
         "specs_g2e": null,
         "anciens": []
     },
@@ -3301,19 +3241,13 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie industriel",
-                "dernier": null,
                 "rg_median": 1025,
-                "places": 1
-            }
-        ],
-        "specs_tb": [
-            {
-                "spec": null,
                 "dernier": null,
-                "rg_median": 62,
-                "places": 1
+                "places": 4,
+                "concours": "Polytech Réseau"
             }
         ],
+        "specs_tb": null,
         "specs_g2e": null,
         "anciens": []
     },
@@ -3331,21 +3265,15 @@ const ecolesData = [
         "descriptif": "École du génie civil, environnement, aménagement des territoires.",
         "lien_site": "https://www.entpe.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fice-ingenierie.fr%2Fwp-content%2Fuploads%2F2017%2F07%2FENTPE-2.jpg&f=1&nofb=1&ipt=2daa6fda816a63e2467fdf56d01df10813621b357b5a59d3719e2fe8a600f234",
-        "specs_bcpst": [
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 467,
-                "places": 23
-            }
-        ],
+        "specs_bcpst": null,
         "specs_tb": null,
         "specs_g2e": [
             {
                 "spec": null,
+                "rg_median": 8,
                 "dernier": 581,
-                "rg_median": null,
-                "places": 20
+                "places": 20,
+                "concours": "G2E"
             }
         ],
         "anciens": []
@@ -3364,27 +3292,15 @@ const ecolesData = [
         "descriptif": "École des ingénieurs de la Ville de Paris, génie urbain.",
         "lien_site": "https://www.eivp-paris.fr",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.euro-graduation-access.org%2Fwp-content%2Fuploads%2F2019%2F09%2FFacade_EIVP.jpg&f=1&nofb=1&ipt=0d1970cd99e222b0b2cb3b087b75c97225d4865a37907c40c5ed4849434569af",
-        "specs_bcpst": [
-            {
-                "spec": "apprentissage",
-                "dernier": null,
-                "rg_median": 629,
-                "places": 3
-            },
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 539,
-                "places": 5
-            }
-        ],
+        "specs_bcpst": null,
         "specs_tb": null,
         "specs_g2e": [
             {
                 "spec": null,
+                "rg_median": 2,
                 "dernier": 643,
-                "rg_median": null,
-                "places": 5
+                "places": 5,
+                "concours": "TB"
             }
         ],
         "anciens": []
@@ -3403,21 +3319,15 @@ const ecolesData = [
         "descriptif": "École d’ingénieurs spécialisée en sciences de la Terre et géologie.",
         "lien_site": "https://eost.unistra.fr/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.BUVKfd6UqMqNETZqSz2K_gHaE8%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=20c7eeadb15df6d294ca97c3301a0b39f99d6dfa0b263b87e38bf633b9edac4b&ipo=images",
-        "specs_bcpst": [
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 205,
-                "places": 13
-            }
-        ],
+        "specs_bcpst": null,
         "specs_tb": null,
         "specs_g2e": [
             {
                 "spec": null,
+                "rg_median": 1,
                 "dernier": 686,
-                "rg_median": null,
-                "places": 3
+                "places": 3,
+                "concours": "Polytech Réseau"
             }
         ],
         "anciens": []
@@ -3436,21 +3346,15 @@ const ecolesData = [
         "descriptif": "Ingénierie géologique, ressources naturelles et risques.",
         "lien_site": "https://www.groupe-inp.fr/la-prepa-des-inp/ensg-geol-ecole-nationale-superieure-de-geologie",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.pv9j6Bsty9Xu3R-5cl4u8gHaFZ%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=c3d65733f3b1ec15ff94676f9cc0025a9a497a4e33474b7b6f2ab4d1d49d55f9&ipo=images",
-        "specs_bcpst": [
-            {
-                "spec": null,
-                "dernier": null,
-                "rg_median": 190,
-                "places": 70
-            }
-        ],
+        "specs_bcpst": null,
         "specs_tb": null,
         "specs_g2e": [
             {
                 "spec": null,
-                "dernier": 499,
                 "rg_median": null,
-                "places": 20
+                "dernier": 499,
+                "places": 20,
+                "concours": "G2E"
             }
         ],
         "anciens": [
@@ -3597,9 +3501,10 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 684,
                 "rg_median": 556,
-                "places": 9
+                "dernier": 684,
+                "places": 9,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": null,
@@ -3623,9 +3528,10 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 123,
                 "rg_median": 84,
-                "places": 4
+                "dernier": 123,
+                "places": 4,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": null,
@@ -3649,9 +3555,10 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 423,
                 "rg_median": 410,
-                "places": 3
+                "dernier": 423,
+                "places": 3,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": null,
@@ -3675,9 +3582,10 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 197,
                 "rg_median": 192,
-                "places": 2
+                "dernier": 197,
+                "places": 2,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": null,
@@ -3701,9 +3609,10 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 16,
                 "rg_median": 12,
-                "places": 2
+                "dernier": 16,
+                "places": 2,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": null,
@@ -3727,9 +3636,10 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": null,
-                "dernier": 522,
                 "rg_median": 512,
-                "places": 3
+                "dernier": 522,
+                "places": 3,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": null,
@@ -3753,17 +3663,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Génie des Procédés et Bioprocédés",
-                "dernier": null,
                 "rg_median": 784,
-                "places": 3
+                "dernier": null,
+                "places": 3,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_tb": [
             {
                 "spec": "Génie des Procédés et Bioprocédés",
-                "dernier": null,
                 "rg_median": 72,
-                "places": 1
+                "dernier": null,
+                "places": 1,
+                "concours": "Polytech Réseau"
             }
         ],
         "specs_g2e": null,
@@ -3797,17 +3709,19 @@ const ecolesData = [
         "specs_bcpst": [
             {
                 "spec": "Cursus horticulture et paysage",
+                "rg_median": null,
                 "dernier": 2188,
-                "rg_median": 1886,
-                "places": 43
+                "places": 43,
+                "concours": "BCPST"
             }
         ],
         "specs_tb": [
             {
                 "spec": "Cursus horticulture et paysage",
+                "rg_median": null,
                 "dernier": 102,
-                "rg_median": 98,
-                "places": 2
+                "places": 2,
+                "concours": "TB"
             }
         ],
         "specs_g2e": null,

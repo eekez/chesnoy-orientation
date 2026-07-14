@@ -919,28 +919,31 @@ function afficherEcole(ecole) {
             '<span class="inline-block text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ' +
             couleurs + '">' + filiere + '</span>';
 
-        function renderRangs(s) {
+        function renderRangs(s, filiere) {
             const parts = [];
-            if (s.rg_median != null) parts.push('M\u00e9d.\u00a0: <b>' + s.rg_median + '</b>');
+            if (s.rg_median != null) parts.push('Méd.\u00a0: <b>' + s.rg_median + '</b>');
             if (s.dernier   != null) parts.push('Der.\u00a0: <b>' + s.dernier   + '</b>');
             const placesStr = s.places ? ' <span class="text-gray-400 text-[9px]">(' + s.places + '\u00a0pl.)</span>' : '';
-            return parts.join('\u2002·\u2002') + placesStr;
+            const concours = s.concours && s.concours !== filiere
+                ? '<br><span class="text-[9px] italic text-gray-400 ml-0.5">classmt\u00a0' + s.concours + '</span>'
+                : '';
+            return parts.join('\u2002·\u2002') + placesStr + concours;
         }
 
         if (sorted.length === 1 && !sorted[0].spec) {
             const s = sorted[0];
             return '<div class="mb-1.5">' +
                 '<div class="mb-0.5">' + filiereLabel + '</div>' +
-                '<div class="ml-1 text-amber-900 text-[11px]">' + renderRangs(s) + '</div>' +
+                '<div class="ml-1 text-amber-900 text-[11px]">' + renderRangs(s, filiere) + '</div>' +
                 '</div>';
         }
 
         let html = '<div class="mb-1.5"><div class="mb-0.5">' + filiereLabel + '</div><ul class="ml-1 space-y-0.5">';
         sorted.forEach(s => {
             html += '<li class="text-[11px] text-amber-900">' +
-                '<span class="text-amber-400 mr-0.5">\u203a</span>' +
+                '<span class="text-amber-400 mr-0.5">›</span>' +
                 (s.spec ? '<span class="text-gray-600 italic text-[10px]">' + s.spec + '</span><br><span class="ml-3">' : '<span>') +
-                renderRangs(s) +
+                renderRangs(s, filiere) +
                 '</span></li>';
         });
         html += '</ul></div>';
