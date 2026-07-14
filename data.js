@@ -46,7 +46,7 @@ const ecolesData = [
             {
                 "nom": "AYMON",
                 "prenom": "Julien",
-                "initiale_nom": "",
+                "initiale_nom": "A",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -56,7 +56,7 @@ const ecolesData = [
             {
                 "nom": "MURAT",
                 "prenom": "Quentin",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -66,7 +66,7 @@ const ecolesData = [
             {
                 "nom": "PRUGNEAU",
                 "prenom": "Thomas",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2024,
                 "classe": "TB",
                 "lien_video": "",
@@ -76,7 +76,7 @@ const ecolesData = [
             {
                 "nom": "LEBON",
                 "prenom": "Olivia",
-                "initiale_nom": "",
+                "initiale_nom": "L",
                 "annee": 2024,
                 "classe": "TB",
                 "lien_video": "",
@@ -86,7 +86,7 @@ const ecolesData = [
             {
                 "nom": "REVEILLARD",
                 "prenom": "Antoine",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -96,7 +96,7 @@ const ecolesData = [
             {
                 "nom": "AUROUX",
                 "prenom": "Ophélie",
-                "initiale_nom": "",
+                "initiale_nom": "A",
                 "annee": 2020,
                 "classe": "TB",
                 "lien_video": "",
@@ -106,7 +106,7 @@ const ecolesData = [
             {
                 "nom": "DUMEZ",
                 "prenom": "Lucy",
-                "initiale_nom": "",
+                "initiale_nom": "D",
                 "annee": 2017,
                 "classe": "TB",
                 "lien_video": "",
@@ -116,7 +116,7 @@ const ecolesData = [
             {
                 "nom": "BARDON",
                 "prenom": "Camille",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -126,7 +126,7 @@ const ecolesData = [
             {
                 "nom": "ZIMMERMANN",
                 "prenom": "Rudi",
-                "initiale_nom": "",
+                "initiale_nom": "Z",
                 "annee": 2015,
                 "classe": "TB",
                 "lien_video": "",
@@ -222,7 +222,7 @@ const ecolesData = [
             {
                 "nom": "SEMHOUN",
                 "prenom": "Bastien",
-                "initiale_nom": "",
+                "initiale_nom": "S",
                 "annee": 2025,
                 "classe": "TB",
                 "lien_video": "",
@@ -232,7 +232,7 @@ const ecolesData = [
             {
                 "nom": "BHATTI",
                 "prenom": "Bilal",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2024,
                 "classe": "TB",
                 "lien_video": "",
@@ -242,7 +242,7 @@ const ecolesData = [
             {
                 "nom": "GUEDON",
                 "prenom": "Eline",
-                "initiale_nom": "",
+                "initiale_nom": "G",
                 "annee": 2024,
                 "classe": "TB",
                 "lien_video": "",
@@ -252,7 +252,7 @@ const ecolesData = [
             {
                 "nom": "HEREMBERT",
                 "prenom": "Elsa",
-                "initiale_nom": "",
+                "initiale_nom": "H",
                 "annee": 2024,
                 "classe": "TB",
                 "lien_video": "",
@@ -262,7 +262,7 @@ const ecolesData = [
             {
                 "nom": "MOKRANI",
                 "prenom": "Alan",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2024,
                 "classe": "TB",
                 "lien_video": "",
@@ -272,7 +272,7 @@ const ecolesData = [
             {
                 "nom": "BOUTET",
                 "prenom": "Anaïs",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -282,7 +282,7 @@ const ecolesData = [
             {
                 "nom": "LEBLOND",
                 "prenom": "Benoît",
-                "initiale_nom": "",
+                "initiale_nom": "L",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -292,7 +292,7 @@ const ecolesData = [
             {
                 "nom": "THAUVIN",
                 "prenom": "Bastien",
-                "initiale_nom": "",
+                "initiale_nom": "T",
                 "annee": 2018,
                 "classe": "TB",
                 "lien_video": "",
@@ -302,7 +302,7 @@ const ecolesData = [
             {
                 "nom": "VOLENA",
                 "prenom": "Lucas",
-                "initiale_nom": "",
+                "initiale_nom": "V",
                 "annee": 2018,
                 "classe": "TB",
                 "lien_video": "",
@@ -312,7 +312,7 @@ const ecolesData = [
             {
                 "nom": "FOUGERE",
                 "prenom": "Louise",
-                "initiale_nom": "",
+                "initiale_nom": "F",
                 "annee": 2017,
                 "classe": "TB",
                 "lien_video": "",
@@ -398,7 +398,7 @@ const ecolesData = [
             {
                 "nom": "ESCOMS",
                 "prenom": "Sarah",
-                "initiale_nom": "",
+                "initiale_nom": "E",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -408,7 +408,7 @@ const ecolesData = [
             {
                 "nom": "AGOGUE",
                 "prenom": "Arnaud",
-                "initiale_nom": "",
+                "initiale_nom": "A",
                 "annee": 2020,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -418,7 +418,7 @@ const ecolesData = [
             {
                 "nom": "WALCZAK",
                 "prenom": "Loic",
-                "initiale_nom": "",
+                "initiale_nom": "W",
                 "annee": 2025,
                 "classe": "TB",
                 "lien_video": "",
@@ -428,7 +428,7 @@ const ecolesData = [
             {
                 "nom": "TURPIN",
                 "prenom": "Doriane",
-                "initiale_nom": "",
+                "initiale_nom": "T",
                 "annee": 2025,
                 "classe": "TB",
                 "lien_video": "",
@@ -438,7 +438,7 @@ const ecolesData = [
             {
                 "nom": "SAUTET",
                 "prenom": "Aristide",
-                "initiale_nom": "",
+                "initiale_nom": "S",
                 "annee": 2023,
                 "classe": "TB",
                 "lien_video": "",
@@ -448,7 +448,7 @@ const ecolesData = [
             {
                 "nom": "LECLOUX",
                 "prenom": "Marion",
-                "initiale_nom": "",
+                "initiale_nom": "L",
                 "annee": 2017,
                 "classe": "TB",
                 "lien_video": "",
@@ -534,7 +534,7 @@ const ecolesData = [
             {
                 "nom": "CHAMPIN",
                 "prenom": "Clarisse",
-                "initiale_nom": "",
+                "initiale_nom": "C",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -544,7 +544,7 @@ const ecolesData = [
             {
                 "nom": "CLEMENT",
                 "prenom": "Louna",
-                "initiale_nom": "",
+                "initiale_nom": "C",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -554,7 +554,7 @@ const ecolesData = [
             {
                 "nom": "NINCLAUS",
                 "prenom": "Tristan",
-                "initiale_nom": "",
+                "initiale_nom": "N",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -564,7 +564,7 @@ const ecolesData = [
             {
                 "nom": "ROBILLARD",
                 "prenom": "Julien",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -574,7 +574,7 @@ const ecolesData = [
             {
                 "nom": "GAUTIER",
                 "prenom": "Lysandre",
-                "initiale_nom": "",
+                "initiale_nom": "G",
                 "annee": 2025,
                 "classe": "TB",
                 "lien_video": "",
@@ -584,7 +584,7 @@ const ecolesData = [
             {
                 "nom": "EL-TAIB",
                 "prenom": "Chaïma",
-                "initiale_nom": "",
+                "initiale_nom": "E",
                 "annee": 2024,
                 "classe": "TB",
                 "lien_video": "",
@@ -594,7 +594,7 @@ const ecolesData = [
             {
                 "nom": "GEBER",
                 "prenom": "Léonie",
-                "initiale_nom": "",
+                "initiale_nom": "G",
                 "annee": 2023,
                 "classe": "TB",
                 "lien_video": "",
@@ -604,7 +604,7 @@ const ecolesData = [
             {
                 "nom": "KENFAR",
                 "prenom": "Salma",
-                "initiale_nom": "",
+                "initiale_nom": "K",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -614,7 +614,7 @@ const ecolesData = [
             {
                 "nom": "PETEL",
                 "prenom": "Elodie",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -624,7 +624,7 @@ const ecolesData = [
             {
                 "nom": "CHASSIN",
                 "prenom": "Camille",
-                "initiale_nom": "",
+                "initiale_nom": "C",
                 "annee": 2020,
                 "classe": "TB",
                 "lien_video": "",
@@ -634,7 +634,7 @@ const ecolesData = [
             {
                 "nom": "ROGERON",
                 "prenom": "Léna",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2019,
                 "classe": "TB",
                 "lien_video": "",
@@ -644,7 +644,7 @@ const ecolesData = [
             {
                 "nom": "VIRAPIN",
                 "prenom": "Morgane",
-                "initiale_nom": "",
+                "initiale_nom": "V",
                 "annee": 2017,
                 "classe": "TB",
                 "lien_video": "",
@@ -654,7 +654,7 @@ const ecolesData = [
             {
                 "nom": "RIVET",
                 "prenom": "Mélanie",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -851,7 +851,7 @@ const ecolesData = [
             {
                 "nom": "JARREAU",
                 "prenom": "Lucie",
-                "initiale_nom": "",
+                "initiale_nom": "J",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -861,7 +861,7 @@ const ecolesData = [
             {
                 "nom": "SPAGNOL",
                 "prenom": "Flavio",
-                "initiale_nom": "",
+                "initiale_nom": "S",
                 "annee": 2025,
                 "classe": "TB",
                 "lien_video": "",
@@ -871,7 +871,7 @@ const ecolesData = [
             {
                 "nom": "ROLLAND",
                 "prenom": "Nathan",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2024,
                 "classe": "TB",
                 "lien_video": "",
@@ -881,7 +881,7 @@ const ecolesData = [
             {
                 "nom": "DROIN",
                 "prenom": "Salomé",
-                "initiale_nom": "",
+                "initiale_nom": "D",
                 "annee": 2023,
                 "classe": "TB",
                 "lien_video": "",
@@ -891,7 +891,7 @@ const ecolesData = [
             {
                 "nom": "RENAULT",
                 "prenom": "Jean",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -901,7 +901,7 @@ const ecolesData = [
             {
                 "nom": "MORRETTON",
                 "prenom": "Laureen",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2020,
                 "classe": "TB",
                 "lien_video": "",
@@ -911,7 +911,7 @@ const ecolesData = [
             {
                 "nom": "VIARD",
                 "prenom": "Quentin",
-                "initiale_nom": "",
+                "initiale_nom": "V",
                 "annee": 2019,
                 "classe": "TB",
                 "lien_video": "",
@@ -921,7 +921,7 @@ const ecolesData = [
             {
                 "nom": "GUY",
                 "prenom": "Quentin",
-                "initiale_nom": "",
+                "initiale_nom": "G",
                 "annee": 2018,
                 "classe": "TB",
                 "lien_video": "",
@@ -931,7 +931,7 @@ const ecolesData = [
             {
                 "nom": "POIRRIER",
                 "prenom": "Fanny",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -941,7 +941,7 @@ const ecolesData = [
             {
                 "nom": "BORIE",
                 "prenom": "Léa",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2014,
                 "classe": "TB",
                 "lien_video": "",
@@ -987,7 +987,7 @@ const ecolesData = [
             {
                 "nom": "CHOMPRET",
                 "prenom": "Louise-Karol",
-                "initiale_nom": "",
+                "initiale_nom": "C",
                 "annee": 2025,
                 "classe": "TB",
                 "lien_video": "",
@@ -997,7 +997,7 @@ const ecolesData = [
             {
                 "nom": "LAURENT",
                 "prenom": "Thibault",
-                "initiale_nom": "",
+                "initiale_nom": "L",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -1007,7 +1007,7 @@ const ecolesData = [
             {
                 "nom": "ROUQUIE",
                 "prenom": "Julien",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2019,
                 "classe": "TB",
                 "lien_video": "",
@@ -1017,7 +1017,7 @@ const ecolesData = [
             {
                 "nom": "Herthault",
                 "prenom": "Emeline",
-                "initiale_nom": "",
+                "initiale_nom": "H",
                 "annee": 2019,
                 "classe": "TB",
                 "lien_video": "",
@@ -1027,7 +1027,7 @@ const ecolesData = [
             {
                 "nom": "PAYEN",
                 "prenom": "Romain",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -1037,7 +1037,7 @@ const ecolesData = [
             {
                 "nom": "D'ANDRIA",
                 "prenom": "Gabriel",
-                "initiale_nom": "",
+                "initiale_nom": "D",
                 "annee": 2014,
                 "classe": "TB",
                 "lien_video": "",
@@ -1047,7 +1047,7 @@ const ecolesData = [
             {
                 "nom": "MODE",
                 "prenom": "Eline",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2014,
                 "classe": "TB",
                 "lien_video": "",
@@ -1163,7 +1163,7 @@ const ecolesData = [
             {
                 "nom": "MARCHAL",
                 "prenom": "Lily",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -1173,7 +1173,7 @@ const ecolesData = [
             {
                 "nom": "FAGNIOT",
                 "prenom": "Nicolas",
-                "initiale_nom": "",
+                "initiale_nom": "F",
                 "annee": 2023,
                 "classe": "TB",
                 "lien_video": "",
@@ -1183,7 +1183,7 @@ const ecolesData = [
             {
                 "nom": "VALETTE",
                 "prenom": "Firmin",
-                "initiale_nom": "",
+                "initiale_nom": "V",
                 "annee": 2023,
                 "classe": "TB",
                 "lien_video": "",
@@ -1193,7 +1193,7 @@ const ecolesData = [
             {
                 "nom": "BERTHAULT",
                 "prenom": "Alison",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2023,
                 "classe": "TB",
                 "lien_video": "",
@@ -1203,7 +1203,7 @@ const ecolesData = [
             {
                 "nom": "CAILLETTE",
                 "prenom": "Anna",
-                "initiale_nom": "",
+                "initiale_nom": "C",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -1213,7 +1213,7 @@ const ecolesData = [
             {
                 "nom": "CRÉTÉ",
                 "prenom": "Sandra",
-                "initiale_nom": "",
+                "initiale_nom": "C",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -1223,7 +1223,7 @@ const ecolesData = [
             {
                 "nom": "POUPA",
                 "prenom": "Jade",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -1233,7 +1233,7 @@ const ecolesData = [
             {
                 "nom": "RENARD",
                 "prenom": "Thibault",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2018,
                 "classe": "TB",
                 "lien_video": "",
@@ -1299,7 +1299,7 @@ const ecolesData = [
             {
                 "nom": "GUÉRINI",
                 "prenom": "Alice",
-                "initiale_nom": "",
+                "initiale_nom": "G",
                 "annee": 2026,
                 "classe": "TB",
                 "lien_video": "",
@@ -1309,7 +1309,7 @@ const ecolesData = [
             {
                 "nom": "FOUCAULT",
                 "prenom": "Julien",
-                "initiale_nom": "",
+                "initiale_nom": "F",
                 "annee": 2017,
                 "classe": "TB",
                 "lien_video": "",
@@ -1319,7 +1319,7 @@ const ecolesData = [
             {
                 "nom": "BALOUX",
                 "prenom": "Louison",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2015,
                 "classe": "TB",
                 "lien_video": "",
@@ -1399,7 +1399,7 @@ const ecolesData = [
             {
                 "nom": "DOUSSAN",
                 "prenom": "Célia",
-                "initiale_nom": "",
+                "initiale_nom": "D",
                 "annee": 2020,
                 "classe": "TB",
                 "lien_video": "",
@@ -1409,7 +1409,7 @@ const ecolesData = [
             {
                 "nom": "BREANT",
                 "prenom": "Antoine",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2018,
                 "classe": "TB",
                 "lien_video": "",
@@ -1419,7 +1419,7 @@ const ecolesData = [
             {
                 "nom": "SARCOU",
                 "prenom": "Cyril",
-                "initiale_nom": "",
+                "initiale_nom": "S",
                 "annee": 2015,
                 "classe": "TB",
                 "lien_video": "",
@@ -1429,7 +1429,7 @@ const ecolesData = [
             {
                 "nom": "VANDENBAVIERE",
                 "prenom": "Julien",
-                "initiale_nom": "",
+                "initiale_nom": "V",
                 "annee": 2015,
                 "classe": "TB",
                 "lien_video": "",
@@ -1475,7 +1475,7 @@ const ecolesData = [
             {
                 "nom": "JACQUET",
                 "prenom": "Benjamin",
-                "initiale_nom": "",
+                "initiale_nom": "J",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -1521,7 +1521,7 @@ const ecolesData = [
             {
                 "nom": "BOURDOUNE",
                 "prenom": "Lauryne",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -1577,7 +1577,7 @@ const ecolesData = [
             {
                 "nom": "SPAGNOL",
                 "prenom": "Luka",
-                "initiale_nom": "",
+                "initiale_nom": "S",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -1587,7 +1587,7 @@ const ecolesData = [
             {
                 "nom": "PLET",
                 "prenom": "Audrey",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2018,
                 "classe": "TB",
                 "lien_video": "",
@@ -1597,7 +1597,7 @@ const ecolesData = [
             {
                 "nom": "CHARBONNEAU",
                 "prenom": "Mathilde",
-                "initiale_nom": "",
+                "initiale_nom": "C",
                 "annee": 2015,
                 "classe": "TB",
                 "lien_video": "",
@@ -1607,7 +1607,7 @@ const ecolesData = [
             {
                 "nom": "MICHOUX",
                 "prenom": "Andréa",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2015,
                 "classe": "TB",
                 "lien_video": "",
@@ -1653,7 +1653,7 @@ const ecolesData = [
             {
                 "nom": "LEMOINE",
                 "prenom": "Yanis",
-                "initiale_nom": "",
+                "initiale_nom": "L",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -1663,7 +1663,7 @@ const ecolesData = [
             {
                 "nom": "JEANROY",
                 "prenom": "Anaïs",
-                "initiale_nom": "",
+                "initiale_nom": "J",
                 "annee": 2023,
                 "classe": "TB",
                 "lien_video": "",
@@ -1673,7 +1673,7 @@ const ecolesData = [
             {
                 "nom": "AUDOUARD",
                 "prenom": "Lucie",
-                "initiale_nom": "",
+                "initiale_nom": "A",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -1683,7 +1683,7 @@ const ecolesData = [
             {
                 "nom": "VIANEY",
                 "prenom": "Laura",
-                "initiale_nom": "",
+                "initiale_nom": "V",
                 "annee": 2020,
                 "classe": "TB",
                 "lien_video": "",
@@ -1731,7 +1731,7 @@ const ecolesData = [
             {
                 "nom": "DETROYAT",
                 "prenom": "mickael",
-                "initiale_nom": "",
+                "initiale_nom": "D",
                 "annee": 2025,
                 "classe": "TB",
                 "lien_video": "",
@@ -1741,7 +1741,7 @@ const ecolesData = [
             {
                 "nom": "ESTEVE",
                 "prenom": "Maylis",
-                "initiale_nom": "",
+                "initiale_nom": "E",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -1751,7 +1751,7 @@ const ecolesData = [
             {
                 "nom": "BADIER",
                 "prenom": "Kelig",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2018,
                 "classe": "TB",
                 "lien_video": "",
@@ -1761,7 +1761,7 @@ const ecolesData = [
             {
                 "nom": "BORGNE",
                 "prenom": "Alexia",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2017,
                 "classe": "TB",
                 "lien_video": "",
@@ -1771,7 +1771,7 @@ const ecolesData = [
             {
                 "nom": "FOCH",
                 "prenom": "Marie",
-                "initiale_nom": "",
+                "initiale_nom": "F",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -1781,7 +1781,7 @@ const ecolesData = [
             {
                 "nom": "DUCARNE",
                 "prenom": "Alexandre",
-                "initiale_nom": "",
+                "initiale_nom": "D",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -1806,7 +1806,29 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.concours-mines-telecom.fr%2Fwp-content%2Fuploads%2F2022%2F06%2FLD-PH660001JLD-856x450.jpg&f=1&nofb=1&ipt=90d8ba49221c6ab43bb43815f8c5a78c54d6b10db9d90d2ab22fdea74a21476c",
         "specs_bcpst": null,
         "specs_tb": null,
-        "specs_g2e": null,
+        "specs_g2e": [
+            {
+                "spec": "Pôle Nancy",
+                "rg_median": 190,
+                "dernier": null,
+                "places": 70,
+                "concours": "G2E"
+            },
+            {
+                "spec": "Fonctionnaire",
+                "rg_median": 366,
+                "dernier": null,
+                "places": 4,
+                "concours": "G2E"
+            },
+            {
+                "spec": null,
+                "rg_median": 544,
+                "dernier": null,
+                "places": 3,
+                "concours": "G2E"
+            }
+        ],
         "anciens": [
             {
                 "nom": "AUCHERE",
@@ -1925,7 +1947,7 @@ const ecolesData = [
             {
                 "nom": "URBINI",
                 "prenom": "Ulysse",
-                "initiale_nom": "",
+                "initiale_nom": "U",
                 "annee": 2025,
                 "classe": "TB",
                 "lien_video": "",
@@ -1935,7 +1957,7 @@ const ecolesData = [
             {
                 "nom": "DUBOC",
                 "prenom": "Daphné",
-                "initiale_nom": "",
+                "initiale_nom": "D",
                 "annee": 2018,
                 "classe": "TB",
                 "lien_video": "",
@@ -1945,7 +1967,7 @@ const ecolesData = [
             {
                 "nom": "MARTINS",
                 "prenom": "Mégane",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -1955,7 +1977,7 @@ const ecolesData = [
             {
                 "nom": "POMARES",
                 "prenom": "Lorelei",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2015,
                 "classe": "TB",
                 "lien_video": "",
@@ -2011,7 +2033,7 @@ const ecolesData = [
             {
                 "nom": "RAFFAULT",
                 "prenom": "Éva",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2026,
                 "classe": "TB",
                 "lien_video": "",
@@ -2067,7 +2089,7 @@ const ecolesData = [
             {
                 "nom": "RAULT",
                 "prenom": "Kévin",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2024,
                 "classe": "TB",
                 "lien_video": "",
@@ -2077,7 +2099,7 @@ const ecolesData = [
             {
                 "nom": "REMOND",
                 "prenom": "Antoine",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "https://youtube.com/shorts/-Ft-YouRkKg",
@@ -2087,7 +2109,7 @@ const ecolesData = [
             {
                 "nom": "AZZOUN",
                 "prenom": "Corentin",
-                "initiale_nom": "",
+                "initiale_nom": "A",
                 "annee": 2020,
                 "classe": "TB",
                 "lien_video": "",
@@ -2244,7 +2266,7 @@ const ecolesData = [
             {
                 "nom": "BARBIER",
                 "prenom": "Louis",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -2254,7 +2276,7 @@ const ecolesData = [
             {
                 "nom": "LEWANDOWSKI",
                 "prenom": "Maud",
-                "initiale_nom": "",
+                "initiale_nom": "L",
                 "annee": 2019,
                 "classe": "TB",
                 "lien_video": "",
@@ -2353,7 +2375,7 @@ const ecolesData = [
             {
                 "nom": "PAVARD",
                 "prenom": "Gaëtan",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -2429,7 +2451,7 @@ const ecolesData = [
             {
                 "nom": "LOPES",
                 "prenom": "Alice",
-                "initiale_nom": "",
+                "initiale_nom": "L",
                 "annee": 2023,
                 "classe": "TB",
                 "lien_video": "",
@@ -2439,7 +2461,7 @@ const ecolesData = [
             {
                 "nom": "MAUGER-BIROCHEAU",
                 "prenom": "Tom",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2020,
                 "classe": "TB",
                 "lien_video": "",
@@ -2449,7 +2471,7 @@ const ecolesData = [
             {
                 "nom": "COLVE",
                 "prenom": "Grégoire",
-                "initiale_nom": "",
+                "initiale_nom": "C",
                 "annee": 2019,
                 "classe": "TB",
                 "lien_video": "",
@@ -2479,7 +2501,7 @@ const ecolesData = [
             {
                 "nom": "PRESA",
                 "prenom": "Quentin",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2023,
                 "classe": "TB",
                 "lien_video": "",
@@ -2489,7 +2511,7 @@ const ecolesData = [
             {
                 "nom": "BARDIN",
                 "prenom": "Alycia",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -2535,7 +2557,7 @@ const ecolesData = [
             {
                 "nom": "FRERE",
                 "prenom": "Nathan",
-                "initiale_nom": "",
+                "initiale_nom": "F",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -2545,7 +2567,7 @@ const ecolesData = [
             {
                 "nom": "LEBEAU",
                 "prenom": "Simon",
-                "initiale_nom": "",
+                "initiale_nom": "L",
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
@@ -2591,7 +2613,7 @@ const ecolesData = [
             {
                 "nom": "PENOCHET",
                 "prenom": "Laure",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -2601,7 +2623,7 @@ const ecolesData = [
             {
                 "nom": "VANTOMME",
                 "prenom": "Matthis",
-                "initiale_nom": "",
+                "initiale_nom": "V",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -2611,7 +2633,7 @@ const ecolesData = [
             {
                 "nom": "MONNIER",
                 "prenom": "Manon",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -2641,7 +2663,7 @@ const ecolesData = [
             {
                 "nom": "WITKOWSKI",
                 "prenom": "Sébastien",
-                "initiale_nom": "",
+                "initiale_nom": "W",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -2697,7 +2719,7 @@ const ecolesData = [
             {
                 "nom": "REDONNET",
                 "prenom": "Antoine",
-                "initiale_nom": "",
+                "initiale_nom": "R",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -2707,7 +2729,7 @@ const ecolesData = [
             {
                 "nom": "CANEVET",
                 "prenom": "Morgan",
-                "initiale_nom": "",
+                "initiale_nom": "C",
                 "annee": 2019,
                 "classe": "TB",
                 "lien_video": "",
@@ -2737,7 +2759,7 @@ const ecolesData = [
             {
                 "nom": "MARCHEVAL",
                 "prenom": "Lisa",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2018,
                 "classe": "TB",
                 "lien_video": "",
@@ -2747,7 +2769,7 @@ const ecolesData = [
             {
                 "nom": "GIBERT",
                 "prenom": "Joséphine",
-                "initiale_nom": "",
+                "initiale_nom": "G",
                 "annee": 2017,
                 "classe": "TB",
                 "lien_video": "",
@@ -2785,7 +2807,7 @@ const ecolesData = [
             {
                 "nom": "HEISSLER",
                 "prenom": "Claire",
-                "initiale_nom": "",
+                "initiale_nom": "H",
                 "annee": 2017,
                 "classe": "TB",
                 "lien_video": "",
@@ -2795,7 +2817,7 @@ const ecolesData = [
             {
                 "nom": "GODEST",
                 "prenom": "Vincent",
-                "initiale_nom": "",
+                "initiale_nom": "G",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -2825,7 +2847,7 @@ const ecolesData = [
             {
                 "nom": "MARET",
                 "prenom": "Sophie",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -2855,7 +2877,7 @@ const ecolesData = [
             {
                 "nom": "MERISSI",
                 "prenom": "Florian",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -2885,7 +2907,7 @@ const ecolesData = [
             {
                 "nom": "ORTUSO",
                 "prenom": "Marion",
-                "initiale_nom": "",
+                "initiale_nom": "O",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -2915,7 +2937,7 @@ const ecolesData = [
             {
                 "nom": "WYSOCKI",
                 "prenom": "Léa",
-                "initiale_nom": "",
+                "initiale_nom": "W",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -2983,7 +3005,7 @@ const ecolesData = [
             {
                 "nom": "FIGUIER",
                 "prenom": "Valentin",
-                "initiale_nom": "",
+                "initiale_nom": "F",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
@@ -2993,7 +3015,7 @@ const ecolesData = [
             {
                 "nom": "BLANCHARD",
                 "prenom": "Thibault",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2014,
                 "classe": "TB",
                 "lien_video": "",
@@ -3023,7 +3045,7 @@ const ecolesData = [
             {
                 "nom": "PICQ",
                 "prenom": "Kévin",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2015,
                 "classe": "TB",
                 "lien_video": "",
@@ -3297,10 +3319,10 @@ const ecolesData = [
         "specs_g2e": [
             {
                 "spec": null,
-                "rg_median": 2,
+                "rg_median": 539,
                 "dernier": 643,
-                "places": 5,
-                "concours": "TB"
+                "places": 8,
+                "concours": "G2E"
             }
         ],
         "anciens": []
@@ -3348,20 +3370,12 @@ const ecolesData = [
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.pv9j6Bsty9Xu3R-5cl4u8gHaFZ%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=c3d65733f3b1ec15ff94676f9cc0025a9a497a4e33474b7b6f2ab4d1d49d55f9&ipo=images",
         "specs_bcpst": null,
         "specs_tb": null,
-        "specs_g2e": [
-            {
-                "spec": null,
-                "rg_median": null,
-                "dernier": 499,
-                "places": 20,
-                "concours": "G2E"
-            }
-        ],
+        "specs_g2e": null,
         "anciens": [
             {
                 "nom": "GIMENEZ",
                 "prenom": "Grégoire",
-                "initiale_nom": "",
+                "initiale_nom": "G",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -3749,7 +3763,7 @@ const ecolesData = [
             {
                 "nom": "BEAUMONT",
                 "prenom": "Caroline",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2021,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -3759,7 +3773,7 @@ const ecolesData = [
             {
                 "nom": "BOUTY",
                 "prenom": "Aurore",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2020,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -3769,7 +3783,7 @@ const ecolesData = [
             {
                 "nom": "BOMPART",
                 "prenom": "Clara",
-                "initiale_nom": "",
+                "initiale_nom": "B",
                 "annee": 2025,
                 "classe": "TB",
                 "lien_video": "",
@@ -3779,7 +3793,7 @@ const ecolesData = [
             {
                 "nom": "FOUQUET",
                 "prenom": "Zoé",
-                "initiale_nom": "",
+                "initiale_nom": "F",
                 "annee": 2025,
                 "classe": "TB",
                 "lien_video": "",
@@ -3789,7 +3803,7 @@ const ecolesData = [
             {
                 "nom": "GOUIN",
                 "prenom": "Matthis",
-                "initiale_nom": "",
+                "initiale_nom": "G",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -3799,7 +3813,7 @@ const ecolesData = [
             {
                 "nom": "MORATA",
                 "prenom": "Jade",
-                "initiale_nom": "",
+                "initiale_nom": "M",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -3809,7 +3823,7 @@ const ecolesData = [
             {
                 "nom": "PLANTARD",
                 "prenom": "Yves",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
@@ -3819,7 +3833,7 @@ const ecolesData = [
             {
                 "nom": "PRESTREAU",
                 "prenom": "Charlotte",
-                "initiale_nom": "",
+                "initiale_nom": "P",
                 "annee": 2020,
                 "classe": "TB",
                 "lien_video": "",
@@ -3829,7 +3843,7 @@ const ecolesData = [
             {
                 "nom": "CROIBIER-MUSCAT",
                 "prenom": "Antoine",
-                "initiale_nom": "",
+                "initiale_nom": "C",
                 "annee": 2016,
                 "classe": "TB",
                 "lien_video": "",
