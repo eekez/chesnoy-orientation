@@ -925,7 +925,7 @@ function afficherEcole(ecole) {
             if (s.dernier   != null) parts.push('Der.\u00a0: <b>' + s.dernier   + '</b>');
             const placesStr = s.places ? ' <span class="text-gray-400 text-[9px]">(' + s.places + '\u00a0pl.)</span>' : '';
             const concours = s.concours && s.concours !== filiere
-                ? '<br><span class="text-[9px] italic text-gray-400 ml-0.5">classmt\u00a0' + s.concours + '</span>'
+                ? '<br><span class="text-[9px] italic text-gray-400 ml-0.5">classement\u00a0' + s.concours + '</span>'
                 : '';
             return parts.join('\u2002·\u2002') + placesStr + concours;
         }
