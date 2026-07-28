@@ -3943,7 +3943,7 @@ const ecolesData = [
         "type_tb": "Polytech",
         "banque_bcpst": "Agro-Véto",
         "banque_tb": "Polytech",
-        "descriptif": "L’Ecole Nationale Supérieure de\nTechnologie des Biomolécules de\nBordeaux (ENSTBB) forme, au sein de\nl’Institut Polytechnique de Bordeaux\n(Bordeaux INP), des ingénieurs\nspécialisés dans les secteurs des\nBiotechnologies pour un développement\ndurable de la santé.",
+        "descriptif": "L’Ecole Nationale Supérieure de Technologie des Biomolécules de Bordeaux (ENSTBB) forme, au sein de l’Institut Polytechnique de Bordeaux (Bordeaux INP), des ingénieurs spécialisés dans les secteurs des Biotechnologies pour un développement durable de la santé.",
         "lien_site": "https://enstbb.bordeaux-inp.fr/fr",
         "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkBmhLT8FoCoqmFXNDUyRYg2IfV4c_sWL8Mih903hj2eQPC0nUb65V7P7_KTM6jZ0XxmRHrkW7AMrSIARAOXRycvHrchBP2beeH4BLdHMbqm9GJ9TsBJ386cIGGZWbef8vcGGo=w1333-h1000-k-no",
         "specs_bcpst": null,
