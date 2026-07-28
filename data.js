@@ -504,7 +504,7 @@ const ecolesData = [
             {
                 "nom": "DOS SANTOS",
                 "prenom": "Lola",
-                "initiale_nom": "DS",
+                "initiale_nom": "D",
                 "annee": 2022,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -719,6 +719,16 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
+                "nom": "VANSEVEREN",
+                "prenom": "Carla",
+                "initiale_nom": "V",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": "fonctionnaire"
+            },
+            {
                 "nom": "FEVRE",
                 "prenom": "Logann",
                 "initiale_nom": "F",
@@ -781,7 +791,7 @@ const ecolesData = [
             {
                 "nom": "",
                 "prenom": "Raphael",
-                "initiale_nom": "D",
+                "initiale_nom": "",
                 "annee": 2023,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -791,7 +801,7 @@ const ecolesData = [
             {
                 "nom": "",
                 "prenom": "Pierre",
-                "initiale_nom": "G",
+                "initiale_nom": "",
                 "annee": 2023,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -1091,6 +1101,16 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
+                "nom": "BONNIN",
+                "prenom": "Laurine",
+                "initiale_nom": "B",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
                 "nom": "JOSEPH-EDOUARD",
                 "prenom": "Ana",
                 "initiale_nom": "J",
@@ -1276,6 +1296,16 @@ const ecolesData = [
         ],
         "specs_g2e": null,
         "anciens": [
+            {
+                "nom": "COSKOY",
+                "prenom": "Elif",
+                "initiale_nom": "C",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
             {
                 "nom": "WIETRICH",
                 "prenom": "Vanessa",
@@ -2167,7 +2197,7 @@ const ecolesData = [
             {
                 "nom": "",
                 "prenom": "Adrien",
-                "initiale_nom": "N",
+                "initiale_nom": "",
                 "annee": 2024,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -3003,6 +3033,16 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
+                "nom": "HAZARD",
+                "prenom": "Estéban",
+                "initiale_nom": "H",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
                 "nom": "FIGUIER",
                 "prenom": "Valentin",
                 "initiale_nom": "F",
@@ -3741,6 +3781,16 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
+                "nom": "BRONSIN",
+                "prenom": "Cléa",
+                "initiale_nom": "B",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
                 "nom": "HENRI",
                 "prenom": "Severine",
                 "initiale_nom": "H",
@@ -3845,6 +3895,66 @@ const ecolesData = [
                 "prenom": "Antoine",
                 "initiale_nom": "C",
                 "annee": 2016,
+                "classe": "TB",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            }
+        ]
+    },
+    {
+        "nom": "ENSI Poitiers",
+        "ville": "Angers",
+        "coords": [
+            46.5684,
+            0.3833
+        ],
+        "type_bcpst": "Agro",
+        "type_tb": "Agro",
+        "banque_bcpst": "Agro-Véto",
+        "banque_tb": "Agro-Véto",
+        "descriptif": "Le diplôme Génie de l’Eau et Génie Civil (GEGC) de l’ENSI Poitiers a pour vocation de former des ingénieurs généralistes opérationnels dans les domaines de la gestion et l’utilisation des ressources naturelles (matériaux, eaux), de la conception et de la réalisation d’ouvrages et d’infrastructures, de l’aménagement urbain (VRD, assainissement, …).",
+        "lien_site": "https://ensip.univ-poitiers.fr/formations/",
+        "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWknvIch5KeU20y1MBKK3mzcq9S-2UW9NO_BSsJMYIax5DAq7P0aC6hXyENOrBZP8WPAOnwkQK-_KbuLbwQwXG1bgmALRcexnfW825E0AJ-7j_Drpyv4Ue36aEcuhvbkhiHc=w1348-h1000-k-no",
+        "specs_bcpst": null,
+        "specs_tb": null,
+        "specs_g2e": null,
+        "anciens": [
+            {
+                "nom": "KOUSSAFI",
+                "prenom": "Selma",
+                "initiale_nom": "K",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            }
+        ]
+    },
+    {
+        "nom": "ENSTBB Bordeaux",
+        "ville": "Bordeaux",
+        "coords": [
+            44.8268,
+            -0.5968
+        ],
+        "type_bcpst": "Polytech",
+        "type_tb": "Polytech",
+        "banque_bcpst": "Agro-Véto",
+        "banque_tb": "Polytech",
+        "descriptif": "L’Ecole Nationale Supérieure de\nTechnologie des Biomolécules de\nBordeaux (ENSTBB) forme, au sein de\nl’Institut Polytechnique de Bordeaux\n(Bordeaux INP), des ingénieurs\nspécialisés dans les secteurs des\nBiotechnologies pour un développement\ndurable de la santé.",
+        "lien_site": "https://enstbb.bordeaux-inp.fr/fr",
+        "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWkBmhLT8FoCoqmFXNDUyRYg2IfV4c_sWL8Mih903hj2eQPC0nUb65V7P7_KTM6jZ0XxmRHrkW7AMrSIARAOXRycvHrchBP2beeH4BLdHMbqm9GJ9TsBJ386cIGGZWbef8vcGGo=w1333-h1000-k-no",
+        "specs_bcpst": null,
+        "specs_tb": null,
+        "specs_g2e": null,
+        "anciens": [
+            {
+                "nom": "BOUILLET",
+                "prenom": "Enzo",
+                "initiale_nom": "B",
+                "annee": 2026,
                 "classe": "TB",
                 "lien_video": "",
                 "lien_fiche_poste": "",
