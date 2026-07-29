@@ -245,8 +245,8 @@
 
     </div></main><div id="global-video-modal" class="hidden fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
      role="dialog" aria-modal="true" aria-labelledby="global-video-title-text">
-    <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col border border-gray-700">
-        <div class="flex justify-between items-center p-4 bg-emerald-900 text-white">
+	<div id="global-video-window" class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col border border-gray-700 transition-all duration-300">        
+	<div class="flex justify-between items-center p-4 bg-emerald-900 text-white">
             <h3 id="global-video-title" class="font-bold text-sm md:text-base tracking-wide flex items-center">
                 <span class="text-red-400 animate-pulse mr-2" aria-hidden="true">●</span>
                 <span id="global-video-title-text">Titre</span>
@@ -254,7 +254,7 @@
             <button onclick="fermerModalGlobale()" aria-label="Fermer la vidéo"
                     class="text-white hover:text-amber-400 text-2xl leading-none font-bold transition-colors">&times;</button>
         </div>
-        <div class="aspect-video w-full bg-black">
+        <div id="global-video-container" class="aspect-video w-full bg-black transition-all duration-300">
             <iframe id="global-video-player" class="w-full h-full" src="" frameborder="0"
                     allow="autoplay; encrypted-media; fullscreen" allowfullscreen title="Conférence ou forum d'anciens"></iframe>
         </div>
@@ -1124,7 +1124,7 @@ function lancerVideo(lien, prenom) {
     const videoId = extraireIdYoutube(lien);
 
     if (videoId) {
-        ouvrirModalGlobale(lien, "Témoignage de " + prenom);
+        ouvrirModalGlobale(lien, "Témoignage de " + prenom, true);
     } else {
         window.open(lien, "_blank");
     }
@@ -1132,17 +1132,52 @@ function lancerVideo(lien, prenom) {
 
 
 
-function ouvrirModalGlobale(lien, titre) {
+function ouvrirModalGlobale(lien, titre, vertical = false) {
+	document.body.style.overflow = "hidden";
     const videoId = extraireIdYoutube(lien);
-    if (videoId) {
-        document.getElementById('global-video-title-text').innerText = titre;
-		document.getElementById('global-video-player').src =    "https://www.youtube-nocookie.com/embed/" +    videoId +    "?autoplay=1&rel=0&modestbranding=1&playsinline=1";
-        document.getElementById('global-video-modal').classList.remove('hidden');
-        document.getElementById('global-video-modal').focus();
-    } else { window.open(lien, '_blank'); }
+
+    if (!videoId) {
+        window.open(lien, "_blank");
+        return;
+    }
+
+    const fenetre = document.getElementById("global-video-window");
+    const container = document.getElementById("global-video-container");
+
+    if (vertical) {
+
+        // Témoignage étudiant
+
+        fenetre.classList.remove("max-w-4xl");
+        fenetre.classList.add("max-w-md");
+
+        container.classList.remove("aspect-video");
+        container.style.aspectRatio = "9 / 16";
+
+    } else {
+
+        // Conférence
+
+        fenetre.classList.remove("max-w-md");
+        fenetre.classList.add("max-w-4xl");
+
+        container.classList.add("aspect-video");
+        container.style.aspectRatio = "";
+
+    }
+
+    document.getElementById("global-video-title-text").innerText = titre;
+
+    document.getElementById("global-video-player").src =
+        "https://www.youtube-nocookie.com/embed/" +
+        videoId +
+        "?autoplay=1&rel=0&modestbranding=1&playsinline=1";
+
+    document.getElementById("global-video-modal").classList.remove("hidden");
 }
 
 function fermerModalGlobale() {
+	document.body.style.overflow = "";
     document.getElementById('global-video-modal').classList.add('hidden');
     document.getElementById('global-video-player').src = "";
 }
