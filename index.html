@@ -235,10 +235,6 @@
                     <button onclick="fermerVideo()" aria-label="Fermer la vidéo"
                             class="text-gray-400 hover:text-red-600 text-sm font-bold px-1 transition-colors">✕</button>
                 </h3>
-                <div class="aspect-[9/16] w-full max-w-[220px] mx-auto bg-black rounded-xl overflow-hidden shadow-md">
-                    <iframe id="video-player" class="w-full h-full" src="" frameborder="0"
-                            allow="autoplay; encrypted-media" allowfullscreen title="Témoignage d'un ancien élève"></iframe>
-                </div>
             </div>
 
             <div class="flex-1">
@@ -1051,10 +1047,9 @@ function afficherEcole(ecole) {
         imgEl.classList.remove('hidden');
     } else { imgEl.classList.add('hidden'); }
 
-    if (!ecoleActuelleObj || ecoleActuelleObj.nom !== ecole.nom) {
-        document.getElementById('video-block').classList.add('hidden');
-        document.getElementById('video-player').src = "";
-    }
+	if (!ecoleActuelleObj || ecoleActuelleObj.nom !== ecole.nom) {
+		fermerModalGlobale();
+	}
     ecoleActuelleObj = ecole;
 
     // Liste élèves
@@ -1105,7 +1100,7 @@ function fermerEcole() {
     document.getElementById('school-info').classList.add('hidden');
     document.getElementById('placeholder-message').classList.remove('hidden');
     
-    fermerVideo();
+    fermerModalGlobale();
     ecoleActuelleObj = null;
     const miniMapEl = document.getElementById('school-mini-map');
     miniMapEl.classList.add('hidden');
@@ -1127,25 +1122,21 @@ function extraireIdYoutube(url) {
 
 function lancerVideo(lien, prenom) {
     const videoId = extraireIdYoutube(lien);
+
     if (videoId) {
-        document.getElementById('current-video-author').innerText = prenom;
-        document.getElementById('video-player').src = "https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1&rel=0";
-        const block = document.getElementById('video-block');
-        block.classList.remove('hidden');
-        block.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    } else { window.open(lien, '_blank'); }
+        ouvrirModalGlobale(lien, "Témoignage de " + prenom);
+    } else {
+        window.open(lien, "_blank");
+    }
 }
 
-function fermerVideo() {
-    document.getElementById('video-player').src = "";
-    document.getElementById('video-block').classList.add('hidden');
-}
+
 
 function ouvrirModalGlobale(lien, titre) {
     const videoId = extraireIdYoutube(lien);
     if (videoId) {
         document.getElementById('global-video-title-text').innerText = titre;
-        document.getElementById('global-video-player').src = "https://www.youtube-nocookie.com/embed/" + videoId + "?autoplay=1&rel=0";
+		document.getElementById('global-video-player').src =    "https://www.youtube-nocookie.com/embed/" +    videoId +    "?autoplay=1&rel=0&modestbranding=1&playsinline=1";
         document.getElementById('global-video-modal').classList.remove('hidden');
         document.getElementById('global-video-modal').focus();
     } else { window.open(lien, '_blank'); }
@@ -1155,6 +1146,15 @@ function fermerModalGlobale() {
     document.getElementById('global-video-modal').classList.add('hidden');
     document.getElementById('global-video-player').src = "";
 }
+
+document.getElementById("global-video-modal").addEventListener("click", function(e) {
+
+    // Si on clique sur le fond noir
+    if (e.target === this) {
+        fermerModalGlobale();
+    }
+
+});
 
 // ================================================================
 // RÉINITIALISATION
@@ -1400,6 +1400,12 @@ document.addEventListener('keydown', ev => {
         const modal = document.getElementById('global-video-modal');
         if (!modal.classList.contains('hidden')) { fermerModalGlobale(); return; }
         if (ecoleActuelleObj) { fermerEcole(); }
+    }
+});
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+        fermerModalGlobale();
     }
 });
 
