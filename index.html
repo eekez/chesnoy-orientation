@@ -623,7 +623,15 @@ function mettreAJourGraphique() {
 // BANQUE CHECKBOXES
 // ================================================================
 function mettreAJourBanques() {
-    selectedBanqueTypes.clear();
+    // On ne vide plus systématiquement la sélection : on ne retire que les
+    // types qui n'existent pas dans la structure de la nouvelle filière,
+    // pour que le filtre "banque" reste cohérent quand on bascule entre
+    // Tous / BCPST / TB (cf. bug Emma M. ONIRIS Nantes).
+    const structure     = CONFIG_BANQUES[filiereSelectionnee];
+    const typesValides  = new Set(Object.values(structure).flat());
+    Array.from(selectedBanqueTypes).forEach(type => {
+        if (!typesValides.has(type)) selectedBanqueTypes.delete(type);
+    });
     renderBanqueCheckboxes();
     updateBanqueButton();
 }
@@ -661,6 +669,7 @@ function renderBanqueCheckboxes() {
             itemCb.className = 'item-checkbox accent-emerald-600 w-3 h-3 shrink-0';
             itemCb.value = type;
             itemCb.dataset.groupe = groupe;
+            itemCb.checked = selectedBanqueTypes.has(type);
             itemCb.setAttribute('aria-label', type);
             itemCb.onchange = function() { onItemBanqueChange(this); };
 
@@ -670,6 +679,12 @@ function renderBanqueCheckboxes() {
         });
         groupDiv.appendChild(subDiv);
         container.appendChild(groupDiv);
+
+        // État de la case "groupe" en fonction des cases "item" cochées
+        const nbCochees = types.filter(t => selectedBanqueTypes.has(t)).length;
+        if      (nbCochees === 0)           { groupCb.checked = false; groupCb.indeterminate = false; }
+        else if (nbCochees === types.length) { groupCb.checked = true;  groupCb.indeterminate = false; }
+        else                                  { groupCb.checked = false; groupCb.indeterminate = true;  }
     }
 }
 
