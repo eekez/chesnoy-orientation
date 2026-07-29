@@ -797,46 +797,70 @@ function filtrerTout() {
     const anneeFin   = parseInt(document.getElementById('filter-year-end').value);
     let ecolesCount  = 0, elevesCount = 0;
 
-	markers.forEach(item => {
-			const e          = item.ecole;
-			const hasNoAlumni = e.anciens.length === 0;
-			const normalize  = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-			
-			// 1. On calcule d'abord les élèves correspondants aux filtres (filière, année, etc.)
-			const filtres    = elevesFiltresPourEcole(e, anneeDebut, anneeFin);
+    markers.forEach(item => {
+        const e = item.ecole;
 
-			// 2. On cherche si le texte tapé correspond à l'école, à la ville, ou au prénom/nom d'un élève
-			const matchTexte = normalize(e.nom).includes(query) || 
-							   normalize(e.ville).includes(query) || 
-							   filtres.some(a => normalize(a.prenom + " " + a.nom).includes(query) || normalize(a.nom).includes(query));
+        const normalize = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 
-			const schoolMatchesBanque = selectedBanqueTypes.size === 0 ||
-        
-	// On vérifie si la période est celle par défaut (2015 à 2026)
-	const periodeComplete = (anneeDebut === 2015 && anneeFin === 2026);
+        // Élèves correspondant aux filtres (année, filière, banque)
+        const filtres = elevesFiltresPourEcole(e, anneeDebut, anneeFin);
 
-	// L'école est affichée fanée SI :
-	// 1. Elle n'a pas d'élèves DANS LA PÉRIODE SÉLECTIONNÉE (filtres.length === 0)
-	// 2. Elle correspond au texte, banque et filière
-	// 3. ET la période sélectionnée est la période COMPLÈTE.
-	const showFaded = filtres.length === 0 && matchTexte && schoolMatchesBanque && 	schoolMatchesFiliere && periodeComplete;
+        // Recherche texte : école, ville ou élève
+        const matchTexte =
+            normalize(e.nom).includes(query) ||
+            normalize(e.ville).includes(query) ||
+            filtres.some(a =>
+                normalize(a.prenom + " " + a.nom).includes(query) ||
+                normalize(a.nom).includes(query)
+            );
+
+        // Compatibilité avec les écoles sans anciens
+        const schoolMatchesBanque =
+            selectedBanqueTypes.size === 0 ||
+            selectedBanqueTypes.has(e.type_bcpst) ||
+            selectedBanqueTypes.has(e.type_tb);
+
+        const schoolMatchesFiliere =
+            filiereSelectionnee === "TOUT" ||
+            (filiereSelectionnee === "BCPST" ? !!e.banque_bcpst : !!e.banque_tb);
+
+        // Période complète ?
+        const periodeComplete = (anneeDebut === 2015 && anneeFin === 2026);
+
+        // École affichée en grisé
+        const showFaded =
+            filtres.length === 0 &&
+            matchTexte &&
+            schoolMatchesBanque &&
+            schoolMatchesFiliere &&
+            periodeComplete;
 
         const visible = matchTexte && (filtres.length > 0 || showFaded);
+
         item.visible = visible;
-        item.faded   = showFaded;
+        item.faded = showFaded;
 
         if (visible) {
             clusterGroup.addLayer(item.marker);
-            item.marker.setStyle({ fillOpacity: showFaded ? 0.3 : 0.9, opacity: showFaded ? 0.5 : 1 });
-            if (!showFaded) { ecolesCount++; elevesCount += filtres.length; }
+            item.marker.setStyle({
+                fillOpacity: showFaded ? 0.3 : 0.9,
+                opacity: showFaded ? 0.5 : 1
+            });
+
+            if (!showFaded) {
+                ecolesCount++;
+                elevesCount += filtres.length;
+            }
         } else {
             clusterGroup.removeLayer(item.marker);
         }
     });
 
-    const txtE = ecolesCount > 1 ? 'écoles' : 'école';
-    const txtA = elevesCount > 1 ? 'anciens élèves' : 'ancien élève';
-    document.getElementById('stats-counter').innerHTML = '📊 <b>' + ecolesCount + '</b> ' + txtE + ' et <b>' + elevesCount + '</b> ' + txtA + ' correspondent';
+    const txtE = ecolesCount > 1 ? "écoles" : "école";
+    const txtA = elevesCount > 1 ? "anciens élèves" : "ancien élève";
+
+    document.getElementById("stats-counter").innerHTML =
+        `📊 <b>${ecolesCount}</b> ${txtE} et <b>${elevesCount}</b> ${txtA} correspondent`;
 
     if (ecoleActuelleObj) {
         const encoreVisible = markers.some(item => item.ecole.nom === ecoleActuelleObj.nom && item.visible);
@@ -847,8 +871,6 @@ function filtrerTout() {
     mettreAJourGraphique();
     mettreAJourListeVue();
     sauvegarderEtat();
-    
-    // Met à jour la visibilité du bouton "Retour"
     verifierEtatInitial();
 }
 
