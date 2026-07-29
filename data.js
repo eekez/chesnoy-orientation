@@ -719,6 +719,16 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
+                "nom": "SAVORGNANO",
+                "prenom": "Jimmy",
+                "initiale_nom": "S",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": "fonctionnaire"
+            },
+            {
                 "nom": "VANSEVEREN",
                 "prenom": "Carla",
                 "initiale_nom": "V",
@@ -3412,6 +3422,16 @@ const ecolesData = [
         "specs_tb": null,
         "specs_g2e": null,
         "anciens": [
+            {
+                "nom": "Thibault",
+                "prenom": "Joan",
+                "initiale_nom": "T",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
             {
                 "nom": "GIMENEZ",
                 "prenom": "Grégoire",
