@@ -220,6 +220,16 @@ const ecolesData = [
                 "fonctionnaire": ""
             },
             {
+                "nom": "MERCIER",
+                "prenom": "Emma",
+                "initiale_nom": "M",
+                "annee": 2026,
+                "classe": "TB",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
                 "nom": "SEMHOUN",
                 "prenom": "Bastien",
                 "initiale_nom": "S",
@@ -567,6 +577,16 @@ const ecolesData = [
                 "initiale_nom": "R",
                 "annee": 2021,
                 "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "BOUCAUD--GAILLET",
+                "prenom": "Alexia",
+                "initiale_nom": "B",
+                "annee": 2026,
+                "classe": "TB",
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": ""
