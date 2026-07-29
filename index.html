@@ -1022,17 +1022,27 @@ function afficherEcole(ecole) {
     const list          = document.getElementById('students-list');
     list.innerHTML      = '';
 
-    if (elevesFiltres.length === 0) {
+if (elevesFiltres.length === 0) {
         list.innerHTML = '<li class="text-sm text-gray-400 italic" role="listitem">Aucun élève ne correspond aux critères actuels.</li>';
     } else {
         elevesFiltres.forEach(eleve => {
             const li = document.createElement('li');
             li.className = 'flex items-center justify-between p-2.5 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-all';
             li.setAttribute('role','listitem');
+            
+            // Vérification de la présence d'une vidéo
             const hasVideo = eleve.lien_video && eleve.lien_video.toString().trim() !== "" && eleve.lien_video !== "nan" && eleve.lien_video !== "undefined";
+            
+            // Vérification du statut de fonctionnaire
+            const estFonctionnaire = eleve.fonctionnaire && eleve.fonctionnaire.toString().trim() !== "" && eleve.fonctionnaire.toString().toLowerCase() !== "non";
+            const badgeFonctionnaire = estFonctionnaire ? '<span class="ml-2 text-[9px] font-bold px-1.5 py-0.5 rounded-md bg-blue-100 text-blue-800 border border-blue-200 uppercase tracking-wide">Fonctionnaire</span>' : '';
+
             li.innerHTML =
-                '<div class="text-sm"><span class="font-bold text-gray-800">' + eleve.prenom + ' ' + eleve.initiale_nom + '.</span>' +
-                '<span class="text-xs text-gray-500 ml-1">(' + eleve.classe + ' - ' + eleve.annee + ')</span></div>' +
+                '<div class="text-sm flex items-center flex-wrap">' +
+                '<span class="font-bold text-gray-800">' + eleve.prenom + ' ' + eleve.initiale_nom + '.</span>' +
+                '<span class="text-xs text-gray-500 ml-1">(' + eleve.classe + ' - ' + eleve.annee + ')</span>' + 
+                badgeFonctionnaire + // Insertion du badge ici
+                '</div>' +
                 (hasVideo ?
                     '<button onclick="lancerVideo(\'' + eleve.lien_video + '\', \'' + eleve.prenom + '\')" ' +
                     'aria-label="Voir le témoignage de ' + eleve.prenom + '" ' +
