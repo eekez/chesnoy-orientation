@@ -112,9 +112,10 @@
 
         <div class="space-y-3 mb-4 bg-gray-50 p-3 rounded-xl border border-gray-100 shadow-sm" role="search" aria-label="Filtres de recherche">
 
-            <input type="text" id="search-bar" placeholder="🔍 Rechercher une école, une ville..."
-                   aria-label="Rechercher une école ou une ville"
-                   class="w-full p-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-all text-xs">
+		<!-- Remplacez l'ancien input par celui-ci : -->
+		<input type="text" id="search-bar" placeholder="🔍 Rechercher une école, une ville, un élève..."
+			   aria-label="Rechercher une école, une ville ou un élève"
+			   class="w-full p-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-all text-xs">
 
             <div class="flex space-x-2" role="group" aria-label="Filtrer par filière">
                 <button id="btn-all-filieres" onclick="changerFiliere('TOUT')" aria-pressed="true"
@@ -456,40 +457,56 @@ function mettreAJourListeVue() {
         return;
     }
 
-    ecolesVisibles.forEach(item => {
-        const e = item.ecole;
-        const typeKey = typeColors[e.type_bcpst] ? e.type_bcpst :
-                        typeColors[e.type_tb]    ? e.type_tb    : null;
-        const color   = typeKey ? typeColors[typeKey] : '#6b7280';
-        const count   = elevesFiltresPourEcole(e, anneeDebut, anneeFin).length;
-        const isEmpty = e.anciens.length === 0;
+	ecolesVisibles.forEach(item => {
+			const e = item.ecole;
+			const typeKey = typeColors[e.type_bcpst] ? e.type_bcpst :
+							typeColors[e.type_tb]    ? e.type_tb    : null;
+			const color   = typeKey ? typeColors[typeKey] : '#6b7280';
+			
+			// On récupère les élèves pour pouvoir lister leurs noms
+			const eleves  = elevesFiltresPourEcole(e, anneeDebut, anneeFin); 
+			const count   = eleves.length;
+			const isEmpty = e.anciens.length === 0;
 
-        const card = document.createElement('div');
-        card.className = 'list-school-card bg-white rounded-lg border ' +
-            (isEmpty ? 'border-gray-100 opacity-60' : 'border-gray-100 hover:border-emerald-200 hover:shadow-sm') +
-            ' p-3 cursor-pointer transition-all active:scale-[0.99]';
-        card.setAttribute('role', 'listitem');
-        card.setAttribute('tabindex', '0');
-        card.setAttribute('aria-label', 'Voir ' + e.nom + ' à ' + e.ville);
+			// --- NOUVEAUTÉ : Génération de la liste des élèves en tout petit ---
+			let listeElevesHtml = '';
+			if (count > 0) {
+				// On crée une chaîne du type "Prénom I., Prénom2 I."
+				const noms = eleves.map(el => `${el.prenom} ${el.initiale_nom}.`).join(', ');
+				// line-clamp-2 permet de couper proprement si la liste est trop longue (2 lignes max)
+				listeElevesHtml = `<div class="mt-2 pt-2 border-t border-gray-100 text-[10px] text-gray-500 leading-tight italic line-clamp-2" title="${noms}">🎓 ${noms}</div>`;
+			}
 
-        card.innerHTML =
-            '<div class="flex items-start justify-between gap-2">' +
-              '<div class="min-w-0">' +
-                '<h3 class="font-bold text-sm ' + (isEmpty ? 'text-gray-400' : 'text-gray-900') + ' truncate">' + e.nom + '</h3>' +
-                '<p class="text-xs text-gray-400 mt-0.5">' + e.ville + '</p>' +
-              '</div>' +
-              '<div class="flex flex-col items-end gap-1 shrink-0">' +
-                (typeKey ? '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded text-white" style="background:' + color + '">' + typeKey + '</span>' : '') +
-                '<span class="text-[10px] text-gray-500">' +
-                  (isEmpty ? '<em>Aucun ancien</em>' : count + ' ancien' + (count > 1 ? 's' : '')) +
-                '</span>' +
-              '</div>' +
-            '</div>';
+			const card = document.createElement('div');
+			card.className = 'list-school-card bg-white rounded-lg border ' +
+				(isEmpty ? 'border-gray-100 opacity-60' : 'border-gray-100 hover:border-emerald-200 hover:shadow-sm') +
+				' p-3 cursor-pointer transition-all active:scale-[0.99]';
+			card.setAttribute('role', 'listitem');
+			card.setAttribute('tabindex', '0');
+			card.setAttribute('aria-label', 'Voir ' + e.nom + ' à ' + e.ville);
 
-        card.onclick   = () => selectionnerEcoleDepuisListe(e);
-        card.onkeydown = ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); selectionnerEcoleDepuisListe(e); } };
-        container.appendChild(card);
-    });
+			// On intègre la liste des élèves à la fin de la carte
+			card.innerHTML =
+				'<div class="flex flex-col">' +
+				  '<div class="flex items-start justify-between gap-2">' +
+					'<div class="min-w-0">' +
+					  '<h3 class="font-bold text-sm ' + (isEmpty ? 'text-gray-400' : 'text-gray-900') + ' truncate">' + e.nom + '</h3>' +
+					  '<p class="text-xs text-gray-400 mt-0.5">' + e.ville + '</p>' +
+					'</div>' +
+					'<div class="flex flex-col items-end gap-1 shrink-0">' +
+					  (typeKey ? '<span class="text-[10px] font-bold px-1.5 py-0.5 rounded text-white" style="background:' + color + '">' + typeKey + '</span>' : '') +
+					  '<span class="text-[10px] text-gray-500">' +
+						(isEmpty ? '<em>Aucun ancien</em>' : count + ' ancien' + (count > 1 ? 's' : '')) +
+					  '</span>' +
+					'</div>' +
+				  '</div>' +
+				  listeElevesHtml +
+				'</div>';
+
+			card.onclick   = () => selectionnerEcoleDepuisListe(e);
+			card.onkeydown = ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); selectionnerEcoleDepuisListe(e); } };
+			container.appendChild(card);
+		});
 }
 
 function selectionnerEcoleDepuisListe(ecole) {
@@ -780,17 +797,20 @@ function filtrerTout() {
     const anneeFin   = parseInt(document.getElementById('filter-year-end').value);
     let ecolesCount  = 0, elevesCount = 0;
 
-    markers.forEach(item => {
-        const e          = item.ecole;
-        const hasNoAlumni = e.anciens.length === 0;
-        const normalize  = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-        const matchTexte = normalize(e.nom).includes(query) || normalize(e.ville).includes(query);
-        const filtres    = elevesFiltresPourEcole(e, anneeDebut, anneeFin);
+	markers.forEach(item => {
+			const e          = item.ecole;
+			const hasNoAlumni = e.anciens.length === 0;
+			const normalize  = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+			
+			// 1. On calcule d'abord les élèves correspondants aux filtres (filière, année, etc.)
+			const filtres    = elevesFiltresPourEcole(e, anneeDebut, anneeFin);
 
-        const schoolMatchesBanque = selectedBanqueTypes.size === 0 ||
-            selectedBanqueTypes.has(e.type_bcpst) || selectedBanqueTypes.has(e.type_tb);
-        const schoolMatchesFiliere = (filiereSelectionnee === 'TOUT') ||
-            (filiereSelectionnee === 'BCPST' ? !!e.banque_bcpst : !!e.banque_tb);
+			// 2. On cherche si le texte tapé correspond à l'école, à la ville, ou au prénom/nom d'un élève
+			const matchTexte = normalize(e.nom).includes(query) || 
+							   normalize(e.ville).includes(query) || 
+							   filtres.some(a => normalize(a.prenom + " " + a.nom).includes(query) || normalize(a.nom).includes(query));
+
+			const schoolMatchesBanque = selectedBanqueTypes.size === 0 ||
         
 	// On vérifie si la période est celle par défaut (2015 à 2026)
 	const periodeComplete = (anneeDebut === 2015 && anneeFin === 2026);
