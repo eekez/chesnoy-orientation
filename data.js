@@ -479,7 +479,7 @@ const ecolesData = [
         "banque_bcpst": "Agro-Véto",
         "banque_tb": "Agro-Véto",
         "descriptif": "École d’ingénieurs spécialisée en agronomie et industries alimentaires.",
-        "lien_site": "https://www.ensia.univ-lorraine.fr",
+        "lien_site": "https://ensaia.univ-lorraine.fr/",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.RUy9dPHDqmlaA0tTt40z3AHaEK%3Fcb%3Ducfimgc2%26pid%3DApi&f=1&ipt=44ad9df2f0ec58c894d8b14ae9328bd6db488b0c39c378cb41eeae2629a3b410&ipo=images",
         "specs_bcpst": [
             {
