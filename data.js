@@ -2865,6 +2865,16 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
+                "nom": "GARNIER",
+                "prenom": "Alexandre",
+                "initiale_nom": "G",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
                 "nom": "HEISSLER",
                 "prenom": "Claire",
                 "initiale_nom": "H",
