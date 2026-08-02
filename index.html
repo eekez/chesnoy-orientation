@@ -220,7 +220,10 @@
                 <div id="school-mini-map" class="hidden w-full rounded-lg overflow-hidden border border-gray-100 mt-3" style="height:96px;" aria-label="Localisation sur la carte"></div>
 
                 <img id="school-image" src="" alt="" class="hidden w-full h-40 object-cover rounded-xl mt-3 mb-2 shadow-sm border border-gray-100">
-                <p id="school-desc" class="text-sm text-gray-600 mt-2 italic bg-gray-50 p-2.5 rounded-lg border-l-4 border-emerald-600">Descriptif…</p>
+                <div id="school-desc-block" class="mt-2">
+                    <p id="school-desc" class="text-sm text-gray-700 leading-relaxed"></p>
+                    <div id="school-keywords" class="hidden mt-2 flex flex-wrap gap-1"></div>
+                </div>
                 <a id="school-link" href="#" target="_blank" rel="noopener noreferrer"
                    class="inline-block mt-2 text-xs font-bold text-emerald-700 hover:underline">Visiter le site officiel ↗</a>
                 <div id="school-rang" class="hidden mt-3 p-2 bg-amber-50/50 rounded-lg border border-amber-200/60 text-xs"></div>
@@ -946,7 +949,32 @@ function afficherEcole(ecole) {
 
     document.getElementById('school-name').innerText = ecole.nom;
     document.getElementById('school-city').innerText = ecole.ville;
-    document.getElementById('school-desc').innerText = ecole.descriptif || "Aucun descriptif fourni.";
+
+    // Descriptif
+    const descEl = document.getElementById('school-desc');
+    descEl.innerText = ecole.descriptif || '';
+    descEl.className = ecole.descriptif
+        ? 'text-sm text-gray-700 leading-relaxed'
+        : 'hidden';
+
+    // Mots-clés
+    const kwEl = document.getElementById('school-keywords');
+    kwEl.innerHTML = '';
+    if (ecole.mots_cles && ecole.mots_cles.length) {
+        kwEl.classList.remove('hidden');
+        ecole.mots_cles.forEach(mot => {
+            const span = document.createElement('span');
+            span.textContent = mot.trim();
+            span.className =
+                'inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full ' +
+                'bg-emerald-50 text-emerald-800 border border-emerald-200 ' +
+                'cursor-default select-none';
+            kwEl.appendChild(span);
+        });
+    } else {
+        kwEl.classList.add('hidden');
+    }
+
     document.getElementById('school-link').href = ecole.lien_site;
 
     // Bloc sélectivité (rangs SCEI par spécialité)
