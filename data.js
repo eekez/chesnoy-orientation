@@ -2140,9 +2140,20 @@ const ecolesData = [
         "type_tb": "Polytech",
         "banque_bcpst": "Agro-Véto",
         "banque_tb": "Polytech",
-        "descriptif": "École d’ingénieurs généraliste proposant diverses spécialités.",
+        "descriptif": "Polytech Angers est une école qui forme des ingénieurs capables de répondre aux enjeux technologiques, économiques et environnementaux actuels. La spécialité ouverte aux étudiants de BCPST et de TB est Génie biologique et santé. Les enseignements les risques biologiques et la gestion des risques, les technologies des bioproduits mais également le management de projets et de nombreuses interventions de professionnels.",
         "lien_site": "https://www.polytech-angers.fr",
-        "mots_cles": [],
+        "mots_cles": [
+            "Microbiologie",
+            "Produits de santé",
+            "Qualité",
+            "Gestion des risques",
+            "Réglementation",
+            "Contrôle analytique",
+            "Innovation",
+            "Management de projet",
+            "Alternance",
+            "Mobilité internationale"
+        ],
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.lesechos.com%2Fapi%2Fv1%2Fimages%2Fview%2F65281245cf64d06b960dd200%2F1280x720%2F0902741976329-web-tete.jpg&f=1&nofb=1&ipt=caacb499cf8cb913b77c575be00b2f781f1349152342f0be56bcce5a897d63c7",
         "specs_bcpst": [
             {
