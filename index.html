@@ -113,7 +113,7 @@
         <div class="space-y-3 mb-4 bg-gray-50 p-3 rounded-xl border border-gray-100 shadow-sm" role="search" aria-label="Filtres de recherche">
 
 		<!-- Remplacez l'ancien input par celui-ci : -->
-		<input type="text" id="search-bar" placeholder="🔍 Rechercher une école, une ville, un élève..."
+		<input type="text" id="search-bar" placeholder="🔍 École, ville, élève, mot-clé (ex: biotechnologies)…"
 			   aria-label="Rechercher une école, une ville ou un élève"
 			   class="w-full p-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-600 transition-all text-xs">
 
@@ -819,10 +819,12 @@ function filtrerTout() {
         // Élèves correspondant aux filtres (année, filière, banque)
         const filtres = elevesFiltresPourEcole(e, anneeDebut, anneeFin);
 
-        // Recherche texte : école, ville ou élève
+        // Recherche texte : école, ville, élève ou mot-clé
         const matchTexte =
+            !query ||
             normalize(e.nom).includes(query) ||
             normalize(e.ville).includes(query) ||
+            (e.mots_cles && e.mots_cles.some(m => normalize(m).includes(query))) ||
             filtres.some(a =>
                 normalize(a.prenom + " " + a.nom).includes(query) ||
                 normalize(a.nom).includes(query)
@@ -965,10 +967,15 @@ function afficherEcole(ecole) {
         ecole.mots_cles.forEach(mot => {
             const span = document.createElement('span');
             span.textContent = mot.trim();
+            span.title = 'Rechercher "' + mot.trim() + '"';
             span.className =
                 'inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full ' +
                 'bg-emerald-50 text-emerald-800 border border-emerald-200 ' +
-                'cursor-default select-none';
+                'cursor-pointer select-none hover:bg-emerald-100 hover:border-emerald-400 transition-colors';
+            span.onclick = () => {
+                document.getElementById('search-bar').value = mot.trim();
+                filtrerTout();
+            };
             kwEl.appendChild(span);
         });
     } else {
