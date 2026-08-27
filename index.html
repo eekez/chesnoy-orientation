@@ -340,7 +340,7 @@ let miniMarker           = null;
 // ================================================================
 const map = L.map('map', { zoomControl: false }).setView([46.6, 2.2], 5);
 L.control.zoom({ position: 'topleft' }).addTo(map);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1_2ca2_1_ecce94fae6c4dfd24b87b466', {
     attribution: '© OpenStreetMap contributors © CARTO'
 }).addTo(map);
 
