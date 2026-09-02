@@ -234,6 +234,56 @@ const ecolesData = [
                 "fonctionnaire": ""
             },
             {
+                "nom": "COURTHIAL",
+                "prenom": "Emma",
+                "initiale_nom": "C",
+                "annee": 2026,
+                "classe": "TB",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "CHOCHOY",
+                "prenom": "Emy",
+                "initiale_nom": "C",
+                "annee": 2026,
+                "classe": "TB",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "BATUT",
+                "prenom": "Siriane",
+                "initiale_nom": "B",
+                "annee": 2026,
+                "classe": "TB",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "MAURY",
+                "prenom": "Lisa",
+                "initiale_nom": "M",
+                "annee": 2026,
+                "classe": "TB",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "MANAS",
+                "prenom": "Léa",
+                "initiale_nom": "M",
+                "annee": 2026,
+                "classe": "TB",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
                 "nom": "MERCIER",
                 "prenom": "Emma",
                 "initiale_nom": "M",
@@ -4250,5 +4300,36 @@ const ecolesData = [
                 "fonctionnaire": ""
             }
         ]
+    },
+    {
+        "nom": "UTC Compiègne",
+        "ville": "Compiègne",
+        "coords": [
+            49.4157,
+            2.823
+        ],
+        "type_bcpst": "",
+        "type_tb": "",
+        "banque_bcpst": "",
+        "banque_tb": "",
+        "descriptif": "Grande école d’ingénieurs généraliste proposant des formations en génie biologique, génie des procédés, informatique, mécanique, génie urbain et systèmes urbains. L’UTC met l’accent sur l’innovation, la recherche et la personnalisation du parcours de formation.",
+        "lien_site": "https://www.utc.fr",
+        "mots_cles": [
+            "Mécanique",
+            "Informatique",
+            "Génie biologique",
+            "Génie des procédés",
+            "Génie urbain",
+            "Systèmes urbains",
+            "Innovation",
+            "Recherche",
+            "International",
+            "Ingénierie"
+        ],
+        "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcareers.recruiteecdn.com%2Fimage%2Fupload%2Fq_auto%2Cw_1920%2Cc_limit%2Fproduction%2Fimages%2FBQC2%2FwIFApRbvNKFd.jpeg&f=1&nofb=1&ipt=04c93c67c5ef840175d2e39636a76e85966178ae1c56d63ab1894ed4ca9f3ad3",
+        "specs_bcpst": null,
+        "specs_tb": null,
+        "specs_g2e": null,
+        "anciens": []
     }
 ];
