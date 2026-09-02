@@ -234,16 +234,6 @@ const ecolesData = [
                 "fonctionnaire": ""
             },
             {
-                "nom": "COURTHIAL",
-                "prenom": "Emma",
-                "initiale_nom": "C",
-                "annee": 2026,
-                "classe": "TB",
-                "lien_video": "",
-                "lien_fiche_poste": "",
-                "fonctionnaire": ""
-            },
-            {
                 "nom": "CHOCHOY",
                 "prenom": "Emy",
                 "initiale_nom": "C",
@@ -4330,6 +4320,17 @@ const ecolesData = [
         "specs_bcpst": null,
         "specs_tb": null,
         "specs_g2e": null,
-        "anciens": []
+        "anciens": [
+            {
+                "nom": "COURTHIAL",
+                "prenom": "Emma",
+                "initiale_nom": "C",
+                "annee": 2026,
+                "classe": "TB",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            }
+        ]
     }
 ];
