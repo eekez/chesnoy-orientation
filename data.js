@@ -300,7 +300,7 @@ const ecolesData = [
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
-                "lien_fiche_poste": "",
+                "lien_fiche_poste": "https://eekez.github.io/chesnoy-orientation/fiches/ficheAnaisB.pdf",
                 "fonctionnaire": ""
             },
             {
@@ -310,7 +310,7 @@ const ecolesData = [
                 "annee": 2021,
                 "classe": "TB",
                 "lien_video": "",
-                "lien_fiche_poste": "",
+                "lien_fiche_poste": "https://eekez.github.io/chesnoy-orientation/fiches/ficheBenoitL.pdf",
                 "fonctionnaire": ""
             },
             {
