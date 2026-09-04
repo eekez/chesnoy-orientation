@@ -85,6 +85,16 @@ const ecolesData = [
                 "fonctionnaire": ""
             },
             {
+                "nom": "SAUTET",
+                "prenom": "Aristide",
+                "initiale_nom": "S",
+                "annee": 2023,
+                "classe": "TB",
+                "lien_video": "https://youtu.be/mUE_eBgYsfk",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
                 "nom": "REVEILLARD",
                 "prenom": "Antoine",
                 "initiale_nom": "R",
@@ -495,16 +505,6 @@ const ecolesData = [
                 "prenom": "Doriane",
                 "initiale_nom": "T",
                 "annee": 2025,
-                "classe": "TB",
-                "lien_video": "",
-                "lien_fiche_poste": "",
-                "fonctionnaire": ""
-            },
-            {
-                "nom": "SAUTET",
-                "prenom": "Aristide",
-                "initiale_nom": "S",
-                "annee": 2023,
                 "classe": "TB",
                 "lien_video": "",
                 "lien_fiche_poste": "",
