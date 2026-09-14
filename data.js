@@ -1778,7 +1778,7 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": "",
+                "lien_video": "https://youtu.be/nZCwqNyJkJg",
                 "lien_fiche_poste": "",
                 "fonctionnaire": ""
             },
@@ -1788,7 +1788,7 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": "",
+                "lien_video": "https://youtu.be/nZCwqNyJkJg",
                 "lien_fiche_poste": "",
                 "fonctionnaire": ""
             }
