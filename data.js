@@ -1031,8 +1031,8 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2020,
                 "classe": "TB",
-                "lien_video": "",
-                "lien_fiche_poste": "",
+                "lien_video": "https://youtu.be/ZHZfCFbO07Q",
+                "lien_fiche_poste": "https://eekez.github.io/chesnoy-orientation/fiches/ficheLaureenM.pdf",
                 "fonctionnaire": ""
             },
             {
@@ -1778,7 +1778,7 @@ const ecolesData = [
                 "initiale_nom": "C",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": "https://youtu.be/nZCwqNyJkJg",
+                "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": ""
             },
@@ -1788,7 +1788,7 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2015,
                 "classe": "TB",
-                "lien_video": "https://youtu.be/nZCwqNyJkJg",
+                "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": ""
             }
