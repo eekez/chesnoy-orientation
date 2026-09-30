@@ -1323,6 +1323,16 @@ const ecolesData = [
                 "fonctionnaire": ""
             },
             {
+                "nom": "VIALLARD",
+                "prenom": "Flore",
+                "initiale_nom": "V",
+                "annee": 2018,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
                 "nom": "FAGNIOT",
                 "prenom": "Nicolas",
                 "initiale_nom": "F",
