@@ -194,6 +194,16 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
+                "nom": "RONCERET--ARTAL",
+                "prenom": "Lola",
+                "initiale_nom": "R",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
                 "nom": "LELEU--RIOU",
                 "prenom": "Ines",
                 "initiale_nom": "L",
