@@ -87,7 +87,13 @@
     </div>
 </header>
 
-<main class="flex-1 flex flex-col md:flex-row overflow-hidden">
+<nav class="bg-white border-b border-gray-200 flex overflow-x-auto shrink-0" role="tablist" aria-label="Sections du site">
+    <button id="tab-btn-carte"  role="tab" onclick="changerOnglet('carte')"  class="px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-4 transition-all">🗺 Carte</button>
+    <button id="tab-btn-videos" role="tab" onclick="changerOnglet('videos')" class="px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-4 transition-all">🎬 Vidéos</button>
+    <button id="tab-btn-stats"  role="tab" onclick="changerOnglet('stats')"  class="px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-4 transition-all">📊 Statistiques</button>
+</nav>
+
+<main id="tab-carte" class="flex-1 flex flex-col md:flex-row overflow-hidden">
 
     <div id="map-container" class="w-full h-2/5 md:h-full md:w-3/5 bg-gray-200 shadow-inner relative">
         <div id="map" class="w-full h-full"></div>
@@ -144,22 +150,23 @@
             </div>
 
             <div>
-                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1" id="period-label">
-                    Période d'intégration :
-                    <span id="year-range-label" class="text-emerald-700 ml-1 normal-case font-bold tracking-normal" aria-live="polite">2015 – 2026</span>
-                </label>
-                <div class="relative flex items-center mt-3 mb-1 h-5 px-2" role="group" aria-labelledby="period-label">
-                    <div class="absolute inset-x-2 h-1 bg-gray-200 rounded-full"></div>
-                    <div id="range-fill" class="absolute h-1 bg-emerald-500 rounded-full" style="left:8px;right:8px;"></div>
-                    <input type="range" id="filter-year-start" min="2015" max="2026" value="2015"
-                           aria-label="Année de début" class="range-slider-thumb" oninput="updateRangeSlider(true)">
-                    <input type="range" id="filter-year-end" min="2015" max="2026" value="2026"
-                           aria-label="Année de fin" class="range-slider-thumb" oninput="updateRangeSlider(false)">
-                </div>
-                <div class="flex justify-between text-[9px] text-gray-400 px-1 mt-1" aria-hidden="true">
-                    <span>2015</span><span>2018</span><span>2021</span><span>2024</span><span>2026</span>
+                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">Intégrés :</label>
+                <div class="flex space-x-2" role="group" aria-label="Type d'établissement intégré">
+                    <button id="btn-int-tous" onclick="setGrandesEcoles(false)" aria-pressed="true"
+                            class="flex-1 py-1.5 px-3 rounded-lg text-xs font-bold border shadow-sm transition-all bg-emerald-700 text-white border-emerald-700">Tous les intégrés</button>
+                    <button id="btn-int-ge" onclick="setGrandesEcoles(true)" aria-pressed="false"
+                            class="flex-1 py-1.5 px-3 rounded-lg text-xs font-bold border shadow-sm transition-all bg-white text-gray-700 border-gray-200 hover:bg-gray-100">🎓 Grandes écoles</button>
                 </div>
             </div>
+
+            <div>
+                <label class="block text-[10px] font-bold text-gray-500 uppercase mb-1">
+                    Années sélectionnées :
+                    <span id="year-range-label" class="text-emerald-700 ml-1 normal-case font-bold tracking-normal" aria-live="polite">Toutes</span>
+                </label>
+                <div id="year-chips" class="flex flex-wrap gap-1.5" role="group" aria-label="Choix des années (sélection multiple)"></div>
+            </div>
+
 
             <div class="flex items-center justify-between mt-1">
                 <div id="stats-counter" role="status" aria-live="polite"
@@ -246,7 +253,18 @@
             </div>
         </div>
 
-    </div></main><div id="global-video-modal" class="hidden fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
+    </div></main>
+<section id="tab-videos" class="hidden flex-1 overflow-y-auto bg-gray-50">
+    <div class="max-w-6xl mx-auto p-4 md:p-6">
+        <h2 class="text-lg font-extrabold text-emerald-950">🎬 Vidéos</h2>
+        <p class="text-xs text-gray-500 mb-3">Forums, conférences, FAQ et témoignages d'anciens élèves.</p>
+        <div id="video-subtabs" class="flex flex-wrap gap-2 mb-4"></div>
+        <div id="video-grid"></div>
+    </div>
+</section>
+<section id="tab-stats" class="hidden flex-1 overflow-y-auto bg-gray-50">
+    <div id="stats-content" class="max-w-5xl mx-auto p-4 md:p-6"></div>
+</section><div id="global-video-modal" class="hidden fixed inset-0 z-[9999] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 md:p-10"
      role="dialog" aria-modal="true" aria-labelledby="global-video-title-text">
     <div class="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col border border-gray-700">
         <div class="flex justify-between items-center p-4 bg-emerald-900 text-white">
@@ -336,6 +354,188 @@ let miniMap              = null;
 let miniMarker           = null;
 
 // ================================================================
+// ANNÉES (icônes) · GRANDES ÉCOLES · ONGLETS
+// ================================================================
+const ANNEES = [...new Set(ecolesData.flatMap(e => e.anciens.map(a => a.annee)).filter(Boolean))].sort((a, b) => a - b);
+const HASH_INITIAL = location.hash;   // lu avant que sauvegarderEtat() ne l'efface
+let anneesSel = new Set();          // vide = « Toutes »
+let grandesEcolesSeules = false;
+let ongletCourant = 'carte';
+let sousOngletVideo = 'forums';
+let statsFiliere = 'TOUT';
+
+// Types considérés comme NON « grande école » (ajouter ici 'BUT' etc. si besoin)
+const TYPES_NON_GRANDE_ECOLE = ['Fac', 'BUT', 'IUT', 'Université'];
+function estGrandeEcole(e) {
+    const t = [e.type_bcpst, e.type_tb].filter(Boolean);
+    if (t.length) return !t.every(x => TYPES_NON_GRANDE_ECOLE.includes(x));
+    return !/^(facult|universit|iut|but\b)/i.test(e.nom);   // type vide (UTC, ESA…) : on se fie au nom
+}
+function anneeOk(y) { return anneesSel.size === 0 || anneesSel.has(y); }
+function aLien(v) { v = (v || '').toString().trim(); return v !== '' && v !== 'nan' && v !== 'undefined'; }
+function estFonct(a) { const f = (a.fonctionnaire || '').toString().trim().toLowerCase(); return f !== '' && f !== 'non'; }
+
+function renderAnneeChips() {
+    const on  = 'bg-emerald-700 text-white border-emerald-700 shadow-sm';
+    const off = 'bg-white text-gray-600 border-gray-200 hover:bg-emerald-50 hover:border-emerald-300';
+    const chip = (label, actif, fn) => '<button type="button" onclick="' + fn + '" aria-pressed="' + actif + '" class="px-2.5 py-1 rounded-full border text-[11px] font-bold transition-all active:scale-95 ' + (actif ? on : off) + '">' + label + '</button>';
+    document.getElementById('year-chips').innerHTML =
+        chip('Toutes', anneesSel.size === 0, 'toutesAnnees()') +
+        ANNEES.map(y => chip(y, anneesSel.has(y), 'basculerAnnee(' + y + ')')).join('');
+    const sel = [...anneesSel].sort();
+    document.getElementById('year-range-label').textContent =
+        sel.length === 0 ? 'Toutes' : sel.length <= 4 ? sel.join(', ') : sel.length + ' années';
+}
+function basculerAnnee(y) { anneesSel.has(y) ? anneesSel.delete(y) : anneesSel.add(y); renderAnneeChips(); filtrerTout(); }
+function toutesAnnees()   { anneesSel.clear(); renderAnneeChips(); filtrerTout(); }
+
+function setGrandesEcoles(v, refresh = true) {
+    grandesEcolesSeules = v;
+    [['btn-int-tous', !v], ['btn-int-ge', v]].forEach(([id, actif]) => {
+        const b = document.getElementById(id);
+        b.setAttribute('aria-pressed', String(actif));
+        b.className = 'flex-1 py-1.5 px-3 rounded-lg text-xs font-bold border shadow-sm transition-all ' +
+            (actif ? 'bg-emerald-700 text-white border-emerald-700' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100');
+    });
+    if (refresh) filtrerTout();
+}
+
+function changerOnglet(o, init) {
+    ongletCourant = o;
+    fermerModalGlobale();
+    ['carte', 'videos', 'stats'].forEach(k => {
+        document.getElementById('tab-' + k).classList.toggle('hidden', k !== o);
+        const b = document.getElementById('tab-btn-' + k);
+        b.setAttribute('aria-selected', String(k === o));
+        b.className = 'px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-4 transition-all ' +
+            (k === o ? 'border-amber-400 text-emerald-900 bg-emerald-50/60' : 'border-transparent text-gray-500 hover:text-emerald-800');
+    });
+    document.getElementById('view-toggle-btn').classList.toggle('hidden', o !== 'carte');
+    if (o === 'carte') setTimeout(() => map.invalidateSize(), 50);
+    if (o === 'videos') rendreVideos();
+    if (o === 'stats') rendreStats();
+    if (!init) sauvegarderEtat();
+}
+
+// ---------- Onglet Vidéos ----------
+const SOUS_ONGLETS_VIDEOS = [
+    { id: 'forums',      label: 'Forums',      icone: '🎤', test: c => /forum/i.test(c) },
+    { id: 'conferences', label: 'Conférences', icone: '🎓', test: c => /conf/i.test(c) },
+    { id: 'faq',         label: 'FAQ',         icone: '❓', test: c => /faq/i.test(c) },
+    { id: 'temoignages', label: 'Témoignages', icone: '🗣️', temoignages: true }
+];
+
+function carteVideo(titre, sous, lien) {
+    const id = extraireIdYoutube(lien);
+    const el = document.createElement('button');
+    el.className = 'group text-left bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden active:scale-[0.98]';
+    el.innerHTML =
+        '<div class="relative aspect-video bg-gradient-to-br from-emerald-700 to-emerald-900">' +
+            (id ? '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" onerror="this.remove()">' : '') +
+            '<span class="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30 transition-colors">' +
+                '<span class="w-11 h-11 rounded-full bg-white/90 flex items-center justify-center shadow text-red-600 text-lg pl-0.5" aria-hidden="true">▶</span></span>' +
+        '</div>' +
+        '<div class="p-2.5"><p class="text-xs font-bold text-gray-900 leading-snug line-clamp-2">' + titre + '</p>' +
+        (sous ? '<p class="text-[10px] text-gray-500 mt-0.5 truncate">' + sous + '</p>' : '') + '</div>';
+    el.setAttribute('aria-label', 'Lire : ' + titre);
+    el.onclick = () => ouvrirModalGlobale(lien, titre);
+    return el;
+}
+
+function rendreVideos() {
+    document.getElementById('video-subtabs').innerHTML = SOUS_ONGLETS_VIDEOS.map(s => {
+        const actif = s.id === sousOngletVideo;
+        return '<button onclick="sousOngletVideo=\'' + s.id + '\';rendreVideos()" aria-pressed="' + actif + '" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all ' +
+            (actif ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200 hover:bg-emerald-50') + '">' + s.icone + ' ' + s.label + '</button>';
+    }).join('');
+
+    const s = SOUS_ONGLETS_VIDEOS.find(x => x.id === sousOngletVideo);
+    let groupes;
+    if (s.temoignages) {
+        const par = {};
+        ecolesData.forEach(e => e.anciens.forEach(a => {
+            if (!aLien(a.lien_video)) return;
+            (par[a.annee] = par[a.annee] || []).push({ titre: a.prenom + ' ' + a.initiale_nom + '.', sous: e.nom, lien: a.lien_video.trim() });
+        }));
+        groupes = Object.keys(par).sort((a, b) => b - a).map(y => ({ titre: 'Intégration ' + y, videos: par[y] }));
+    } else {
+        groupes = VIDEOS_CATEGORISEES.filter(c => s.test(c.categorie))
+            .map(c => ({ titre: c.categorie, videos: c.videos.map(v => ({ titre: v.titre, sous: '', lien: v.lien })) }));
+    }
+
+    const cont = document.getElementById('video-grid');
+    cont.innerHTML = '';
+    if (!groupes.length) {
+        cont.innerHTML = '<p class="text-sm text-gray-400 italic text-center py-12">Aucune vidéo dans cette rubrique pour le moment.</p>';
+        return;
+    }
+    groupes.forEach(g => {
+        const h = document.createElement('h3');
+        h.className = 'text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-5 mb-2 flex items-center gap-2';
+        h.innerHTML = g.titre + '<span class="flex-1 border-t border-emerald-200"></span>';
+        cont.appendChild(h);
+        const grid = document.createElement('div');
+        grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3';
+        g.videos.forEach(v => grid.appendChild(carteVideo(v.titre, v.sous, v.lien)));
+        cont.appendChild(grid);
+    });
+}
+
+// ---------- Onglet Statistiques ----------
+function rendreStats() {
+    const rows = [];
+    ecolesData.forEach(e => e.anciens.forEach(a => {
+        if (statsFiliere !== 'TOUT' && !(a.classe || '').includes(statsFiliere)) return;
+        rows.push({ a, e, ge: estGrandeEcole(e) });
+    }));
+    const total = rows.length, nbGE = rows.filter(r => r.ge).length;
+    const pct = (n, t) => t ? Math.round(100 * n / t) + ' %' : '–';
+    const carte = (val, lib, sub, coul) => '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center"><p class="text-2xl font-extrabold ' + coul + '">' + val + '</p><p class="text-[11px] font-bold text-gray-700">' + lib + '</p>' + (sub ? '<p class="text-[10px] text-gray-400">' + sub + '</p>' : '') + '</div>';
+
+    let h = '<h2 class="text-lg font-extrabold text-emerald-950">📊 Statistiques</h2>' +
+        '<p class="text-xs text-gray-500 mb-3">Élèves recensés avec une école intégrée (hors étudiants non recensés).</p>' +
+        '<div class="flex gap-2 mb-4">' + [['TOUT', 'Tous'], ['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) =>
+            '<button onclick="statsFiliere=\'' + k + '\';rendreStats()" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all ' +
+            (statsFiliere === k ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200 hover:bg-emerald-50') + '">' + l + '</button>').join('') + '</div>';
+
+    h += '<div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">' +
+        carte(total, 'élèves recensés', ANNEES.length + ' promotions', 'text-emerald-700') +
+        carte(nbGE, 'en grandes écoles', pct(nbGE, total), 'text-emerald-700') +
+        carte(total - nbGE, 'à l\'université / fac', pct(total - nbGE, total), 'text-slate-500') +
+        carte(rows.filter(r => estFonct(r.a)).length, 'élèves fonctionnaires', '', 'text-blue-600') +
+        carte(rows.filter(r => aLien(r.a.lien_video)).length, 'témoignages vidéo', '', 'text-red-600') +
+        carte(new Set(rows.map(r => r.e.nom)).size, 'établissements différents', '', 'text-amber-600') + '</div>';
+
+    // Par année
+    h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Par année d\'intégration</h3>' +
+        '<div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-x-auto mb-6"><table class="w-full text-xs text-center">' +
+        '<thead class="bg-emerald-50 text-emerald-900 text-[10px] uppercase tracking-wide"><tr><th class="p-2 text-left">Année</th><th class="p-2">Élèves</th><th class="p-2">BCPST</th><th class="p-2">TB</th><th class="p-2">Grandes écoles</th><th class="p-2">Fac</th><th class="p-2">Fonct.</th></tr></thead><tbody>';
+    [...ANNEES].reverse().forEach(y => {
+        const r = rows.filter(x => x.a.annee === y);
+        if (!r.length) return;
+        const g = r.filter(x => x.ge).length;
+        h += '<tr class="border-t border-gray-100 hover:bg-gray-50"><td class="p-2 text-left font-bold">' + y + '</td><td class="p-2 font-bold">' + r.length + '</td>' +
+            '<td class="p-2">' + r.filter(x => (x.a.classe || '').includes('BCPST')).length + '</td><td class="p-2">' + r.filter(x => (x.a.classe || '').includes('TB')).length + '</td>' +
+            '<td class="p-2 text-emerald-700 font-bold">' + g + ' <span class="text-gray-400 font-normal">(' + pct(g, r.length) + ')</span></td><td class="p-2 text-slate-500">' + (r.length - g) + '</td>' +
+            '<td class="p-2 text-blue-600">' + r.filter(x => estFonct(x.a)).length + '</td></tr>';
+    });
+    h += '</tbody></table></div>';
+
+    // Par type d'école
+    const types = {};
+    rows.forEach(r => { const t = typeColors[r.e.type_bcpst] ? r.e.type_bcpst : typeColors[r.e.type_tb] ? r.e.type_tb : 'Autres'; types[t] = (types[t] || 0) + 1; });
+    const max = Math.max(1, ...Object.values(types));
+    h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Par type d\'établissement</h3><div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 space-y-1.5">' +
+        Object.entries(types).sort((a, b) => b[1] - a[1]).map(([t, n]) =>
+            '<div class="flex items-center gap-2 text-[11px]"><span class="w-28 shrink-0 font-bold text-gray-700 truncate">' + t + '</span>' +
+            '<div class="flex-1 bg-gray-100 rounded-full h-3 overflow-hidden"><div class="h-3 rounded-full" style="width:' + (100 * n / max) + '%;background:' + (typeColors[t] || '#6b7280') + '"></div></div>' +
+            '<span class="w-8 text-right font-bold text-gray-700">' + n + '</span></div>').join('') + '</div>';
+
+    document.getElementById('stats-content').innerHTML = h;
+}
+
+
+// ================================================================
 // CARTE PRINCIPALE
 // ================================================================
 const map = L.map('map', { zoomControl: false }).setView([46.6, 2.2], 5);
@@ -358,8 +558,7 @@ map.addLayer(clusterGroup);
 // ================================================================
 function verifierEtatInitial() {
     const search = document.getElementById('search-bar').value.trim();
-    const start  = document.getElementById('filter-year-start').value;
-    const end    = document.getElementById('filter-year-end').value;
+
     
     // Vérifie l'état de la carte (coordonnées et zoom par défaut)
     const center = map.getCenter();
@@ -371,8 +570,7 @@ function verifierEtatInitial() {
     // Vérifie si TOUT est à sa valeur par défaut
     const isInitial = (
         search === "" &&
-        start === "2015" &&
-        end === "2026" &&
+        anneesSel.size === 0 && !grandesEcolesSeules &&
         filiereSelectionnee === "TOUT" &&
         selectedBanqueTypes.size === 0 &&
         ecoleActuelleObj === null &&
@@ -432,8 +630,8 @@ function toggleVue() {
 function mettreAJourListeVue() {
     if (vueCourante !== 'liste') return;
     const container  = document.getElementById('list-content');
-    const anneeDebut = parseInt(document.getElementById('filter-year-start').value);
-    const anneeFin   = parseInt(document.getElementById('filter-year-end').value);
+    const anneeDebut = 0;
+    const anneeFin = 9999;
 
     const ecolesVisibles = markers.filter(item => item.visible);
     ecolesVisibles.sort((a, b) => {
@@ -520,10 +718,9 @@ function sauvegarderEtat() {
     const p = new URLSearchParams();
     if (filiereSelectionnee !== 'TOUT') p.set('f', filiereSelectionnee);
     if (selectedBanqueTypes.size > 0) p.set('t', Array.from(selectedBanqueTypes).join('~'));
-    const d = document.getElementById('filter-year-start').value;
-    const e = document.getElementById('filter-year-end').value;
-    if (d !== '2015') p.set('d', d);
-    if (e !== '2026') p.set('e', e);
+    if (anneesSel.size) p.set('y', [...anneesSel].sort().join(','));
+    if (grandesEcolesSeules) p.set('g', '1');
+    if (ongletCourant !== 'carte') p.set('o', ongletCourant);
     const q = document.getElementById('search-bar').value.trim();
     if (q) p.set('q', q);
     if (ecoleActuelleObj) p.set('s', ecoleActuelleObj.nom);
@@ -532,8 +729,8 @@ function sauvegarderEtat() {
 }
 
 function chargerEtat() {
-    if (!location.hash || location.hash.length <= 1) return;
-    const p = new URLSearchParams(location.hash.slice(1));
+    if (!HASH_INITIAL || HASH_INITIAL.length <= 1) return;
+    const p = new URLSearchParams(HASH_INITIAL.slice(1));
 
     const f = p.get('f');
     if (f && ['BCPST', 'TB'].includes(f)) changerFiliere(f);
@@ -548,10 +745,12 @@ function chargerEtat() {
         updateBanqueButton();
     }
 
-    const d = p.get('d'); const e = p.get('e');
-    if (d) document.getElementById('filter-year-start').value = d;
-    if (e) document.getElementById('filter-year-end').value   = e;
-    if (d || e) updateRangeSlider(true);
+    const y = p.get('y');
+    if (y) { y.split(',').map(Number).filter(Boolean).forEach(v => anneesSel.add(v)); renderAnneeChips(); }
+    if (p.get('g') === '1') setGrandesEcoles(true, false);
+    if (anneesSel.size || grandesEcolesSeules) filtrerTout();
+    const o = p.get('o');
+    if (o && ['videos', 'stats'].includes(o)) changerOnglet(o);
 
     const q = p.get('q');
     if (q) document.getElementById('search-bar').value = q;
@@ -571,16 +770,16 @@ function chargerEtat() {
 function mettreAJourGraphique() {
     const container  = document.getElementById('chart-container');
     if (!container) return;
-    const anneeDebut = parseInt(document.getElementById('filter-year-start').value);
-    const anneeFin   = parseInt(document.getElementById('filter-year-end').value);
+    const anneeDebut = 0;
+    const anneeFin = 9999;
 
     const counts = {};
-    for (let y = anneeDebut; y <= anneeFin; y++) counts[y] = 0;
+    ANNEES.filter(y => anneesSel.size === 0 || anneesSel.has(y)).forEach(y => counts[y] = 0);
 
     markers.forEach(item => {
         if (!item.visible || item.ecole.anciens.length === 0) return;
         item.ecole.anciens.forEach(a => {
-            if (a.annee < anneeDebut || a.annee > anneeFin) return;
+            if (!anneeOk(a.annee) || (grandesEcolesSeules && !estGrandeEcole(item.ecole))) return;
             const matchFiliere = (filiereSelectionnee === 'TOUT') || (a.classe && a.classe.includes(filiereSelectionnee));
             const matchBanque  = selectedBanqueTypes.size === 0 ||
                 selectedBanqueTypes.has(item.ecole.type_bcpst) || selectedBanqueTypes.has(item.ecole.type_tb);
@@ -772,21 +971,6 @@ function changerFiliere(filiere) {
 // ================================================================
 // RANGE SLIDER
 // ================================================================
-function updateRangeSlider(fromStart) {
-    const startEl = document.getElementById('filter-year-start');
-    const endEl   = document.getElementById('filter-year-end');
-    let s = parseInt(startEl.value), e = parseInt(endEl.value);
-    if (fromStart && s > e) { startEl.value = e; s = e; }
-    if (!fromStart && e < s) { endEl.value  = s; e = s; }
-    const min = 2015, max = 2026, range = max - min;
-    const leftPct  = ((s - min) / range) * 100;
-    const rightPct = 100 - ((e - min) / range) * 100;
-    const fill = document.getElementById('range-fill');
-    fill.style.left  = 'calc(8px + ' + leftPct  + '% * (100% - 16px) / 100)';
-    fill.style.right = 'calc(8px + ' + rightPct + '% * (100% - 16px) / 100)';
-    document.getElementById('year-range-label').innerText = (s === e) ? s : s + ' – ' + e;
-    filtrerTout();
-}
 
 // ================================================================
 // FILTRE PRINCIPAL
@@ -794,7 +978,7 @@ function updateRangeSlider(fromStart) {
 function elevesFiltresPourEcole(ecole, anneeDebut, anneeFin) {
     return ecole.anciens.filter(a => {
         const matchFiliere = (filiereSelectionnee === 'TOUT') || (a.classe && a.classe.includes(filiereSelectionnee));
-        const matchAnnee   = a.annee >= anneeDebut && a.annee <= anneeFin;
+        const matchAnnee   = anneeOk(a.annee) && (!grandesEcolesSeules || estGrandeEcole(ecole));
         let matchBanque    = true;
         if (selectedBanqueTypes.size > 0) {
             if      (a.classe && a.classe.includes('BCPST')) matchBanque = selectedBanqueTypes.has(ecole.type_bcpst);
@@ -807,8 +991,8 @@ function elevesFiltresPourEcole(ecole, anneeDebut, anneeFin) {
 
 function filtrerTout() {
     const query      = document.getElementById('search-bar').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    const anneeDebut = parseInt(document.getElementById('filter-year-start').value);
-    const anneeFin   = parseInt(document.getElementById('filter-year-end').value);
+    const anneeDebut = 0;
+    const anneeFin = 9999;
     let ecolesCount  = 0, elevesCount = 0;
 
     markers.forEach(item => {
@@ -841,7 +1025,7 @@ function filtrerTout() {
             (filiereSelectionnee === "BCPST" ? !!e.banque_bcpst : !!e.banque_tb);
 
         // Période complète ?
-        const periodeComplete = (anneeDebut === 2015 && anneeFin === 2026);
+        const periodeComplete = anneesSel.size === 0 && (!grandesEcolesSeules || estGrandeEcole(e));
 
         // École affichée en grisé
         const showFaded =
@@ -1103,8 +1287,8 @@ function afficherEcole(ecole) {
     ecoleActuelleObj = ecole;
 
     // Liste élèves
-    const anneeDebut    = parseInt(document.getElementById('filter-year-start').value);
-    const anneeFin      = parseInt(document.getElementById('filter-year-end').value);
+    const anneeDebut = 0;
+    const anneeFin = 9999;
     const elevesFiltres = elevesFiltresPourEcole(ecole, anneeDebut, anneeFin);
     const list          = document.getElementById('students-list');
     list.innerHTML      = '';
@@ -1275,9 +1459,8 @@ document.getElementById("global-video-modal").addEventListener("click", function
 // ================================================================
 function reinitialiserFiltres() {
     document.getElementById('search-bar').value = "";
-    document.getElementById('filter-year-start').value = "2015";
-    document.getElementById('filter-year-end').value   = "2026";
-    updateRangeSlider(true);
+    anneesSel.clear(); renderAnneeChips(); setGrandesEcoles(false, false);
+    if (ongletCourant !== 'carte') changerOnglet('carte');
     toutDeselectionnerBanques();
     fermerEcole(); // ferme la fiche et remet la vue de la carte par défaut
     changerFiliere('TOUT');
@@ -1525,7 +1708,8 @@ document.addEventListener("keydown", function(e) {
 
 document.getElementById('search-bar').addEventListener('input', filtrerTout);
 
-updateRangeSlider(true);
+renderAnneeChips();
+changerOnglet('carte', true);
 filtrerTout();
 chargerEtat();
 
