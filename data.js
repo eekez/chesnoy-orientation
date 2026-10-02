@@ -836,6 +836,16 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
+                "nom": "THOMAS",
+                "prenom": "Titouan",
+                "initiale_nom": "T",
+                "annee": 2026,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": "fonctionnaire"
+            },
+            {
                 "nom": "SAVORGNANO",
                 "prenom": "Jimmy",
                 "initiale_nom": "S",
