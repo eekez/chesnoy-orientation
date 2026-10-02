@@ -466,7 +466,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "https://eekez.github.io/chesnoy-orientation/fiches/ficheAnaisB.pdf",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Ingénieure en production laitière"
             },
             {
                 "nom": "LEBLOND",
@@ -477,7 +477,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "https://eekez.github.io/chesnoy-orientation/fiches/ficheBenoitL.pdf",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Ingénieur en Bioproduction"
             },
             {
                 "nom": "THAUVIN",
@@ -1200,18 +1200,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "fonctionnaire",
-                "apres_ecole": ""
-            },
-            {
-                "nom": "GUILLERAULT",
-                "prenom": "Pierre",
-                "initiale_nom": "G",
-                "annee": 2023,
-                "classe": "BCPST",
-                "lien_video": "",
-                "lien_fiche_poste": "",
-                "fonctionnaire": "fonctionnaire",
-                "apres_ecole": ""
+                "apres_ecole": "Chef de service adjoint en DDETSPP"
             },
             {
                 "nom": "MANSART",
@@ -1475,7 +1464,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Salarié agricole"
             },
             {
                 "nom": "MORRETTON",
@@ -2079,7 +2068,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Chargée de mission animation et communication en médiation environnementale"
             },
             {
                 "nom": "POUPA",
@@ -3187,7 +3176,7 @@ const ecolesData = [
                 "lien_video": "https://youtube.com/shorts/-Ft-YouRkKg",
                 "lien_fiche_poste": "https://eekez.github.io/chesnoy-orientation/fiches/ficheAntoineR.pdf",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Ingénieur en institut de Recherche"
             },
             {
                 "nom": "AZZOUN",
