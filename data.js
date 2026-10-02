@@ -624,7 +624,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": "thèsarde en pologne"
+                "apres_ecole": "Thèsarde en pologne"
             },
             {
                 "nom": "BATIER",
@@ -849,7 +849,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": "consultante R et D en biotechnologies"
+                "apres_ecole": "Consultante R&D en biotechnologies"
             },
             {
                 "nom": "NINCLAUS",
@@ -893,7 +893,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Coordinateur production des biscuits Saint Michel"
             },
             {
                 "nom": "JOHNS",
@@ -1277,7 +1277,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": "gestion des milieux naturels"
+                "apres_ecole": "Gestion des milieux naturels"
             },
             {
                 "nom": "LASSALLETTE",
@@ -1288,7 +1288,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": "stages bien-être animal – thèse sur transition dans l’élevage"
+                "apres_ecole": "Stages bien-être animal –Thèse sur transition dans l’élevage"
             },
             {
                 "nom": "CHARTIER",
@@ -1321,7 +1321,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "fonctionnaire",
-                "apres_ecole": ""
+                "apres_ecole": "Cheffe de projet agriculture urbaine"
             },
             {
                 "nom": "JOSSELIN",
@@ -1343,7 +1343,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "DDT Chasse Faune sauvage pastoralisme"
             },
             {
                 "nom": "SAN FRANCISCO",
@@ -1677,7 +1677,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Directeur exploitation 100% bio"
             },
             {
                 "nom": "MASSON",
@@ -1699,7 +1699,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Manager sélection animale"
             },
             {
                 "nom": "CHOMPRET",
@@ -1925,7 +1925,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": "ingé biologiste cutanée"
+                "apres_ecole": "Ingénieure biologiste cutanée"
             },
             {
                 "nom": "VIALLARD",
@@ -1936,7 +1936,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Nutritionniste en parc zoologique/Thésarde/Enseignement"
             },
             {
                 "nom": "NOEL",
@@ -1958,7 +1958,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Technicienne en racea allaitantes"
             },
             {
                 "nom": "PICARD-PAYS",
@@ -2674,7 +2674,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Chargé de projets au conservatoire espaces naturels de l’allier"
             },
             {
                 "nom": "FROSSARD",
@@ -2878,7 +2878,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Développeur logiciels milieu médical"
             }
         ]
     },
@@ -2959,7 +2959,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Ingénieure affaires cliniques uromems"
             },
             {
                 "nom": "PENDJE",
@@ -3252,9 +3252,9 @@ const ecolesData = [
                 "apres_ecole": ""
             },
             {
-                "nom": "",
+                "nom": "NORE",
                 "prenom": "Adrien",
-                "initiale_nom": "",
+                "initiale_nom": "N",
                 "annee": 2024,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -3286,14 +3286,14 @@ const ecolesData = [
             },
             {
                 "nom": "FOLLIN",
-                "prenom": "Léa",
+                "prenom": "Léna",
                 "initiale_nom": "F",
                 "annee": 2017,
                 "classe": "BCPST",
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Coordonatrice de projets de construction à Montréal"
             },
             {
                 "nom": "RIPOTEAU",
@@ -4025,7 +4025,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Ingénieur recherche CNRS"
             },
             {
                 "nom": "MARCHEVAL",
@@ -4592,7 +4592,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Ingénieur CVC – Chargé d’affaires"
             }
         ]
     },
@@ -4710,14 +4710,14 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Inspectrice ICPE"
             },
             {
                 "nom": "BALAT",
                 "prenom": "Emeline",
                 "initiale_nom": "B",
-                "annee": 0,
-                "classe": "",
+                "annee": 2017,
+                "classe": "BCPST",
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
@@ -5294,7 +5294,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": "paysagiste conceptrice en cabinet"
+                "apres_ecole": "Paysagiste conceptrice en cabinet"
             },
             {
                 "nom": "BOUTY",
@@ -5305,7 +5305,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": "conseillere dans une COOP de noix"
+                "apres_ecole": "Conseillere dans une COOP de noix"
             },
             {
                 "nom": "BOMPART",
@@ -5440,7 +5440,7 @@ const ecolesData = [
                 "lien_video": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
-                "apres_ecole": ""
+                "apres_ecole": "Chargée de restauration des milieux dans un syndicat des rivières"
             }
         ]
     },
