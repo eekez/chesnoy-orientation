@@ -1106,9 +1106,9 @@ const ecolesData = [
                 "fonctionnaire": "fonctionnaire"
             },
             {
-                "nom": "",
+                "nom": "DEVOS",
                 "prenom": "Raphael",
-                "initiale_nom": "",
+                "initiale_nom": "D",
                 "annee": 2023,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -1116,9 +1116,9 @@ const ecolesData = [
                 "fonctionnaire": "fonctionnaire"
             },
             {
-                "nom": "",
+                "nom": "GUILLERAULT",
                 "prenom": "Pierre",
-                "initiale_nom": "",
+                "initiale_nom": "G",
                 "annee": 2023,
                 "classe": "BCPST",
                 "lien_video": "",
@@ -1452,6 +1452,126 @@ const ecolesData = [
         ],
         "specs_g2e": null,
         "anciens": [
+            {
+                "nom": "BARBEAU",
+                "prenom": "Laura",
+                "initiale_nom": "B",
+                "annee": 2024,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "HENRIET",
+                "prenom": "Mélanie",
+                "initiale_nom": "H",
+                "annee": 2024,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "LE PANS",
+                "prenom": "Blandine",
+                "initiale_nom": "L",
+                "annee": 2024,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "BATTAIT",
+                "prenom": "Alexandre",
+                "initiale_nom": "B",
+                "annee": 2023,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "GUYON",
+                "prenom": "Pauline",
+                "initiale_nom": "G",
+                "annee": 2023,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "VUILE",
+                "prenom": "Léa",
+                "initiale_nom": "V",
+                "annee": 2022,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "CHAMPOLIVIER",
+                "prenom": "Léa",
+                "initiale_nom": "C",
+                "annee": 2021,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "COURCOUX",
+                "prenom": "Eve",
+                "initiale_nom": "C",
+                "annee": 2021,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "DEMEULEMEESTER",
+                "prenom": "Léa",
+                "initiale_nom": "D",
+                "annee": 2018,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "SIMON",
+                "prenom": "Thibaut",
+                "initiale_nom": "S",
+                "annee": 2017,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "MASSON",
+                "prenom": "Auréliane",
+                "initiale_nom": "M",
+                "annee": 2014,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
+            {
+                "nom": "POISSON",
+                "prenom": "Aurore",
+                "initiale_nom": "P",
+                "annee": 2014,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": ""
+            },
             {
                 "nom": "CHOMPRET",
                 "prenom": "Louise-Karol",
@@ -4998,7 +5118,7 @@ const ecolesData = [
             "Enseignement par projets",
             "Contrat de Professionnalisation"
         ],
-        "image": "https://lh3.googleusercontent.com/gps-cs-s/AHRPTWknvIch5KeU20y1MBKK3mzcq9S-2UW9NO_BSsJMYIax5DAq7P0aC6hXyENOrBZP8WPAOnwkQK-_KbuLbwQwXG1bgmALRcexnfW825E0AJ-7j_Drpyv4Ue36aEcuhvbkhiHc=w1348-h1000-k-no",
+        "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.lO_GiI7tKgIdCO8-wsmx9gHaEK%3Fr%3D0%26pid%3DApi&f=1&ipt=882bbd65ddd7a781f2a89ea31c354ccc2876fc7730d756a9be2dc4366ae5afc8&ipo=images",
         "specs_bcpst": null,
         "specs_tb": null,
         "specs_g2e": null,
