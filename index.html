@@ -1081,7 +1081,7 @@ function afficherEcole(ecole) {
             zoomControl: false, dragging: false, scrollWheelZoom: false,
             doubleClickZoom: false, keyboard: false, attributionControl: false
         });
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png').addTo(miniMap);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1_2ca2_1_ecce94fae6c4dfd24b87b466').addTo(miniMap);
     }
     if (miniMarker) miniMap.removeLayer(miniMarker);
     miniMarker = L.circleMarker(ecole.coords, {
