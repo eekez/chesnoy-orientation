@@ -80,7 +80,8 @@
         <img src="logo.jpg" alt="Logo Le Chesnoy" class="h-12 w-12 rounded-lg bg-white p-0.5 object-contain shadow">
         <div class="min-w-0">
             <h1 class="truncate text-md md:text-lg font-bold tracking-tight text-amber-300">Lycée Agricole Le Chesnoy</h1>
-            <p class="hidden sm:block text-xs opacity-90 font-medium text-white">Parcours des Anciens Étudiants BCPST &amp; TB</p>
+            <p class="truncate text-xs md:text-sm font-semibold text-white">Où sont nos anciens étudiants ?</p>
+            <p class="hidden md:block text-[11px] opacity-80 font-medium text-white">Parcours des Anciens Étudiants BCPST &amp; TB</p>
         </div>
     </div>
     
@@ -126,14 +127,15 @@
 
     <div id="list-view" class="hidden w-full h-2/5 md:h-full md:w-3/5 overflow-y-auto bg-gray-50 border-r border-gray-200 flex flex-col" role="region" aria-label="Liste des écoles">
         <div class="sticky top-0 bg-gray-50 border-b border-gray-200 px-4 py-2 z-10">
-            <p id="list-header-text" class="text-[11px] text-gray-500"></p>
+            <div class="flex items-center justify-between gap-2"><p id="list-header-text" class="text-[11px] text-gray-500"></p>
+            <button onclick="ouvrirFeuille()" class="md:hidden shrink-0 text-xs font-bold text-white bg-emerald-700 px-3 py-1.5 rounded-full active:scale-95">🔍 Filtres</button></div>
         </div>
         <div id="list-content" class="p-3 space-y-2 flex-1" role="list"></div>
     </div>
 
     <div id="details-panel" class="w-full h-3/5 md:h-full md:w-2/5 bg-white p-4 md:p-6 overflow-y-auto border-t-2 md:border-t-0 md:border-l border-gray-200 flex flex-col">
 
-        <div class="md:hidden flex items-center justify-between mb-2"><span class="w-10 h-1.5 rounded-full bg-gray-300"></span><button onclick="fermerFeuille()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700">✕ Fermer</button></div>
+        <div class="md:hidden flex items-center justify-between mb-2"><span class="w-10 h-1.5 rounded-full bg-gray-300"></span><button onclick="fermerSheet()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700">✕ Fermer</button></div>
         <div id="filters-block" class="space-y-3 mb-4 bg-gray-50 p-3 rounded-xl border border-gray-100 shadow-sm" role="search" aria-label="Filtres de recherche">
 
 		<!-- Remplacez l'ancien input par celui-ci : -->
@@ -404,7 +406,7 @@ function setGrandesEcoles(v, refresh = true) {
 function changerOnglet(o, init) {
     const section = o === 'liste' ? 'carte' : o;
     const vue = o === 'liste' ? 'liste' : o === 'carte' ? 'carte' : null;
-    if (vue && vue !== vueCourante) toggleVue();
+    if (vue && vue !== vueCourante) { toggleVue(); reinitialiserFiltresSeuls(); }
     ongletCourant = section;
     fermerModalGlobale();
     ['carte', 'fiches', 'videos', 'stats'].forEach(k => document.getElementById('tab-' + k).classList.toggle('hidden', k !== section));
@@ -480,12 +482,15 @@ function rendreVideos() {
     const s = SOUS_ONGLETS_VIDEOS.find(x => x.id === sousOngletVideo);
     let groupes;
     if (s.temoignages) {
-        const par = {};
-        ecolesData.forEach(e => e.anciens.forEach(a => {
-            if (!aLien(a.lien_video)) return;
-            (par[a.annee] = par[a.annee] || []).push({ titre: a.prenom + ' ' + a.initiale_nom + '.', sous: e.nom, lien: a.lien_video.trim() });
-        }));
-        groupes = Object.keys(par).sort((a, b) => b - a).map(y => ({ titre: 'Intégration ' + y, videos: par[y] }));
+        groupes = ecolesData
+            .map(e => ({
+                titre: e.nom,
+                videos: e.anciens.filter(a => aLien(a.lien_video))
+                    .sort((a, b) => b.annee - a.annee)
+                    .map(a => ({ titre: a.prenom + ' ' + a.initiale_nom + '.', sous: 'Promotion ' + a.annee + (a.classe ? ' · ' + a.classe : ''), lien: a.lien_video.trim() }))
+            }))
+            .filter(g => g.videos.length)
+            .sort((a, b) => a.titre.localeCompare(b.titre, 'fr'));
     } else {
         groupes = VIDEOS_CATEGORISEES.filter(c => s.test(c.categorie))
             .map(c => ({ titre: c.categorie, videos: c.videos.map(v => ({ titre: v.titre, sous: '', lien: v.lien })) }));
@@ -516,44 +521,50 @@ function rendreStats() {
         if (!(a.classe || '').includes(statsFiliere)) return;
         rows.push({ a, e, ge: estGrandeEcole(e) });
     }));
-    const total = rows.length, nbGE = rows.filter(r => r.ge).length;
-    const pct = (n, t) => t ? Math.round(100 * n / t) + ' %' : '–';
+    const hc = (typeof etudiantsHorsCarte !== 'undefined' ? etudiantsHorsCarte : []).filter(h => (h.classe || '').includes(statsFiliere));
+    const nbHC = c => hc.filter(h => h.categorie === c).length;
+    const nbBUT = nbHC('BUT'), nbFacNP = nbHC('Faculté (non précisée)'), nbSN = nbHC('Sans nouvelles');
+    const facsNommees = rows.filter(r => !r.ge);
+    const total = rows.length + hc.length, nbGE = rows.filter(r => r.ge).length, nbFac = facsNommees.length + nbFacNP, nbAutres = nbBUT + nbSN;
+    const nb52 = rows.filter(r => r.a.cinq_demi).length + hc.filter(h => h.cinq_demi).length;
     const carte = (val, lib, sub, coul) => '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center"><p class="text-2xl font-extrabold ' + coul + '">' + val + '</p><p class="text-[11px] font-bold text-gray-700">' + lib + '</p>' + (sub ? '<p class="text-[10px] text-gray-400">' + sub + '</p>' : '') + '</div>';
+    const annees = [...new Set([...ANNEES, ...hc.map(h => h.annee)])].sort((a, b) => b - a);
 
     let h = '<h2 class="text-lg font-extrabold text-emerald-950">📊 Statistiques — ' + statsFiliere + '</h2>' +
-        '<p class="text-xs text-gray-500 mb-3">Effectifs des étudiants dont la destination est connue. Pas de pourcentages : le nombre d\'étudiants par classe et le devenir de certains étudiants ne sont pas toujours connus.</p>' +
+        '<p class="text-xs text-gray-500 mb-3">Tous les étudiants du fichier sont comptés, y compris ceux absents de la carte. Réorientations : « Fac » (facultés nommées ou non) et « Autres » (BUT, sans nouvelles…). Aucun pourcentage.</p>' +
         '<div class="flex gap-2 mb-4">' + [['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) =>
             '<button onclick="statsFiliere=\'' + k + '\';rendreStats()" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all ' +
             (statsFiliere === k ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200 hover:bg-emerald-50') + '">' + l + '</button>').join('') + '</div>';
 
     h += '<div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">' +
-        carte(total, 'élèves recensés', ANNEES.length + ' promotions', 'text-emerald-700') +
+        carte(total, 'étudiants au total', annees.length + ' promotions', 'text-emerald-700') +
         carte(nbGE, 'en grandes écoles', '', 'text-emerald-700') +
-        carte(total - nbGE, 'à l\'université / fac', '', 'text-slate-500') +
+        carte(nbFac, 'réorientations : fac', '', 'text-slate-500') +
+        carte(nbAutres, 'réorientations : autres', 'BUT, sans nouvelles…', 'text-slate-500') +
         carte(rows.filter(r => estFonct(r.a)).length, 'élèves fonctionnaires', '', 'text-blue-600') +
-        carte(rows.filter(r => r.a.cinq_demi).length, 'étudiants en 5/2', '', 'text-purple-600') +
-        carte(rows.filter(r => aLien(r.a.lien_video)).length, 'témoignages vidéo', '', 'text-red-600') +
-        carte(new Set(rows.map(r => r.e.nom)).size, 'établissements différents', '', 'text-amber-600') + '</div>';
+        carte(nb52, 'étudiants en 5/2', '', 'text-purple-600') +
+        carte(rows.filter(r => aLien(r.a.lien_video)).length, 'témoignages vidéo', '', 'text-red-600') + '</div>';
 
-    // Par année
     h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Par année d\'intégration</h3>' +
         '<div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-x-auto mb-6"><table class="w-full text-xs text-center">' +
-        '<thead class="bg-emerald-50 text-emerald-900 text-[10px] uppercase tracking-wide"><tr><th class="p-2 text-left">Année</th><th class="p-2">Élèves</th><th class="p-2">Grandes écoles</th><th class="p-2">Fac</th><th class="p-2">Fonct.</th><th class="p-2">5/2</th></tr></thead><tbody>';
-    [...ANNEES].reverse().forEach(y => {
-        const r = rows.filter(x => x.a.annee === y);
-        if (!r.length) return;
-        const g = r.filter(x => x.ge).length;
-        h += '<tr class="border-t border-gray-100 hover:bg-gray-50"><td class="p-2 text-left font-bold">' + y + '</td><td class="p-2 font-bold">' + r.length + '</td>' +
-            '<td class="p-2 text-emerald-700 font-bold">' + g + '</td><td class="p-2 text-slate-500">' + (r.length - g) + '</td>' +
-            '<td class="p-2 text-blue-600">' + r.filter(x => estFonct(x.a)).length + '</td><td class="p-2 text-purple-600">' + r.filter(x => x.a.cinq_demi).length + '</td></tr>';
+        '<thead class="bg-emerald-50 text-emerald-900 text-[10px] uppercase tracking-wide"><tr><th rowspan="2" class="p-2 text-left">Année</th><th rowspan="2" class="p-2">Total</th><th rowspan="2" class="p-2">Grandes écoles</th><th colspan="2" class="p-2 border-l border-emerald-100">Réorientations</th><th rowspan="2" class="p-2 border-l border-emerald-100">Fonct.</th><th rowspan="2" class="p-2">5/2</th></tr><tr><th class="p-1 border-l border-emerald-100">Fac</th><th class="p-1">Autres</th></tr></thead><tbody>';
+    annees.forEach(y => {
+        const r = rows.filter(x => x.a.annee === y), c = hc.filter(x => x.annee === y);
+        if (!r.length && !c.length) return;
+        const cc = k => c.filter(x => x.categorie === k).length;
+        h += '<tr class="border-t border-gray-100 hover:bg-gray-50"><td class="p-2 text-left font-bold">' + y + '</td><td class="p-2 font-bold">' + (r.length + c.length) + '</td>' +
+            '<td class="p-2 text-emerald-700 font-bold">' + r.filter(x => x.ge).length + '</td><td class="p-2 text-slate-500 border-l border-gray-100">' + (r.filter(x => !x.ge).length + cc('Faculté (non précisée)')) + '</td>' +
+            '<td class="p-2 text-slate-500">' + (cc('BUT') + cc('Sans nouvelles')) + '</td>' +
+            '<td class="p-2 text-blue-600">' + r.filter(x => estFonct(x.a)).length + '</td><td class="p-2 text-purple-600">' + (r.filter(x => x.a.cinq_demi).length + c.filter(x => x.cinq_demi).length) + '</td></tr>';
     });
     h += '</tbody></table></div>';
 
-    // Par type d'école
+
+    // Par type d'école (étudiants présents sur la carte)
     const types = {};
-    rows.forEach(r => { const t = typeColors[r.e.type_bcpst] ? r.e.type_bcpst : typeColors[r.e.type_tb] ? r.e.type_tb : 'Autres'; types[t] = (types[t] || 0) + 1; });
+    rows.filter(r => r.ge).forEach(r => { const t = typeColors[r.e.type_bcpst] ? r.e.type_bcpst : typeColors[r.e.type_tb] ? r.e.type_tb : 'Autres'; types[t] = (types[t] || 0) + 1; });
     const max = Math.max(1, ...Object.values(types));
-    h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Par type d\'établissement</h3><div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 space-y-1.5">' +
+    h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Grandes écoles par type d\'établissement</h3><div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 space-y-1.5">' +
         Object.entries(types).sort((a, b) => b[1] - a[1]).map(([t, n]) =>
             '<div class="flex items-center gap-2 text-[11px]"><span class="w-28 shrink-0 font-bold text-gray-700 truncate">' + t + '</span>' +
             '<div class="flex-1 bg-gray-100 rounded-full h-3 overflow-hidden"><div class="h-3 rounded-full" style="width:' + (100 * n / max) + '%;background:' + (typeColors[t] || '#6b7280') + '"></div></div>' +
@@ -1095,7 +1106,7 @@ function filtrerTout() {
 
     if (ecoleActuelleObj) {
         const encoreVisible = markers.some(item => item.ecole.nom === ecoleActuelleObj.nom && item.visible);
-        encoreVisible ? afficherEcole(ecoleActuelleObj) : fermerEcole();
+        encoreVisible ? afficherEcole(ecoleActuelleObj, true) : fermerEcole();
     }
 
     mettreAJourLegende();
@@ -1168,10 +1179,10 @@ function basculerFiltresFiche() {
     btn.textContent = ouvert ? '✕ Masquer les filtres' : '🔍 Filtres';
 }
 
-function afficherEcole(ecole) {
+function afficherEcole(ecole, depuisFiltre) {
     const nouvelle = !ecoleActuelleObj || ecoleActuelleObj.nom !== ecole.nom;
+    if (estMobile() && !depuisFiltre) ouvrirFeuille();
     if (nouvelle) {
-        if (estMobile()) ouvrirFeuille();
         document.getElementById('filters-block').classList.add('hidden');
         const bf = document.getElementById('btn-filtres-fiche'); bf.setAttribute('aria-expanded', 'false'); bf.textContent = '🔍 Filtres';
     }
@@ -1443,6 +1454,7 @@ function ouvrirFichePoste(lien, prenom) { window.open(lien, '_blank', 'noopener'
 
 const estMobile = () => window.matchMedia('(max-width: 767px)').matches;
 function ouvrirFeuille() { document.getElementById('details-panel').classList.add('sheet-open'); }
+function fermerSheet() { if (ecoleActuelleObj) fermerEcole(); else fermerFeuille(); }
 function fermerFeuille() { document.getElementById('details-panel').classList.remove('sheet-open'); }
 
 function fermerEcole() {
@@ -1510,6 +1522,14 @@ document.getElementById("global-video-modal").addEventListener("click", function
 // ================================================================
 // RÉINITIALISATION
 // ================================================================
+function reinitialiserFiltresSeuls() {
+    document.getElementById('search-bar').value = "";
+    anneesSel.clear(); renderAnneeChips(); setGrandesEcoles(false, false);
+    toutDeselectionnerBanques();
+    fermerEcole();
+    changerFiliere('TOUT');
+}
+
 function reinitialiserFiltres() {
     document.getElementById('search-bar').value = "";
     anneesSel.clear(); renderAnneeChips(); setGrandesEcoles(false, false);
