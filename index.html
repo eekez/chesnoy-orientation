@@ -76,11 +76,11 @@
 <body class="bg-gray-50 font-sans h-full flex flex-col">
 
 <header class="bg-emerald-800 text-white p-3 shadow-md flex items-center justify-between z-10 border-b-4 border-amber-400">
-    <div class="flex items-center space-x-3">
+    <div class="flex items-center space-x-3 min-w-0">
         <img src="logo.jpg" alt="Logo Le Chesnoy" class="h-12 w-12 rounded-lg bg-white p-0.5 object-contain shadow">
-        <div>
-            <h1 class="text-md md:text-lg font-bold tracking-tight text-amber-300">Lycée Agricole Le Chesnoy</h1>
-            <p class="text-xs opacity-90 font-medium text-white">Parcours des Anciens Étudiants BCPST &amp; TB</p>
+        <div class="min-w-0">
+            <h1 class="truncate text-md md:text-lg font-bold tracking-tight text-amber-300">Lycée Agricole Le Chesnoy</h1>
+            <p class="hidden sm:block text-xs opacity-90 font-medium text-white">Parcours des Anciens Étudiants BCPST &amp; TB</p>
         </div>
     </div>
     
@@ -111,10 +111,8 @@
 
     <div id="map-container" class="w-full h-2/5 md:h-full md:w-3/5 bg-gray-200 shadow-inner relative">
         <div id="map" class="w-full h-full"></div>
-        <button id="btn-vue-initiale" onclick="reinitialiserFiltres()" class="hidden absolute top-2 right-2 z-[1000] bg-amber-400 text-emerald-950 text-xs font-bold px-3 py-2 rounded-full shadow-lg flex items-center gap-1 active:scale-95">🏠 Vue initiale</button>
         <div class="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] flex gap-2">
             <button onclick="ouvrirFeuille()" class="bg-emerald-700 text-white text-sm font-bold px-5 py-3 rounded-full shadow-lg active:scale-95">🔍 Filtres</button>
-            <button onclick="changerOnglet('liste')" class="bg-white text-emerald-900 text-sm font-bold px-5 py-3 rounded-full shadow-lg border border-gray-200 active:scale-95">📋 Liste</button>
         </div>
         <div id="map-legend" class="absolute bottom-8 left-2 z-[1000] bg-white/95 backdrop-blur-sm rounded-lg shadow-md border border-gray-200 text-xs overflow-hidden" style="min-width:120px;" role="complementary" aria-label="Légende de la carte">
             <button id="legend-toggle" onclick="toggleLegend()" aria-expanded="false" aria-controls="legend-body"
@@ -136,7 +134,7 @@
     <div id="details-panel" class="w-full h-3/5 md:h-full md:w-2/5 bg-white p-4 md:p-6 overflow-y-auto border-t-2 md:border-t-0 md:border-l border-gray-200 flex flex-col">
 
         <div class="md:hidden flex items-center justify-between mb-2"><span class="w-10 h-1.5 rounded-full bg-gray-300"></span><button onclick="fermerFeuille()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700">✕ Fermer</button></div>
-        <div class="space-y-3 mb-4 bg-gray-50 p-3 rounded-xl border border-gray-100 shadow-sm" role="search" aria-label="Filtres de recherche">
+        <div id="filters-block" class="space-y-3 mb-4 bg-gray-50 p-3 rounded-xl border border-gray-100 shadow-sm" role="search" aria-label="Filtres de recherche">
 
 		<!-- Remplacez l'ancien input par celui-ci : -->
 		<input type="text" id="search-bar" placeholder="🔍 École, ville, élève, mot-clé (ex: biotechnologies)…"
@@ -208,6 +206,9 @@
 
 
         <div id="school-info" class="hidden flex-1 flex flex-col">
+
+            <button id="btn-filtres-fiche" onclick="basculerFiltresFiche()" aria-expanded="false"
+                    class="self-start mb-3 text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1.5 rounded-lg active:scale-95">🔍 Filtres</button>
 
             <div class="border-b border-gray-100 pb-3 mb-4">
                 <h2 id="school-name" class="text-xl font-extrabold text-emerald-950 leading-tight">Nom de l'école</h2>
@@ -362,7 +363,7 @@ let anneesSel = new Set();          // vide = « Toutes »
 let grandesEcolesSeules = false;
 let ongletCourant = 'carte';
 let sousOngletVideo = 'forums';
-let statsFiliere = 'TOUT';
+let statsFiliere = 'BCPST';
 
 // Types considérés comme NON « grande école » (ajouter ici 'BUT' etc. si besoin)
 const TYPES_NON_GRANDE_ECOLE = ['Fac', 'BUT', 'IUT', 'Université'];
@@ -512,16 +513,16 @@ function rendreVideos() {
 function rendreStats() {
     const rows = [];
     ecolesData.forEach(e => e.anciens.forEach(a => {
-        if (statsFiliere !== 'TOUT' && !(a.classe || '').includes(statsFiliere)) return;
+        if (!(a.classe || '').includes(statsFiliere)) return;
         rows.push({ a, e, ge: estGrandeEcole(e) });
     }));
     const total = rows.length, nbGE = rows.filter(r => r.ge).length;
     const pct = (n, t) => t ? Math.round(100 * n / t) + ' %' : '–';
     const carte = (val, lib, sub, coul) => '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center"><p class="text-2xl font-extrabold ' + coul + '">' + val + '</p><p class="text-[11px] font-bold text-gray-700">' + lib + '</p>' + (sub ? '<p class="text-[10px] text-gray-400">' + sub + '</p>' : '') + '</div>';
 
-    let h = '<h2 class="text-lg font-extrabold text-emerald-950">📊 Statistiques</h2>' +
+    let h = '<h2 class="text-lg font-extrabold text-emerald-950">📊 Statistiques — ' + statsFiliere + '</h2>' +
         '<p class="text-xs text-gray-500 mb-3">Effectifs des étudiants dont la destination est connue. Pas de pourcentages : le nombre d\'étudiants par classe et le devenir de certains étudiants ne sont pas toujours connus.</p>' +
-        '<div class="flex gap-2 mb-4">' + [['TOUT', 'Tous'], ['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) =>
+        '<div class="flex gap-2 mb-4">' + [['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) =>
             '<button onclick="statsFiliere=\'' + k + '\';rendreStats()" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all ' +
             (statsFiliere === k ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200 hover:bg-emerald-50') + '">' + l + '</button>').join('') + '</div>';
 
@@ -537,13 +538,12 @@ function rendreStats() {
     // Par année
     h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Par année d\'intégration</h3>' +
         '<div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-x-auto mb-6"><table class="w-full text-xs text-center">' +
-        '<thead class="bg-emerald-50 text-emerald-900 text-[10px] uppercase tracking-wide"><tr><th class="p-2 text-left">Année</th><th class="p-2">Élèves</th><th class="p-2">BCPST</th><th class="p-2">TB</th><th class="p-2">Grandes écoles</th><th class="p-2">Fac</th><th class="p-2">Fonct.</th><th class="p-2">5/2</th></tr></thead><tbody>';
+        '<thead class="bg-emerald-50 text-emerald-900 text-[10px] uppercase tracking-wide"><tr><th class="p-2 text-left">Année</th><th class="p-2">Élèves</th><th class="p-2">Grandes écoles</th><th class="p-2">Fac</th><th class="p-2">Fonct.</th><th class="p-2">5/2</th></tr></thead><tbody>';
     [...ANNEES].reverse().forEach(y => {
         const r = rows.filter(x => x.a.annee === y);
         if (!r.length) return;
         const g = r.filter(x => x.ge).length;
         h += '<tr class="border-t border-gray-100 hover:bg-gray-50"><td class="p-2 text-left font-bold">' + y + '</td><td class="p-2 font-bold">' + r.length + '</td>' +
-            '<td class="p-2">' + r.filter(x => (x.a.classe || '').includes('BCPST')).length + '</td><td class="p-2">' + r.filter(x => (x.a.classe || '').includes('TB')).length + '</td>' +
             '<td class="p-2 text-emerald-700 font-bold">' + g + '</td><td class="p-2 text-slate-500">' + (r.length - g) + '</td>' +
             '<td class="p-2 text-blue-600">' + r.filter(x => estFonct(x.a)).length + '</td><td class="p-2 text-purple-600">' + r.filter(x => x.a.cinq_demi).length + '</td></tr>';
     });
@@ -609,22 +609,22 @@ function verifierEtatInitial() {
     
     if (isInitial) {
         btn.classList.add('hidden');
-        document.getElementById('btn-vue-initiale').classList.add('hidden');
     } else {
         btn.classList.remove('hidden');
-        document.getElementById('btn-vue-initiale').classList.toggle('hidden', ecoleActuelleObj !== null);
         
         // Comportement intelligent du bouton
         if (ecoleActuelleObj !== null) {
             // Une école est ouverte : le bouton ferme l'école
             btn.onclick = fermerEcole;
-            btn.innerHTML = '<span aria-hidden="true" class="text-sm leading-none">←</span><span class="hidden sm:inline">Fermer la fiche</span>';
+            btn.innerHTML = '<span aria-hidden="true" class="text-sm leading-none">←</span><span>Fermer la fiche</span>';
             btn.setAttribute('aria-label', 'Fermer la fiche école');
+            btn.title = 'Revenir à la carte complète';
         } else {
             // Aucune école ouverte, mais des filtres sont actifs OU la carte a été déplacée/zoomée
             btn.onclick = reinitialiserFiltres; // Cette fonction remet tout à zéro, y compris la carte
-            btn.innerHTML = '<span aria-hidden="true" class="text-sm leading-none">🏠</span><span class="hidden sm:inline">Retour à l\'accueil</span>';
-            btn.setAttribute('aria-label', 'Réinitialiser l\'affichage et la carte');
+            btn.innerHTML = '<span aria-hidden="true" class="text-sm leading-none">↺</span><span>Vue initiale</span>';
+            btn.setAttribute('aria-label', 'Revenir à la vue initiale : efface les filtres et recentre la carte');
+            btn.title = 'Efface les filtres et recentre la carte sur la France';
         }
     }
 }
@@ -1160,8 +1160,21 @@ function mettreAJourLegende() {
 // ================================================================
 // FICHE ÉCOLE
 // ================================================================
+function basculerFiltresFiche() {
+    const b = document.getElementById('filters-block');
+    const ouvert = b.classList.toggle('hidden') === false;
+    const btn = document.getElementById('btn-filtres-fiche');
+    btn.setAttribute('aria-expanded', String(ouvert));
+    btn.textContent = ouvert ? '✕ Masquer les filtres' : '🔍 Filtres';
+}
+
 function afficherEcole(ecole) {
-    if (estMobile()) ouvrirFeuille();
+    const nouvelle = !ecoleActuelleObj || ecoleActuelleObj.nom !== ecole.nom;
+    if (nouvelle) {
+        if (estMobile()) ouvrirFeuille();
+        document.getElementById('filters-block').classList.add('hidden');
+        const bf = document.getElementById('btn-filtres-fiche'); bf.setAttribute('aria-expanded', 'false'); bf.textContent = '🔍 Filtres';
+    }
     document.getElementById('placeholder-message').classList.add('hidden');
     document.getElementById('school-info').classList.remove('hidden');
 
@@ -1434,6 +1447,7 @@ function fermerFeuille() { document.getElementById('details-panel').classList.re
 
 function fermerEcole() {
     fermerFeuille();
+    document.getElementById('filters-block').classList.remove('hidden');
     document.getElementById('school-info').classList.add('hidden');
     document.getElementById('placeholder-message').classList.remove('hidden');
     
