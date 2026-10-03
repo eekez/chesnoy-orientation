@@ -185,6 +185,8 @@ for _, ecole in ecoles.iterrows():
             "lien_video":       safe_str(eleve.get('Lien_Video')),
             "lien_fiche_poste": safe_str(eleve.get('Lien_Fiche_Poste')),
             "fonctionnaire":    safe_str(eleve.get('Fonctionnaire')),
+            "apres_ecole":      safe_str(eleve.get("Après l'école")),
+            "cinq_demi":        safe_str(eleve.get('CinqDemi')).lower().startswith('oui'),
         })
 
     # Sélectivité

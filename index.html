@@ -59,6 +59,18 @@
             opacity: 1;
         }
         .video-group.collapsed { opacity: 0; }
+    
+        /* ===== Mobile : carte plein écran, filtres/fiche dans une feuille basse ===== */
+        @media (max-width: 767px) {
+            #tab-carte { position: relative; }
+            #map-container { height: 100% !important; width: 100% !important; }
+            #list-view { height: 100% !important; width: 100% !important; }
+            #map-legend { bottom: 4.75rem !important; }
+            #details-panel { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1100; height: auto !important;
+                max-height: 82%; border-radius: 1rem 1rem 0 0; box-shadow: 0 -6px 24px rgba(0,0,0,.22);
+                transform: translateY(105%); transition: transform .25s ease; padding-bottom: 1.5rem; }
+            #details-panel.sheet-open { transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans h-full flex flex-col">
@@ -80,7 +92,7 @@
 
         <button id="view-toggle-btn" onclick="toggleVue()"
                 aria-label="Basculer vers la vue liste"
-                class="text-xs font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shrink-0">
+                class="hidden text-xs font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shrink-0">
             <span id="view-toggle-icon" aria-hidden="true">📋</span>
             <span id="view-toggle-label" class="hidden sm:inline">Vue liste</span>
         </button>
@@ -88,15 +100,22 @@
 </header>
 
 <nav class="bg-white border-b border-gray-200 flex overflow-x-auto shrink-0" role="tablist" aria-label="Sections du site">
-    <button id="tab-btn-carte"  role="tab" onclick="changerOnglet('carte')"  class="px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-4 transition-all">🗺 Carte</button>
-    <button id="tab-btn-videos" role="tab" onclick="changerOnglet('videos')" class="px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-4 transition-all">🎬 Vidéos</button>
-    <button id="tab-btn-stats"  role="tab" onclick="changerOnglet('stats')"  class="px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-4 transition-all">📊 Statistiques</button>
+    <button id="tab-btn-carte"  role="tab" onclick="changerOnglet('carte')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🗺 Carte</button>
+    <button id="tab-btn-liste"  role="tab" onclick="changerOnglet('liste')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📋 Liste</button>
+    <button id="tab-btn-videos" role="tab" onclick="changerOnglet('videos')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🎬 Vidéos</button>
+    <button id="tab-btn-fiches" role="tab" onclick="changerOnglet('fiches')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📄 Fiches de poste</button>
+    <button id="tab-btn-stats"  role="tab" onclick="changerOnglet('stats')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📊 Statistiques</button>
 </nav>
 
 <main id="tab-carte" class="flex-1 flex flex-col md:flex-row overflow-hidden">
 
     <div id="map-container" class="w-full h-2/5 md:h-full md:w-3/5 bg-gray-200 shadow-inner relative">
         <div id="map" class="w-full h-full"></div>
+        <button id="btn-vue-initiale" onclick="reinitialiserFiltres()" class="hidden absolute top-2 right-2 z-[1000] bg-amber-400 text-emerald-950 text-xs font-bold px-3 py-2 rounded-full shadow-lg flex items-center gap-1 active:scale-95">🏠 Vue initiale</button>
+        <div class="md:hidden absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] flex gap-2">
+            <button onclick="ouvrirFeuille()" class="bg-emerald-700 text-white text-sm font-bold px-5 py-3 rounded-full shadow-lg active:scale-95">🔍 Filtres</button>
+            <button onclick="changerOnglet('liste')" class="bg-white text-emerald-900 text-sm font-bold px-5 py-3 rounded-full shadow-lg border border-gray-200 active:scale-95">📋 Liste</button>
+        </div>
         <div id="map-legend" class="absolute bottom-8 left-2 z-[1000] bg-white/95 backdrop-blur-sm rounded-lg shadow-md border border-gray-200 text-xs overflow-hidden" style="min-width:120px;" role="complementary" aria-label="Légende de la carte">
             <button id="legend-toggle" onclick="toggleLegend()" aria-expanded="false" aria-controls="legend-body"
                     class="w-full flex items-center justify-between px-2.5 py-1.5 font-bold text-gray-600 bg-gray-50 hover:bg-gray-100 border-b border-gray-100 transition-colors text-[10px] uppercase tracking-wide">
@@ -116,6 +135,7 @@
 
     <div id="details-panel" class="w-full h-3/5 md:h-full md:w-2/5 bg-white p-4 md:p-6 overflow-y-auto border-t-2 md:border-t-0 md:border-l border-gray-200 flex flex-col">
 
+        <div class="md:hidden flex items-center justify-between mb-2"><span class="w-10 h-1.5 rounded-full bg-gray-300"></span><button onclick="fermerFeuille()" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-gray-100 text-gray-700">✕ Fermer</button></div>
         <div class="space-y-3 mb-4 bg-gray-50 p-3 rounded-xl border border-gray-100 shadow-sm" role="search" aria-label="Filtres de recherche">
 
 		<!-- Remplacez l'ancien input par celui-ci : -->
@@ -180,39 +200,10 @@
             </div>
         </div>
 
-        <div id="placeholder-message" class="flex-1 flex flex-col items-center text-center my-auto py-2">
-            <p class="text-4xl mb-3 animate-bounce" aria-hidden="true">📍</p>
-            <p class="text-base font-bold text-emerald-950">Explorez les intégrations du Chesnoy</p>
-            <p class="text-xs px-4 mt-1 text-gray-500 mb-4">Cliquez sur une école de la carte (ou dans la liste) pour en découvrir davantage.</p>
-
-            <div class="w-full max-w-sm mb-4 bg-emerald-50 rounded-xl p-4 border border-emerald-100 shadow-sm">
-                <h3 class="text-xs font-bold text-emerald-900 mb-3 uppercase tracking-wide flex items-center justify-center border-b border-emerald-200/50 pb-2">
-                    <span class="mr-2" aria-hidden="true">📈</span> Intégrations par année
-                </h3>
-                <div id="chart-container" class="w-full" style="height:84px;" role="img" aria-label="Histogramme des intégrations par année"></div>
-            </div>
-
-            <div class="w-full max-w-sm bg-emerald-50 rounded-xl p-4 border border-emerald-100 shadow-sm overflow-hidden">
-                <h3 class="text-xs font-bold text-emerald-900 mb-1 uppercase tracking-wide flex items-center justify-center border-b border-emerald-200/50 pb-2">
-                    <span class="mr-2 text-base" aria-hidden="true">🎓</span> Conférences et Forums
-                </h3>
-                <div id="general-videos-list" class="space-y-1 mt-2 text-left" role="list"></div>
-            </div>
-			
-			<div class="w-full max-w-sm bg-amber-50 rounded-xl p-4 border border-amber-100 shadow-sm overflow-hidden mt-4">
-                    <h3 class="text-xs font-bold text-amber-900 mb-1 uppercase tracking-wide flex items-center justify-center border-b border-amber-200/50 pb-2 ">
-                        <span class="mr-2 text-base">🗣️</span> Tous les témoignages
-                    </h3>
-                    <div id="all-students-videos-list" class="space-y-1 mt-2 text-left max-h-48 overflow-y-auto pr-1">
-                        </div>
-                </div>
-			<div class="w-full max-w-sm bg-blue-50 rounded-xl p-4 border border-blue-100 shadow-sm overflow-hidden mt-4">
-                <h3 class="text-xs font-bold text-blue-900 mb-1 uppercase tracking-wide flex items-center justify-center border-b border-blue-200/50 pb-2 ">
-                    <span class="mr-2 text-base">📄</span> Toutes les fiches de poste
-                </h3>
-                <div id="all-job-sheets-list" class="space-y-1 mt-2 text-left max-h-48 overflow-y-auto pr-1">
-						</div>
-				</div>
+        <div id="placeholder-message" class="text-center py-6 text-gray-500">
+            <p class="text-3xl mb-2" aria-hidden="true">📍</p>
+            <p class="text-sm font-bold text-emerald-950">Choisissez une école</p>
+            <p class="text-xs mt-1">Touchez un point de la carte ou une école de la liste pour voir sa fiche.</p>
         </div>
 
 
@@ -261,6 +252,9 @@
         <div id="video-subtabs" class="flex flex-wrap gap-2 mb-4"></div>
         <div id="video-grid"></div>
     </div>
+</section>
+<section id="tab-fiches" class="hidden flex-1 overflow-y-auto bg-gray-50">
+    <div id="fiches-content" class="max-w-5xl mx-auto p-4 md:p-6"></div>
 </section>
 <section id="tab-stats" class="hidden flex-1 overflow-y-auto bg-gray-50">
     <div id="stats-content" class="max-w-5xl mx-auto p-4 md:p-6"></div>
@@ -407,20 +401,47 @@ function setGrandesEcoles(v, refresh = true) {
 }
 
 function changerOnglet(o, init) {
-    ongletCourant = o;
+    const section = o === 'liste' ? 'carte' : o;
+    const vue = o === 'liste' ? 'liste' : o === 'carte' ? 'carte' : null;
+    if (vue && vue !== vueCourante) toggleVue();
+    ongletCourant = section;
     fermerModalGlobale();
-    ['carte', 'videos', 'stats'].forEach(k => {
-        document.getElementById('tab-' + k).classList.toggle('hidden', k !== o);
+    ['carte', 'fiches', 'videos', 'stats'].forEach(k => document.getElementById('tab-' + k).classList.toggle('hidden', k !== section));
+    const actif = (section === 'carte' && vueCourante === 'liste') ? 'liste' : section;
+    ['carte', 'liste', 'videos', 'fiches', 'stats'].forEach(k => {
         const b = document.getElementById('tab-btn-' + k);
-        b.setAttribute('aria-selected', String(k === o));
-        b.className = 'px-4 py-2.5 text-xs font-bold whitespace-nowrap border-b-4 transition-all ' +
-            (k === o ? 'border-amber-400 text-emerald-900 bg-emerald-50/60' : 'border-transparent text-gray-500 hover:text-emerald-800');
+        b.setAttribute('aria-selected', String(k === actif));
+        b.className = 'px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4 transition-all ' +
+            (k === actif ? 'border-amber-400 text-emerald-900 bg-emerald-50/60' : 'border-transparent text-gray-500 hover:text-emerald-800');
     });
-    document.getElementById('view-toggle-btn').classList.toggle('hidden', o !== 'carte');
-    if (o === 'carte') setTimeout(() => map.invalidateSize(), 50);
-    if (o === 'videos') rendreVideos();
-    if (o === 'stats') rendreStats();
+    if (section === 'carte') setTimeout(() => map.invalidateSize(), 50);
+    if (section === 'videos') rendreVideos();
+    if (section === 'fiches') rendreFiches();
+    if (section === 'stats') rendreStats();
     if (!init) sauvegarderEtat();
+}
+
+// ---------- Onglet Fiches de poste ----------
+let rechercheFiches = '';
+function rendreFiches() {
+    const fiches = [];
+    ecolesData.forEach(e => e.anciens.forEach(a => { if (aLien(a.lien_fiche_poste)) fiches.push({ a, e }); }));
+    const q = rechercheFiches.toLowerCase();
+    const liste = fiches.filter(f => !q || (f.a.prenom + ' ' + f.a.nom + ' ' + f.e.nom + ' ' + f.a.apres_ecole).toLowerCase().includes(q))
+        .sort((x, y) => y.a.annee - x.a.annee || x.e.nom.localeCompare(y.e.nom));
+    let h = '<h2 class="text-lg font-extrabold text-emerald-950">📄 Fiches de poste</h2>' +
+        '<p class="text-xs text-gray-500 mb-3">Fiches décrivant le métier exercé par d\'anciens élèves (' + fiches.length + ' disponibles).</p>' +
+        '<input id="fiches-search" type="search" value="' + rechercheFiches.replace(/"/g, '&quot;') + '" placeholder="🔍 Prénom, école, métier…" oninput="rechercheFiches=this.value;rendreFiches();document.getElementById(\'fiches-search\').focus()" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-4">';
+    if (!liste.length) h += '<p class="text-xs italic text-gray-500">Aucune fiche ne correspond.</p>';
+    let an = null;
+    liste.forEach(({ a, e }) => {
+        if (a.annee !== an) { an = a.annee; h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-4 mb-2">Promotion ' + an + '</h3>'; }
+        h += '<a href="' + a.lien_fiche_poste + '" target="_blank" rel="noopener" class="flex items-center gap-3 bg-white rounded-xl border border-gray-100 shadow-sm p-3 mb-2 active:scale-[0.99]">' +
+            '<span class="text-2xl" aria-hidden="true">📄</span><span class="flex-1 min-w-0"><span class="block text-sm font-bold text-gray-800 truncate">' + a.prenom + ' ' + (a.initiale_nom || '') + '.</span>' +
+            '<span class="block text-xs text-gray-500 truncate">' + e.nom + ' · ' + a.classe + '</span>' +
+            (a.apres_ecole ? '<span class="block text-xs text-emerald-700 truncate">' + a.apres_ecole + '</span>' : '') + '</span><span class="text-xs font-bold text-emerald-700">Ouvrir ↗</span></a>';
+    });
+    document.getElementById('fiches-content').innerHTML = h;
 }
 
 // ---------- Onglet Vidéos ----------
@@ -499,31 +520,32 @@ function rendreStats() {
     const carte = (val, lib, sub, coul) => '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center"><p class="text-2xl font-extrabold ' + coul + '">' + val + '</p><p class="text-[11px] font-bold text-gray-700">' + lib + '</p>' + (sub ? '<p class="text-[10px] text-gray-400">' + sub + '</p>' : '') + '</div>';
 
     let h = '<h2 class="text-lg font-extrabold text-emerald-950">📊 Statistiques</h2>' +
-        '<p class="text-xs text-gray-500 mb-3">Élèves recensés avec une école intégrée (hors étudiants non recensés).</p>' +
+        '<p class="text-xs text-gray-500 mb-3">Effectifs des étudiants dont la destination est connue. Pas de pourcentages : le nombre d\'étudiants par classe et le devenir de certains étudiants ne sont pas toujours connus.</p>' +
         '<div class="flex gap-2 mb-4">' + [['TOUT', 'Tous'], ['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) =>
             '<button onclick="statsFiliere=\'' + k + '\';rendreStats()" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all ' +
             (statsFiliere === k ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200 hover:bg-emerald-50') + '">' + l + '</button>').join('') + '</div>';
 
     h += '<div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">' +
         carte(total, 'élèves recensés', ANNEES.length + ' promotions', 'text-emerald-700') +
-        carte(nbGE, 'en grandes écoles', pct(nbGE, total), 'text-emerald-700') +
-        carte(total - nbGE, 'à l\'université / fac', pct(total - nbGE, total), 'text-slate-500') +
+        carte(nbGE, 'en grandes écoles', '', 'text-emerald-700') +
+        carte(total - nbGE, 'à l\'université / fac', '', 'text-slate-500') +
         carte(rows.filter(r => estFonct(r.a)).length, 'élèves fonctionnaires', '', 'text-blue-600') +
+        carte(rows.filter(r => r.a.cinq_demi).length, 'étudiants en 5/2', '', 'text-purple-600') +
         carte(rows.filter(r => aLien(r.a.lien_video)).length, 'témoignages vidéo', '', 'text-red-600') +
         carte(new Set(rows.map(r => r.e.nom)).size, 'établissements différents', '', 'text-amber-600') + '</div>';
 
     // Par année
     h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Par année d\'intégration</h3>' +
         '<div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-x-auto mb-6"><table class="w-full text-xs text-center">' +
-        '<thead class="bg-emerald-50 text-emerald-900 text-[10px] uppercase tracking-wide"><tr><th class="p-2 text-left">Année</th><th class="p-2">Élèves</th><th class="p-2">BCPST</th><th class="p-2">TB</th><th class="p-2">Grandes écoles</th><th class="p-2">Fac</th><th class="p-2">Fonct.</th></tr></thead><tbody>';
+        '<thead class="bg-emerald-50 text-emerald-900 text-[10px] uppercase tracking-wide"><tr><th class="p-2 text-left">Année</th><th class="p-2">Élèves</th><th class="p-2">BCPST</th><th class="p-2">TB</th><th class="p-2">Grandes écoles</th><th class="p-2">Fac</th><th class="p-2">Fonct.</th><th class="p-2">5/2</th></tr></thead><tbody>';
     [...ANNEES].reverse().forEach(y => {
         const r = rows.filter(x => x.a.annee === y);
         if (!r.length) return;
         const g = r.filter(x => x.ge).length;
         h += '<tr class="border-t border-gray-100 hover:bg-gray-50"><td class="p-2 text-left font-bold">' + y + '</td><td class="p-2 font-bold">' + r.length + '</td>' +
             '<td class="p-2">' + r.filter(x => (x.a.classe || '').includes('BCPST')).length + '</td><td class="p-2">' + r.filter(x => (x.a.classe || '').includes('TB')).length + '</td>' +
-            '<td class="p-2 text-emerald-700 font-bold">' + g + ' <span class="text-gray-400 font-normal">(' + pct(g, r.length) + ')</span></td><td class="p-2 text-slate-500">' + (r.length - g) + '</td>' +
-            '<td class="p-2 text-blue-600">' + r.filter(x => estFonct(x.a)).length + '</td></tr>';
+            '<td class="p-2 text-emerald-700 font-bold">' + g + '</td><td class="p-2 text-slate-500">' + (r.length - g) + '</td>' +
+            '<td class="p-2 text-blue-600">' + r.filter(x => estFonct(x.a)).length + '</td><td class="p-2 text-purple-600">' + r.filter(x => x.a.cinq_demi).length + '</td></tr>';
     });
     h += '</tbody></table></div>';
 
@@ -587,8 +609,10 @@ function verifierEtatInitial() {
     
     if (isInitial) {
         btn.classList.add('hidden');
+        document.getElementById('btn-vue-initiale').classList.add('hidden');
     } else {
         btn.classList.remove('hidden');
+        document.getElementById('btn-vue-initiale').classList.toggle('hidden', ecoleActuelleObj !== null);
         
         // Comportement intelligent du bouton
         if (ecoleActuelleObj !== null) {
@@ -726,7 +750,8 @@ function sauvegarderEtat() {
     if (selectedBanqueTypes.size > 0) p.set('t', Array.from(selectedBanqueTypes).join('~'));
     if (anneesSel.size) p.set('y', [...anneesSel].sort().join(','));
     if (grandesEcolesSeules) p.set('g', '1');
-    if (ongletCourant !== 'carte') p.set('o', ongletCourant);
+    const oSave = (ongletCourant === 'carte' && vueCourante === 'liste') ? 'liste' : ongletCourant;
+    if (oSave !== 'carte') p.set('o', oSave);
     const q = document.getElementById('search-bar').value.trim();
     if (q) p.set('q', q);
     if (ecoleActuelleObj) p.set('s', ecoleActuelleObj.nom);
@@ -756,7 +781,7 @@ function chargerEtat() {
     if (p.get('g') === '1') setGrandesEcoles(true, false);
     if (anneesSel.size || grandesEcolesSeules) filtrerTout();
     const o = p.get('o');
-    if (o && ['videos', 'stats'].includes(o)) changerOnglet(o);
+    if (o && ['videos', 'stats', 'fiches', 'liste'].includes(o)) changerOnglet(o);
 
     const q = p.get('q');
     if (q) document.getElementById('search-bar').value = q;
@@ -1136,6 +1161,7 @@ function mettreAJourLegende() {
 // FICHE ÉCOLE
 // ================================================================
 function afficherEcole(ecole) {
+    if (estMobile()) ouvrirFeuille();
     document.getElementById('placeholder-message').classList.add('hidden');
     document.getElementById('school-info').classList.remove('hidden');
 
@@ -1400,7 +1426,14 @@ function afficherEcole(ecole) {
     verifierEtatInitial();
 }
 
+function ouvrirFichePoste(lien, prenom) { window.open(lien, '_blank', 'noopener'); }
+
+const estMobile = () => window.matchMedia('(max-width: 767px)').matches;
+function ouvrirFeuille() { document.getElementById('details-panel').classList.add('sheet-open'); }
+function fermerFeuille() { document.getElementById('details-panel').classList.remove('sheet-open'); }
+
 function fermerEcole() {
+    fermerFeuille();
     document.getElementById('school-info').classList.add('hidden');
     document.getElementById('placeholder-message').classList.remove('hidden');
     
@@ -1658,9 +1691,6 @@ function toggleVideoCategorie(btn) {
 // INITIALISATION
 // ================================================================
 mettreAJourBanques();
-initialiserVideosGenerales();
-initialiserVideosAnciens();
-initialiserFichesDePoste();
 
 ecolesData.forEach(ecole => {
     const color  = typeColors[ecole.type_bcpst] || typeColors[ecole.type_tb] || "#6b7280";
