@@ -622,6 +622,18 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
+                "nom": "BLANCO",
+                "prenom": "Orane",
+                "initiale_nom": "B",
+                "annee": 2021,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": "",
+                "apres_ecole": "",
+                "cinq_demi": true
+            },
+            {
                 "nom": "ESCOMS",
                 "prenom": "Sarah",
                 "initiale_nom": "E",
@@ -2279,6 +2291,18 @@ const ecolesData = [
                 "prenom": "Ingrid",
                 "initiale_nom": "H",
                 "annee": 2024,
+                "classe": "BCPST",
+                "lien_video": "",
+                "lien_fiche_poste": "",
+                "fonctionnaire": "",
+                "apres_ecole": "",
+                "cinq_demi": false
+            },
+            {
+                "nom": "MORIN",
+                "prenom": "Anouk",
+                "initiale_nom": "M",
+                "annee": 2017,
                 "classe": "BCPST",
                 "lien_video": "",
                 "lien_fiche_poste": "",
@@ -5973,3 +5997,4 @@ const ecolesData = [
         ]
     }
 ];
+const etudiantsHorsCarte = [{"annee": 2024, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2024, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2024, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2024, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2024, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2024, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2023, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2023, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2023, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2023, "classe": "BCPST", "categorie": "Faculté (non précisée)", "cinq_demi": false}, {"annee": 2022, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2022, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2021, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2021, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2021, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2021, "classe": "BCPST", "categorie": "Véto à l'étranger", "cinq_demi": false}, {"annee": 2020, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2020, "classe": "BCPST", "categorie": "BUT", "cinq_demi": false}, {"annee": 2019, "classe": "BCPST", "categorie": "Faculté (non précisée)", "cinq_demi": false}, {"annee": 2019, "classe": "BCPST", "categorie": "Faculté (non précisée)", "cinq_demi": false}, {"annee": 2019, "classe": "BCPST", "categorie": "Sans nouvelles", "cinq_demi": false}, {"annee": 2019, "classe": "BCPST", "categorie": "Faculté (non précisée)", "cinq_demi": false}, {"annee": 2019, "classe": "BCPST", "categorie": "Faculté (non précisée)", "cinq_demi": false}, {"annee": 2019, "classe": "BCPST", "categorie": "Faculté (non précisée)", "cinq_demi": false}, {"annee": 2018, "classe": "BCPST", "categorie": "Faculté (non précisée)", "cinq_demi": false}, {"annee": 2018, "classe": "BCPST", "categorie": "BUT", "cinq_demi": false}, {"annee": 2018, "classe": "BCPST", "categorie": "Faculté (non précisée)", "cinq_demi": false}, {"annee": 2018, "classe": "BCPST", "categorie": "Faculté (non précisée)", "cinq_demi": false}];
