@@ -81,7 +81,6 @@
         <div class="min-w-0">
             <h1 class="truncate text-md md:text-lg font-bold tracking-tight text-amber-300">Lycée Agricole Le Chesnoy</h1>
             <p class="truncate text-xs md:text-sm font-semibold text-white">Où sont nos anciens étudiants ?</p>
-            <p class="hidden md:block text-[11px] opacity-80 font-medium text-white">Parcours des Anciens Étudiants BCPST &amp; TB</p>
         </div>
     </div>
     
@@ -102,7 +101,8 @@
 
 <nav class="bg-white border-b border-gray-200 flex overflow-x-auto shrink-0" role="tablist" aria-label="Sections du site">
     <button id="tab-btn-carte"  role="tab" onclick="changerOnglet('carte')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🗺 Carte</button>
-    <button id="tab-btn-liste"  role="tab" onclick="changerOnglet('liste')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📋 Liste</button>
+    <button id="tab-btn-promos" role="tab" onclick="changerOnglet('promos')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🎓 Promotions</button>
+    <button id="tab-btn-ecoles" role="tab" onclick="changerOnglet('ecoles')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🏫 Écoles</button>
     <button id="tab-btn-videos" role="tab" onclick="changerOnglet('videos')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🎬 Vidéos</button>
     <button id="tab-btn-fiches" role="tab" onclick="changerOnglet('fiches')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📄 Fiches de poste</button>
     <button id="tab-btn-stats"  role="tab" onclick="changerOnglet('stats')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📊 Statistiques</button>
@@ -256,6 +256,8 @@
         <div id="video-grid"></div>
     </div>
 </section>
+<section id="tab-promos" class="hidden flex-1 overflow-y-auto bg-gray-50"><div id="promos-content" class="max-w-3xl mx-auto p-4 md:p-6"></div></section>
+<section id="tab-ecoles" class="hidden flex-1 overflow-y-auto bg-gray-50"><div id="ecoles-content" class="max-w-3xl mx-auto p-4 md:p-6"></div></section>
 <section id="tab-fiches" class="hidden flex-1 overflow-y-auto bg-gray-50">
     <div id="fiches-content" class="max-w-5xl mx-auto p-4 md:p-6"></div>
 </section>
@@ -282,6 +284,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="data.js"></script>
+<script src="coefficients.js"></script>
 <script>
 // ================================================================
 // CONFIG
@@ -404,24 +407,171 @@ function setGrandesEcoles(v, refresh = true) {
 }
 
 function changerOnglet(o, init) {
-    const section = o === 'liste' ? 'carte' : o;
-    const vue = o === 'liste' ? 'liste' : o === 'carte' ? 'carte' : null;
-    if (vue && vue !== vueCourante) { toggleVue(); reinitialiserFiltresSeuls(); }
-    ongletCourant = section;
+    const ONGLETS = ['carte', 'promos', 'ecoles', 'videos', 'fiches', 'stats'];
+    if (!ONGLETS.includes(o)) o = 'carte';
+    ongletCourant = o;
     fermerModalGlobale();
-    ['carte', 'fiches', 'videos', 'stats'].forEach(k => document.getElementById('tab-' + k).classList.toggle('hidden', k !== section));
-    const actif = (section === 'carte' && vueCourante === 'liste') ? 'liste' : section;
-    ['carte', 'liste', 'videos', 'fiches', 'stats'].forEach(k => {
+    ONGLETS.forEach(k => {
+        document.getElementById('tab-' + k).classList.toggle('hidden', k !== o);
         const b = document.getElementById('tab-btn-' + k);
-        b.setAttribute('aria-selected', String(k === actif));
+        b.setAttribute('aria-selected', String(k === o));
         b.className = 'px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4 transition-all ' +
-            (k === actif ? 'border-amber-400 text-emerald-900 bg-emerald-50/60' : 'border-transparent text-gray-500 hover:text-emerald-800');
+            (k === o ? 'border-amber-400 text-emerald-900 bg-emerald-50/60' : 'border-transparent text-gray-500 hover:text-emerald-800');
     });
-    if (section === 'carte') setTimeout(() => map.invalidateSize(), 50);
-    if (section === 'videos') rendreVideos();
-    if (section === 'fiches') rendreFiches();
-    if (section === 'stats') rendreStats();
+    if (o === 'carte') setTimeout(() => map.invalidateSize(), 50);
+    ({ promos: rendrePromos, ecoles: rendreEcoles, videos: rendreVideos, fiches: rendreFiches, stats: rendreStats })[o]?.();
     if (!init) sauvegarderEtat();
+}
+
+// ---------- Briques communes : badges cohérents avec la carte ----------
+const typeDe = (e, classe) => (classe || '').includes('TB') ? (typeColors[e.type_tb] ? e.type_tb : typeColors[e.type_bcpst] ? e.type_bcpst : null)
+                                                            : (typeColors[e.type_bcpst] ? e.type_bcpst : typeColors[e.type_tb] ? e.type_tb : null);
+const nomAffiche = a => (a.prenom || 'Inconnu') + (a.initiale_nom ? ' ' + a.initiale_nom + '.' : '');
+const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const badgeFiliere = c => '<span class="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ' + ((c || '').includes('BCPST') ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700') + '">' + esc(c) + '</span>';
+const badgeEcole = (e, classe) => '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full text-white" style="background:' + (typeColors[typeDe(e, classe)] || '#6b7280') + '" title="' + esc(typeDe(e, classe) || 'École') + '">' + esc(e.nom) + '</span>';
+const badgeFonct = '<span title="Fonctionnaire d\'état" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-wide">Fonct.</span>';
+const badgeMetier = m => '<span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200">💼 ' + esc(m) + '</span>';
+const badgeVideoStatique = '<span class="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-[#cc0000] text-white">▶ Vidéo</span>';
+const badgeFicheStatique = '<span class="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-amber-500 text-white">📄 Fiche</span>';
+
+function ligneEtudiant(a, e, avecEcole) {
+    const div = document.createElement('div');
+    div.className = 'bg-white rounded-xl border border-gray-100 shadow-sm p-3 mb-2';
+    const liens = (aLien(a.lien_video) ? '<button data-v class="text-[9px] font-bold uppercase px-2 py-1 rounded-full bg-[#cc0000] text-white active:scale-95">▶ Vidéo</button>' : '') +
+                  (aLien(a.lien_fiche_poste) ? '<a href="' + esc(a.lien_fiche_poste) + '" target="_blank" rel="noopener" class="text-[9px] font-bold uppercase px-2 py-1 rounded-full bg-amber-500 text-white active:scale-95">📄 Fiche</a>' : '');
+    div.innerHTML = '<div class="flex items-start justify-between gap-2"><div class="min-w-0 flex-1">' +
+        '<div class="flex items-center flex-wrap gap-1.5"><span class="font-bold text-sm text-gray-800">' + esc(nomAffiche(a)) + '</span>' + badgeFiliere(a.classe) + (estFonct(a) ? badgeFonct : '') + '</div>' +
+        '<div class="flex items-center flex-wrap gap-1.5 mt-1.5">' + (avecEcole ? badgeEcole(e, a.classe) : '') + (aLien(a.apres_ecole) ? badgeMetier(a.apres_ecole) : '') + '</div></div>' +
+        '<div class="flex items-center gap-1 shrink-0">' + liens + '</div></div>';
+    const bv = div.querySelector('[data-v]'); if (bv) bv.onclick = () => lancerVideo(a.lien_video, a.prenom);
+    return div;
+}
+
+// ---------- Onglet Promotions ----------
+const etatPromos = { filiere: 'TOUT', annee: 'TOUT', q: '' };
+function rendrePromos() {
+    const c = document.getElementById('promos-content');
+    const chip = (act, lab, fn) => '<button onclick="' + fn + '" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all whitespace-nowrap ' + (act ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200') + '">' + lab + '</button>';
+    const tous = [];
+    ecolesData.forEach(e => e.anciens.forEach(a => tous.push({ a, e })));
+    const annees = [...new Set(tous.map(x => x.a.annee).filter(Boolean))].sort((x, y) => y - x);
+    const q = etatPromos.q.trim().toLowerCase();
+    const liste = tous.filter(({ a, e }) => (etatPromos.filiere === 'TOUT' || (a.classe || '').includes(etatPromos.filiere)) &&
+        (etatPromos.annee === 'TOUT' || a.annee === +etatPromos.annee) &&
+        (!q || [a.prenom, a.initiale_nom, e.nom, a.apres_ecole].join(' ').toLowerCase().includes(q)))
+        .sort((x, y) => y.a.annee - x.a.annee || (x.a.nom || '').localeCompare(y.a.nom || '', 'fr') || (x.a.prenom || '').localeCompare(y.a.prenom || '', 'fr'));
+    c.innerHTML = '<h2 class="text-lg font-extrabold text-emerald-950 mb-3">🎓 Promotions</h2>' +
+        '<input id="promos-q" type="search" value="' + esc(etatPromos.q) + '" placeholder="🔍 Rechercher un étudiant, une école, un métier…" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-3">' +
+        '<div class="flex gap-2 mb-2">' + [['TOUT', 'Toutes filières'], ['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) => chip(etatPromos.filiere === k, l, "etatPromos.filiere='" + k + "';rendrePromos()")).join('') + '</div>' +
+        '<div class="flex gap-2 overflow-x-auto pb-2 mb-3">' + [['TOUT', 'Toutes les années']].concat(annees.map(y => [String(y), String(y)])).map(([k, l]) => chip(String(etatPromos.annee) === k, l, "etatPromos.annee='" + k + "';rendrePromos()")).join('') + '</div>' +
+        '<p class="text-[11px] text-gray-500 mb-2">' + liste.length + ' étudiant' + (liste.length > 1 ? 's' : '') + '</p><div id="promos-liste"></div>';
+    const inp = document.getElementById('promos-q');
+    inp.oninput = () => { etatPromos.q = inp.value; const pos = inp.selectionStart; rendrePromos(); const n = document.getElementById('promos-q'); n.focus(); n.setSelectionRange(pos, pos); };
+    const cont = document.getElementById('promos-liste');
+    if (!liste.length) cont.innerHTML = '<p class="text-xs italic text-gray-500 py-6 text-center">Aucun étudiant ne correspond.</p>';
+    let an = null;
+    liste.forEach(({ a, e }) => {
+        if (etatPromos.annee === 'TOUT' && a.annee !== an) {
+            an = a.annee;
+            const h = document.createElement('h3'); h.className = 'text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-4 mb-2 flex items-center gap-2';
+            h.innerHTML = 'Promotion ' + an + '<span class="flex-1 border-t border-emerald-200"></span>'; cont.appendChild(h);
+        }
+        cont.appendChild(ligneEtudiant(a, e, true));
+    });
+}
+
+// ---------- Onglet Écoles ----------
+const etatEcoles = { filiere: 'BCPST', q: '', ouvertes: new Set(), coefs: new Set() };
+function rendreEcoles() {
+    const c = document.getElementById('ecoles-content');
+    const F = etatEcoles.filiere, q = etatEcoles.q.trim().toLowerCase();
+    const somme = l => (l || []).reduce((t, x) => t + x[1], 0);
+    const fmt = n => String(n).replace('.', ',');
+    const deja = new Set();
+    const subs = CONCOURS[F].map(sc => {
+        const ecoles = ecolesData.filter(e => !deja.has(e.nom) && sc.types.includes(F === 'TB' ? e.type_tb : e.type_bcpst) && (!sc.noms || sc.noms.includes(e.nom)) &&
+            (!q || (e.nom + ' ' + (e.ville || '')).toLowerCase().includes(q)));
+        ecoles.forEach(e => deja.add(e.nom));
+        return { sc, ecoles: ecoles.sort((a, b) => a.nom.localeCompare(b.nom, 'fr')) };
+    }).filter(x => x.ecoles.length);
+    c.innerHTML = '<h2 class="text-lg font-extrabold text-emerald-950 mb-3">🏫 Écoles</h2>' +
+        '<div class="flex gap-2 mb-3">' + ['BCPST', 'TB'].map(k => '<button onclick="etatEcoles.filiere=\'' + k + '\';rendreEcoles()" class="px-4 py-1.5 rounded-full text-xs font-bold border ' + (F === k ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200') + '">' + k + '</button>').join('') + '</div>' +
+        '<input id="ecoles-q" type="search" value="' + esc(etatEcoles.q) + '" placeholder="🔍 Rechercher une école ou une ville…" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-2">' +
+        '<p class="text-[11px] text-gray-500 mb-1">Écoles accessibles en ' + F + ' par concours, avec les coefficients (session 2026, à vérifier sur les sites des concours). Les anciens indiqués sont ceux de la filière ' + F + '.</p><div id="ecoles-liste"></div>';
+    const inp = document.getElementById('ecoles-q');
+    inp.oninput = () => { etatEcoles.q = inp.value; const pos = inp.selectionStart; rendreEcoles(); const n = document.getElementById('ecoles-q'); n.focus(); n.setSelectionRange(pos, pos); };
+    const cont = document.getElementById('ecoles-liste');
+    if (!subs.length) { cont.innerHTML = '<p class="text-xs italic text-gray-500 py-6 text-center">Aucune école ne correspond.</p>'; return; }
+    let banque = null;
+    const liste = (l) => '<ul class="text-[11px] text-gray-700 space-y-0.5">' + l.map(x => '<li class="flex justify-between gap-2"><span>' + esc(x[0]) + '</span><b>' + fmt(x[1]) + '</b></li>').join('') + '</ul>';
+    const bloc = (b) => {
+        const e = b.ecrit && b.ecrit.length, a = b.adm && b.adm.length;
+        return '<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">' +
+            '<div><p class="text-[10px] font-black uppercase tracking-widest text-emerald-800 mb-1">Écrit (admissibilité)' + (e ? ' · total ' + fmt(somme(b.ecrit)) : '') + '</p>' + (e ? liste(b.ecrit) : '<p class="text-[11px] italic text-gray-400">Non renseigné</p>') + '</div>' +
+            '<div><p class="text-[10px] font-black uppercase tracking-widest text-emerald-800 mb-1">Oral / admission' + (a ? ' · total ' + fmt(somme(b.adm)) : '') + '</p>' + (a ? liste(b.adm) : '<p class="text-[11px] italic text-gray-400">Non renseigné</p>') + '</div></div>' +
+            (e && a ? '<p class="text-[11px] text-gray-600 mt-2">Total général : <b>' + fmt(somme(b.ecrit) + somme(b.adm)) + '</b></p>' : '') + (b.note ? '<p class="text-[11px] italic text-gray-500 mt-1">' + esc(b.note) + '</p>' : '');
+    };
+    subs.forEach(({ sc, ecoles }, i) => {
+        if (sc.banque !== banque) {
+            banque = sc.banque;
+            const h = document.createElement('h3'); h.className = 'text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-6 mb-2 flex items-center gap-2';
+            h.innerHTML = 'Banque ' + esc(banque) + '<span class="flex-1 border-t border-emerald-200"></span>'; cont.appendChild(h);
+        }
+        const key = F + '|' + sc.titre, ouvert = etatEcoles.coefs.has(key);
+        const bl = sc.blocs || [{ titre: '', ecrit: sc.ecrit, adm: sc.adm, note: sc.note }];
+        const sec = document.createElement('div'); sec.className = 'mb-4';
+        const tete = document.createElement('div'); tete.className = 'bg-emerald-50/70 border border-emerald-100 rounded-xl p-3 mb-2';
+        tete.innerHTML = '<div class="flex items-center justify-between gap-2"><p class="text-sm font-extrabold text-emerald-900">' + esc(sc.titre) + '</p>' +
+            '<button class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-white border border-emerald-300 text-emerald-800 whitespace-nowrap" aria-expanded="' + ouvert + '">Coefficients ' + (ouvert ? '▴' : '▾') + '</button></div>' +
+            '<div class="' + (ouvert ? '' : 'hidden') + ' mt-3 space-y-3" data-coefs>' + bl.map(b => (b.titre ? '<p class="text-xs font-bold text-gray-700 mb-1">' + esc(b.titre) + '</p>' : '') + bloc(b)).join('<hr class="border-emerald-100">') + (sc.blocs && sc.note ? '<p class="text-[11px] italic text-gray-500">' + esc(sc.note) + '</p>' : '') + '</div>';
+        tete.querySelector('button').onclick = (ev) => {
+            const z = tete.querySelector('[data-coefs]'), o = z.classList.toggle('hidden') === false;
+            o ? etatEcoles.coefs.add(key) : etatEcoles.coefs.delete(key);
+            ev.currentTarget.textContent = 'Coefficients ' + (o ? '▴' : '▾'); ev.currentTarget.setAttribute('aria-expanded', String(o));
+        };
+        sec.appendChild(tete);
+        ecoles.forEach(e => sec.appendChild(carteEcole(e, F)));
+        cont.appendChild(sec);
+    });
+}
+
+function carteEcole(e, F) {
+    const anciens = e.anciens.filter(a => (a.classe || '').includes(F));
+    const nv = anciens.filter(a => aLien(a.lien_video)).length, nf = anciens.filter(a => aLien(a.lien_fiche_poste)).length;
+    const ouverte = etatEcoles.ouvertes.has(e.nom);
+    const div = document.createElement('div');
+    div.className = 'bg-white rounded-xl border border-gray-100 shadow-sm mb-2 overflow-hidden';
+    div.innerHTML = '<button class="w-full flex items-center gap-2 p-3 text-left" aria-expanded="' + ouverte + '">' +
+        '<span class="w-1.5 self-stretch rounded-full" style="background:' + (typeColors[typeDe(e, F)] || '#6b7280') + '"></span>' +
+        '<span class="flex-1 min-w-0"><span class="block text-sm font-bold text-gray-800 truncate">' + esc(e.nom) + '</span>' +
+        '<span class="flex flex-wrap items-center gap-1.5 mt-1"><span class="text-[10px] text-gray-500">' + esc(e.ville || '') + '</span>' +
+        (anciens.length ? '<span class="text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-gray-100 text-gray-600">' + anciens.length + ' ancien' + (anciens.length > 1 ? 's' : '') + '</span>' : '') +
+        (nv ? badgeVideoStatique : '') + (nf ? badgeFicheStatique : '') + '</span></span>' +
+        '<span class="text-gray-400 text-lg transition-transform ' + (ouverte ? 'rotate-90' : '') + '" aria-hidden="true">▸</span></button>' +
+        '<div class="' + (ouverte ? '' : 'hidden') + ' border-t border-gray-100 p-3 bg-gray-50/60" data-corps></div>';
+    const corps = div.querySelector('[data-corps]');
+    const remplir = () => {
+        let h = '';
+        if (aLien(e.image)) h += '<img src="' + esc(e.image) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" class="w-full h-40 object-cover rounded-lg mb-3">';
+        if (aLien(e.descriptif)) h += '<p class="text-xs text-gray-700 leading-relaxed mb-3">' + esc(e.descriptif) + '</p>';
+        h += '<div class="flex flex-wrap gap-2 mb-3">' + (aLien(e.lien_site) ? '<a href="' + esc(e.lien_site) + '" target="_blank" rel="noopener" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-700 text-white">🔗 Site de l\'école</a>' : '') +
+            '<button data-carte class="text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-800">📍 Voir sur la carte</button></div>';
+        corps.innerHTML = h + '<p class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Anciens (' + F + ')</p><div data-anciens></div>';
+        const zone = corps.querySelector('[data-anciens]');
+        if (!anciens.length) zone.innerHTML = '<p class="text-xs italic text-gray-500">Aucun ancien recensé.</p>';
+        anciens.slice().sort((x, y) => y.annee - x.annee).forEach(a => { const l = ligneEtudiant(a, e, false); l.insertAdjacentHTML('afterbegin', '<p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Promotion ' + a.annee + '</p>'); zone.appendChild(l); });
+        corps.querySelector('[data-carte]').onclick = () => { changerOnglet('carte'); setTimeout(() => { const m = markers.find(x => x.ecole.nom === e.nom); if (m) { map.setView(m.ecole.coords, 12); afficherEcole(m.ecole); } }, 120); };
+    };
+    if (ouverte) remplir();
+    div.querySelector('button').onclick = () => {
+        const ouvre = corps.classList.toggle('hidden') === false;
+        ouvre ? etatEcoles.ouvertes.add(e.nom) : etatEcoles.ouvertes.delete(e.nom);
+        div.querySelector('button').setAttribute('aria-expanded', String(ouvre));
+        div.querySelector('button > span:last-child').classList.toggle('rotate-90', ouvre);
+        if (ouvre && !corps.innerHTML) remplir();
+    };
+    return div;
 }
 
 // ---------- Onglet Fiches de poste ----------
@@ -440,7 +590,7 @@ function rendreFiches() {
     liste.forEach(({ a, e }) => {
         if (a.annee !== an) { an = a.annee; h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-4 mb-2">Promotion ' + an + '</h3>'; }
         h += '<a href="' + a.lien_fiche_poste + '" target="_blank" rel="noopener" class="flex items-center gap-3 bg-white rounded-xl border border-gray-100 shadow-sm p-3 mb-2 active:scale-[0.99]">' +
-            '<span class="text-2xl" aria-hidden="true">📄</span><span class="flex-1 min-w-0"><span class="block text-sm font-bold text-gray-800 truncate">' + a.prenom + ' ' + (a.initiale_nom || '') + '.</span>' +
+            '<span class="text-2xl" aria-hidden="true">📄</span><span class="flex-1 min-w-0"><span class="block text-sm font-bold text-gray-800 truncate">' + nomAffiche(a) + '</span>' +
             '<span class="block text-xs text-gray-500 truncate">' + e.nom + ' · ' + a.classe + '</span>' +
             (a.apres_ecole ? '<span class="block text-xs text-emerald-700 truncate">' + a.apres_ecole + '</span>' : '') + '</span><span class="text-xs font-bold text-emerald-700">Ouvrir ↗</span></a>';
     });
@@ -487,7 +637,7 @@ function rendreVideos() {
                 titre: e.nom,
                 videos: e.anciens.filter(a => aLien(a.lien_video))
                     .sort((a, b) => b.annee - a.annee)
-                    .map(a => ({ titre: a.prenom + ' ' + a.initiale_nom + '.', sous: 'Promotion ' + a.annee + (a.classe ? ' · ' + a.classe : ''), lien: a.lien_video.trim() }))
+                    .map(a => ({ titre: nomAffiche(a), sous: 'Promotion ' + a.annee + (a.classe ? ' · ' + a.classe : ''), lien: a.lien_video.trim() }))
             }))
             .filter(g => g.videos.length)
             .sort((a, b) => a.titre.localeCompare(b.titre, 'fr'));
@@ -710,7 +860,7 @@ function mettreAJourListeVue() {
 			let listeElevesHtml = '';
 			if (count > 0) {
 				// On crée une chaîne du type "Prénom I., Prénom2 I."
-				const noms = eleves.map(el => `${el.prenom} ${el.initiale_nom}.`).join(', ');
+				const noms = eleves.map(el => nomAffiche(el)).join(', ');
 				// line-clamp-2 permet de couper proprement si la liste est trop longue (2 lignes max)
 				listeElevesHtml = `<div class="mt-2 pt-2 border-t border-gray-100 text-[10px] text-gray-500 leading-tight italic line-clamp-2" title="${noms}">🎓 ${noms}</div>`;
 			}
@@ -761,7 +911,7 @@ function sauvegarderEtat() {
     if (selectedBanqueTypes.size > 0) p.set('t', Array.from(selectedBanqueTypes).join('~'));
     if (anneesSel.size) p.set('y', [...anneesSel].sort().join(','));
     if (grandesEcolesSeules) p.set('g', '1');
-    const oSave = (ongletCourant === 'carte' && vueCourante === 'liste') ? 'liste' : ongletCourant;
+    const oSave = ongletCourant;
     if (oSave !== 'carte') p.set('o', oSave);
     const q = document.getElementById('search-bar').value.trim();
     if (q) p.set('q', q);
@@ -792,7 +942,7 @@ function chargerEtat() {
     if (p.get('g') === '1') setGrandesEcoles(true, false);
     if (anneesSel.size || grandesEcolesSeules) filtrerTout();
     const o = p.get('o');
-    if (o && ['videos', 'stats', 'fiches', 'liste'].includes(o)) changerOnglet(o);
+    if (o && ['videos', 'stats', 'fiches', 'promos', 'ecoles'].includes(o)) changerOnglet(o);
 
     const q = p.get('q');
     if (q) document.getElementById('search-bar').value = q;
@@ -1410,7 +1560,7 @@ function afficherEcole(ecole, depuisFiltre) {
 						'<div class="min-w-0 flex-1 flex flex-col justify-center">' +
 						  '<div class="flex items-center flex-wrap gap-x-1.5 gap-y-0.5">' +
 							filiereLabel +
-							'<span class="font-bold text-sm text-gray-800">' + eleve.prenom + ' ' + eleve.initiale_nom + '.</span>' +
+							'<span class="font-bold text-sm text-gray-800">' + nomAffiche(eleve) + '</span>' +
 							badgeFonct +
 						  '</div>' +
 						  apresEcoleBlock +
@@ -1629,7 +1779,7 @@ function initialiserVideosAnciens() {
                     <span class="flex flex-col z-10 text-left w-full overflow-hidden">
                         <span class="flex items-center">
                             <svg class="w-3.5 h-3.5 mr-1.5 text-red-600 fill-current shrink-0" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
-                            <span class="truncate">${vid.prenom} ${vid.initiale}.</span>
+                            <span class="truncate">${vid.prenom}${vid.initiale ? ' ' + vid.initiale + '.' : ''}</span>
                         </span>
                         <span class="text-[9px] text-gray-500 font-normal mt-0.5 ml-5 truncate w-11/12">${vid.ecole} (${vid.annee})</span>
                     </span>
@@ -1685,7 +1835,7 @@ function initialiserFichesDePoste() {
                 <span class="flex flex-col text-left w-full overflow-hidden">
                     <span class="flex items-center">
                         <span class="text-xs mr-1.5 shrink-0" aria-hidden="true">📄</span>
-                        <span class="truncate">${fiche.prenom} ${fiche.initiale}.</span>
+                        <span class="truncate">${fiche.prenom}${fiche.initiale ? ' ' + fiche.initiale + '.' : ''}</span>
                     </span>
                     <span class="text-[9px] text-gray-500 font-normal mt-0.5 ml-5 truncate w-11/12">${fiche.ecole} (${fiche.annee})</span>
                 </span>
