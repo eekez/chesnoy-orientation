@@ -256,7 +256,7 @@
         <div id="video-grid"></div>
     </div>
 </section>
-<section id="tab-promos" class="hidden flex-1 overflow-y-auto bg-gray-50"><div id="promos-content" class="max-w-3xl mx-auto p-4 md:p-6"></div></section>
+<section id="tab-promos" class="hidden flex-1 overflow-y-auto bg-gray-50"><div id="promos-content" class="max-w-5xl mx-auto p-4 md:p-6"></div></section>
 <section id="tab-ecoles" class="hidden flex-1 overflow-y-auto bg-gray-50"><div id="ecoles-content" class="max-w-3xl mx-auto p-4 md:p-6"></div></section>
 <section id="tab-fiches" class="hidden flex-1 overflow-y-auto bg-gray-50">
     <div id="fiches-content" class="max-w-5xl mx-auto p-4 md:p-6"></div>
@@ -448,6 +448,23 @@ function ligneEtudiant(a, e, avecEcole) {
     return div;
 }
 
+// Ligne « tableur » : tous les badges sur la même ligne que le nom (colonnes alignées sur grand écran)
+function ligneCompacte(a, e) {
+    const div = document.createElement('div');
+    div.className = 'px-3 py-2 border-t border-gray-100 first:border-t-0 flex flex-wrap items-center gap-x-2 gap-y-1 hover:bg-emerald-50/40 md:grid md:grid-cols-[10rem_4.5rem_minmax(0,1fr)_3.5rem_minmax(0,1fr)_7rem] md:gap-x-3';
+    const cell = (h, extra) => '<span class="min-w-0 empty:hidden md:empty:block ' + (extra || '') + '">' + h + '</span>';
+    const liens = (aLien(a.lien_video) ? '<button data-v class="text-[9px] font-bold uppercase px-2 py-1 rounded-full bg-[#cc0000] text-white active:scale-95">▶ Vidéo</button>' : '') +
+                  (aLien(a.lien_fiche_poste) ? '<a href="' + esc(a.lien_fiche_poste) + '" target="_blank" rel="noopener" class="text-[9px] font-bold uppercase px-2 py-1 rounded-full bg-amber-500 text-white active:scale-95">📄 Fiche</a>' : '');
+    div.innerHTML = cell('<span class="font-bold text-sm text-gray-800 truncate block">' + esc(nomAffiche(a)) + '</span>') +
+        cell(badgeFiliere(a.classe)) +
+        cell(badgeEcole(e, a.classe).replace('class="', 'class="inline-block max-w-full truncate align-middle '), '') +
+        cell(estFonct(a) ? badgeFonct : '') +
+        cell(aLien(a.apres_ecole) ? badgeMetier(a.apres_ecole).replace('class="', 'class="inline-block max-w-full truncate align-middle ') : '') +
+        '<span class="flex gap-1 md:justify-end ml-auto md:ml-0 empty:hidden md:empty:block">' + liens + '</span>';
+    const bv = div.querySelector('[data-v]'); if (bv) bv.onclick = () => lancerVideo(a.lien_video, a.prenom);
+    return div;
+}
+
 // ---------- Onglet Promotions ----------
 const etatPromos = { filiere: 'TOUT', annee: 'TOUT', q: '' };
 function rendrePromos() {
@@ -465,19 +482,24 @@ function rendrePromos() {
         '<input id="promos-q" type="search" value="' + esc(etatPromos.q) + '" placeholder="🔍 Rechercher un étudiant, une école, un métier…" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-3">' +
         '<div class="flex gap-2 mb-2">' + [['TOUT', 'Toutes filières'], ['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) => chip(etatPromos.filiere === k, l, "etatPromos.filiere='" + k + "';rendrePromos()")).join('') + '</div>' +
         '<div class="flex gap-2 overflow-x-auto pb-2 mb-3">' + [['TOUT', 'Toutes les années']].concat(annees.map(y => [String(y), String(y)])).map(([k, l]) => chip(String(etatPromos.annee) === k, l, "etatPromos.annee='" + k + "';rendrePromos()")).join('') + '</div>' +
-        '<p class="text-[11px] text-gray-500 mb-2">' + liste.length + ' étudiant' + (liste.length > 1 ? 's' : '') + '</p><div id="promos-liste"></div>';
+        '<p class="text-[11px] text-gray-500 mb-2">' + liste.length + ' étudiant' + (liste.length > 1 ? 's' : '') + '</p>' +
+        '<div class="hidden md:grid md:grid-cols-[10rem_4.5rem_minmax(0,1fr)_3.5rem_minmax(0,1fr)_7rem] md:gap-x-3 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400"><span>Étudiant</span><span>Filière</span><span>École intégrée</span><span>Statut</span><span>Métier</span><span class="text-right">Liens</span></div>' +
+        '<div id="promos-liste"></div>';
     const inp = document.getElementById('promos-q');
     inp.oninput = () => { etatPromos.q = inp.value; const pos = inp.selectionStart; rendrePromos(); const n = document.getElementById('promos-q'); n.focus(); n.setSelectionRange(pos, pos); };
     const cont = document.getElementById('promos-liste');
     if (!liste.length) cont.innerHTML = '<p class="text-xs italic text-gray-500 py-6 text-center">Aucun étudiant ne correspond.</p>';
-    let an = null;
+    let an = null, groupe = null;
+    const nouveauGroupe = () => { groupe = document.createElement('div'); groupe.className = 'bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden'; cont.appendChild(groupe); };
+    if (etatPromos.annee !== 'TOUT') nouveauGroupe();
     liste.forEach(({ a, e }) => {
         if (etatPromos.annee === 'TOUT' && a.annee !== an) {
             an = a.annee;
             const h = document.createElement('h3'); h.className = 'text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-4 mb-2 flex items-center gap-2';
             h.innerHTML = 'Promotion ' + an + '<span class="flex-1 border-t border-emerald-200"></span>'; cont.appendChild(h);
+            nouveauGroupe();
         }
-        cont.appendChild(ligneEtudiant(a, e, true));
+        groupe.appendChild(ligneCompacte(a, e));
     });
 }
 
