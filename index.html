@@ -472,12 +472,16 @@ function rendrePromos() {
     const chip = (act, lab, fn) => '<button onclick="' + fn + '" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all whitespace-nowrap ' + (act ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200') + '">' + lab + '</button>';
     const tous = [];
     ecolesData.forEach(e => e.anciens.forEach(a => tous.push({ a, e })));
+    // BUT, BTS, fac non précisée… : pas sur la carte, mais listés ici (prénom + initiale)
+    (typeof etudiantsHorsCarte !== 'undefined' ? etudiantsHorsCarte : []).filter(h => h.prenom).forEach(h =>
+        tous.push({ a: { prenom: h.prenom, initiale_nom: h.initiale_nom, nom: '', annee: h.annee, classe: h.classe, lien_video: h.lien_video, lien_fiche_poste: h.lien_fiche_poste,
+                         fonctionnaire: h.fonctionnaire, apres_ecole: h.apres_ecole, cinq_demi: h.cinq_demi }, e: { nom: h.categorie, type_bcpst: null, type_tb: null, anciens: [] } }));
     const annees = [...new Set(tous.map(x => x.a.annee).filter(Boolean))].sort((x, y) => y - x);
     const q = etatPromos.q.trim().toLowerCase();
     const liste = tous.filter(({ a, e }) => (etatPromos.filiere === 'TOUT' || (a.classe || '').includes(etatPromos.filiere)) &&
         (etatPromos.annee === 'TOUT' || a.annee === +etatPromos.annee) &&
-        (!q || [a.prenom, a.initiale_nom, e.nom, a.apres_ecole].join(' ').toLowerCase().includes(q)))
-        .sort((x, y) => y.a.annee - x.a.annee || (x.a.nom || '').localeCompare(y.a.nom || '', 'fr') || (x.a.prenom || '').localeCompare(y.a.prenom || '', 'fr'));
+        (!q || [a.prenom, a.initiale_nom, a.nom, e.nom, a.apres_ecole].join(' ').toLowerCase().includes(q)))
+        .sort((x, y) => y.a.annee - x.a.annee || ((x.a.nom || x.a.prenom) || '').localeCompare((y.a.nom || y.a.prenom) || '', 'fr') || (x.a.prenom || '').localeCompare(y.a.prenom || '', 'fr'));
     c.innerHTML = '<h2 class="text-lg font-extrabold text-emerald-950 mb-3">🎓 Promotions</h2>' +
         '<input id="promos-q" type="search" value="' + esc(etatPromos.q) + '" placeholder="🔍 Rechercher un étudiant, une école, un métier…" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-3">' +
         '<div class="flex gap-2 mb-2">' + [['TOUT', 'Toutes filières'], ['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) => chip(etatPromos.filiere === k, l, "etatPromos.filiere='" + k + "';rendrePromos()")).join('') + '</div>' +

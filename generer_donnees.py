@@ -124,6 +124,10 @@ TYPES_SANS_RANG = {'Fac', 'INSA', 'ENS', 'Centrale', 'Centrale-Supélec', 'Mines
 # ================================================================
 # SCRIPT PRINCIPAL
 # ================================================================
+def norm(x):
+    import unicodedata
+    return unicodedata.normalize('NFD', str(x)).encode('ascii', 'ignore').decode().strip().lower() if not pd.isna(x) else ''
+
 excel_path = "anciens_eleves.xlsx"
 
 if not os.path.exists(excel_path):
@@ -172,14 +176,18 @@ for _, ecole in ecoles.iterrows():
     else:
         coords = list(coords_raw) if isinstance(coords_raw, (list, tuple)) else [0, 0]
 
-    # Anciens
-    eleves_ecole  = eleves[eleves['École intégrée'] == nom_ecole]
+    # Destinations « Hors carte » (BUT, fac non précisée, sans nouvelles) : comptées dans les stats, jamais sur la carte
+    if type_bcpst == 'Hors carte' or type_tb == 'Hors carte':
+        continue
+
+    # Anciens (comparaison insensible à la casse / aux accents)
+    eleves_ecole  = eleves[eleves['École intégrée'].map(norm) == norm(nom_ecole)]
     liste_anciens = []
     for _, eleve in eleves_ecole.iterrows():
         liste_anciens.append({
             "nom":              safe_str(eleve.get('NOM')),
-            "prenom":           safe_str(eleve.get('Prénom')),
-            "initiale_nom":     safe_str(eleve.get('Initiale NOM')),
+            "prenom":           safe_str(eleve.get('Prénom')) or "Inconnu",
+            "initiale_nom":     safe_str(eleve.get('NOM'))[:1].upper(),   # calculée depuis le nom (indépendante de la colonne B)
             "annee":            int(eleve.get('Année')) if not safe_isnan(eleve.get('Année')) else 0,
             "classe":           safe_str(eleve.get('Classe')),
             "lien_video":       safe_str(eleve.get('Lien_Video')),
@@ -217,9 +225,33 @@ for _, ecole in ecoles.iterrows():
         "anciens":      liste_anciens,
     })
 
+# Étudiants hors carte : agrégés pour les stats ; jamais le nom de famille complet (le site est public)
+hors_noms = {norm(e['Nom']): safe_str(e['Nom']) for _, e in ecoles.iterrows()
+             if 'Hors carte' in (safe_str(e.get('Type_BCPST')), safe_str(e.get('Type_TB')))}
+# « Sans nouvelles » reste anonyme ; les autres destinations hors carte apparaissent dans l'onglet Promotions
+CATEGORIES_VISIBLES_PROMOS = {'BUT', 'BTS', 'Faculté (non précisée)', "Véto à l'étranger"}
+hors_carte = []
+for _, el in eleves.iterrows():
+    cat = hors_noms.get(norm(el.get('École intégrée')))
+    if cat:
+        d = {"annee": int(el.get('Année')) if not safe_isnan(el.get('Année')) else 0,
+             "classe": safe_str(el.get('Classe')), "categorie": cat,
+             "cinq_demi": safe_str(el.get('CinqDemi')).lower().startswith('oui')}
+        if cat in CATEGORIES_VISIBLES_PROMOS:      # identité réduite (prénom + initiale), comme pour les étudiants de la carte
+            d.update({"prenom": safe_str(el.get('Prénom')) or "Inconnu", "initiale_nom": safe_str(el.get('NOM'))[:1].upper(),
+                      "fonctionnaire": safe_str(el.get('Fonctionnaire')), "lien_video": safe_str(el.get('Lien_Video')),
+                      "lien_fiche_poste": safe_str(el.get('Lien_Fiche_Poste')), "apres_ecole": safe_str(el.get("Après l'école"))})
+        hors_carte.append(d)
+connus = {norm(e['nom']) for e in donnees_web} | set(hors_noms)
+inconnus = sorted({safe_str(v) for v in eleves['École intégrée'] if norm(v) not in connus})
+if inconnus:
+    print("\n⚠️  'École intégrée' absente de l'onglet Ecoles (non affichée) :", inconnus)
+
 with open('data.js', 'w', encoding='utf-8') as f:
-    f.write("const ecolesData = " + json.dumps(donnees_web, ensure_ascii=False, indent=4) + ";")
+    f.write("const ecolesData = " + json.dumps(donnees_web, ensure_ascii=False, indent=4) + ";\n")
+    f.write("const etudiantsHorsCarte = " + json.dumps(hors_carte, ensure_ascii=False) + ";")
 
 total = sum(len(e['anciens']) for e in donnees_web)
 print(f"\n✅ data.js généré : {len(donnees_web)} écoles, {total} anciens")
 print(f"   ↳ {avec_rang} avec données de sélectivité  |  {sans_rang} sans")
+print(f"   ↳ {len(hors_carte)} étudiants hors carte (stats uniquement)")
