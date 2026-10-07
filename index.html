@@ -675,8 +675,28 @@ function carteVideo(titre, sous, lien) {
     return el;
 }
 
-// Présentation « question → vidéo réponse » de la rubrique FAQ (les autres rubriques gardent la grille de vignettes)
+// Présentation « question → vidéo réponse » de la rubrique FAQ (les autres rubriques gardent la grille de vignettes).
+// Jusqu'à FAQ_SEUIL_ACCORDEON - 1 questions : cartes toujours ouvertes ; à partir du seuil : accordéon (clic sur la question pour voir la vidéo).
+const FAQ_SEUIL_ACCORDEON = 6;
 function rendreFaq(groupes, cont) {
+    const accordeon = groupes.reduce((n, g) => n + g.videos.length, 0) >= FAQ_SEUIL_ACCORDEON;
+    const tete = (titre) => '<span class="shrink-0 w-10 h-10 rounded-full bg-emerald-700 text-white text-xl font-black flex items-center justify-center shadow" aria-hidden="true">?</span>' +
+        '<span class="min-w-0 text-left"><span class="block text-[10px] font-black uppercase tracking-widest text-emerald-700 mb-0.5">Question</span>' +
+        '<span class="block text-base md:text-lg font-extrabold text-emerald-950 leading-snug">' + titre + '</span></span>';
+    const reponse = (v) => {
+        const id = extraireIdYoutube(v.lien), court = /\/shorts\//.test(v.lien);
+        const b = document.createElement('button');
+        b.className = 'group flex items-center gap-4 p-4 text-left w-full hover:bg-amber-50/60 transition-colors active:scale-[0.99]';
+        b.setAttribute('aria-label', 'Voir la réponse en vidéo : ' + v.titre.replace(/"/g, '&quot;'));
+        b.innerHTML =
+            '<span class="relative shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-emerald-700 to-emerald-900 shadow ' + (court ? 'w-20 aspect-[9/16]' : 'w-40 aspect-video') + '">' +
+                (id ? '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" onerror="this.remove()">' : '') +
+                '<span class="absolute inset-0 flex items-center justify-center bg-black/15 group-hover:bg-black/30 transition-colors"><span class="w-9 h-9 rounded-full bg-white/90 text-red-600 flex items-center justify-center pl-0.5 shadow" aria-hidden="true">▶</span></span></span>' +
+            '<span class="min-w-0"><span class="block text-[10px] font-black uppercase tracking-widest text-amber-600 mb-0.5">Réponse</span>' +
+            '<span class="block text-sm font-bold text-gray-800">Voir la réponse en vidéo</span></span>';
+        b.onclick = () => ouvrirModalGlobale(v.lien, v.titre);
+        return b;
+    };
     groupes.forEach(g => {
         if (!/^faq$/i.test(g.titre.trim())) {
             const t = document.createElement('h3');
@@ -684,23 +704,24 @@ function rendreFaq(groupes, cont) {
             t.innerHTML = g.titre + '<span class="flex-1 border-t border-emerald-200"></span>'; cont.appendChild(t);
         }
         const liste = document.createElement('div');
-        liste.className = 'grid grid-cols-1 md:grid-cols-2 gap-4 mt-3';
+        liste.className = accordeon ? 'flex flex-col gap-3 mt-3 max-w-3xl' : 'grid grid-cols-1 md:grid-cols-2 gap-4 mt-3';
         g.videos.forEach(v => {
-            const id = extraireIdYoutube(v.lien), court = /\/shorts\//.test(v.lien);
             const carte = document.createElement('article');
             carte.className = 'bg-white rounded-2xl border border-emerald-100 shadow-sm overflow-hidden flex flex-col';
-            carte.innerHTML =
-                '<div class="flex items-start gap-3 p-4 bg-emerald-50">' +
-                    '<span class="shrink-0 w-10 h-10 rounded-full bg-emerald-700 text-white text-xl font-black flex items-center justify-center shadow" aria-hidden="true">?</span>' +
-                    '<div class="min-w-0"><p class="text-[10px] font-black uppercase tracking-widest text-emerald-700 mb-0.5">Question</p>' +
-                    '<h3 class="text-base md:text-lg font-extrabold text-emerald-950 leading-snug">' + v.titre + '</h3></div></div>' +
-                '<button class="group flex items-center gap-4 p-4 text-left w-full hover:bg-amber-50/60 transition-colors active:scale-[0.99]" aria-label="Voir la réponse en vidéo : ' + v.titre.replace(/"/g, '&quot;') + '">' +
-                    '<span class="relative shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-emerald-700 to-emerald-900 shadow ' + (court ? 'w-20 aspect-[9/16]' : 'w-40 aspect-video') + '">' +
-                        (id ? '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" onerror="this.remove()">' : '') +
-                        '<span class="absolute inset-0 flex items-center justify-center bg-black/15 group-hover:bg-black/30 transition-colors"><span class="w-9 h-9 rounded-full bg-white/90 text-red-600 flex items-center justify-center pl-0.5 shadow" aria-hidden="true">▶</span></span></span>' +
-                    '<span class="min-w-0"><span class="block text-[10px] font-black uppercase tracking-widest text-amber-600 mb-0.5">Réponse</span>' +
-                    '<span class="block text-sm font-bold text-gray-800">Voir la réponse en vidéo</span></span></button>';
-            carte.querySelector('button').onclick = () => ouvrirModalGlobale(v.lien, v.titre);
+            if (!accordeon) {
+                const q = document.createElement('div'); q.className = 'flex items-start gap-3 p-4 bg-emerald-50'; q.innerHTML = tete(v.titre);
+                carte.appendChild(q); carte.appendChild(reponse(v));
+            } else {
+                const q = document.createElement('button');
+                q.className = 'w-full flex items-start gap-3 p-4 bg-emerald-50 hover:bg-emerald-100/70 transition-colors text-left'; q.setAttribute('aria-expanded', 'false');
+                q.innerHTML = tete(v.titre) + '<span class="ml-auto self-center text-emerald-700 text-xl transition-transform duration-200" aria-hidden="true">▸</span>';
+                const corps = document.createElement('div'); corps.className = 'hidden border-t border-emerald-100'; corps.appendChild(reponse(v));
+                q.onclick = () => {
+                    const ouvert = corps.classList.toggle('hidden') === false;
+                    q.setAttribute('aria-expanded', String(ouvert)); q.lastElementChild.classList.toggle('rotate-90', ouvert);
+                };
+                carte.appendChild(q); carte.appendChild(corps);
+            }
             liste.appendChild(carte);
         });
         cont.appendChild(liste);
@@ -1960,7 +1981,7 @@ ecolesData.forEach(ecole => {
     marker.bindTooltip('<b>' + ecole.nom + '</b><br><span style="font-size:11px;color:#666">' + ecole.ville + '</span>');
     marker.on('click', () => {
         afficherEcole(ecole);
-        map.setView(ecole.coords, 12, { animate: true, duration: 1 });
+        if (estMobile()) map.setView(ecole.coords, 12, { animate: true, duration: 1 });   // zoom automatique uniquement sur mobile
     });
     markers.push({ ecole, marker, visible: true });
     clusterGroup.addLayer(marker);
