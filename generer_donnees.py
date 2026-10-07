@@ -229,7 +229,7 @@ for _, ecole in ecoles.iterrows():
 hors_noms = {norm(e['Nom']): safe_str(e['Nom']) for _, e in ecoles.iterrows()
              if 'Hors carte' in (safe_str(e.get('Type_BCPST')), safe_str(e.get('Type_TB')))}
 # « Sans nouvelles » reste anonyme ; les autres destinations hors carte apparaissent dans l'onglet Promotions
-CATEGORIES_VISIBLES_PROMOS = {'BUT', 'BTS', 'Faculté (non précisée)', "Véto à l'étranger"}
+CATEGORIES_VISIBLES_PROMOS = None   # toutes les destinations hors carte apparaissent (prénom + initiale) dans Promotions
 hors_carte = []
 for _, el in eleves.iterrows():
     cat = hors_noms.get(norm(el.get('École intégrée')))
@@ -237,7 +237,7 @@ for _, el in eleves.iterrows():
         d = {"annee": int(el.get('Année')) if not safe_isnan(el.get('Année')) else 0,
              "classe": safe_str(el.get('Classe')), "categorie": cat,
              "cinq_demi": safe_str(el.get('CinqDemi')).lower().startswith('oui')}
-        if cat in CATEGORIES_VISIBLES_PROMOS:      # identité réduite (prénom + initiale), comme pour les étudiants de la carte
+        if True:      # identité réduite (prénom + initiale), comme pour les étudiants de la carte
             d.update({"prenom": safe_str(el.get('Prénom')) or "Inconnu", "initiale_nom": safe_str(el.get('NOM'))[:1].upper(),
                       "fonctionnaire": safe_str(el.get('Fonctionnaire')), "lien_video": safe_str(el.get('Lien_Video')),
                       "lien_fiche_poste": safe_str(el.get('Lien_Fiche_Poste')), "apres_ecole": safe_str(el.get("Après l'école"))})

@@ -429,7 +429,7 @@ const typeDe = (e, classe) => (classe || '').includes('TB') ? (typeColors[e.type
 const nomAffiche = a => (a.prenom || 'Inconnu') + (a.initiale_nom ? ' ' + a.initiale_nom + '.' : '');
 const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const badgeFiliere = c => '<span class="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ' + ((c || '').includes('BCPST') ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700') + '">' + esc(c) + '</span>';
-const badgeEcole = (e, classe) => '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full text-white" style="background:' + (typeColors[typeDe(e, classe)] || '#6b7280') + '" title="' + esc(typeDe(e, classe) || 'École') + '">' + esc(e.nom) + '</span>';
+const badgeEcole = (e, classe) => '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full text-white" style="background:' + (e.couleur || typeColors[typeDe(e, classe)] || '#6b7280') + '" title="' + esc(typeDe(e, classe) || 'École') + '">' + esc(e.nom) + '</span>';
 const badgeFonct = '<span title="Fonctionnaire d\'état" class="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 uppercase tracking-wide">Fonct.</span>';
 const badgeMetier = m => '<span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-900 border border-emerald-200">💼 ' + esc(m) + '</span>';
 const badgeVideoStatique = '<span class="text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-full bg-[#cc0000] text-white">▶ Vidéo</span>';
@@ -465,42 +465,68 @@ function ligneCompacte(a, e) {
     return div;
 }
 
+// ---------- Liste unifiée des étudiants (utilisée par Promotions ET Statistiques) ----------
+// Groupes : GE (grandes écoles), FAC (facultés), CINQ (5/2 : redoublement choisi), AUTRE (BUT, BTS, sans nouvelles…)
+const GROUPE_HC = { 'Faculté (non précisée)': 'FAC', "Véto à l'étranger": 'GE', '5/2': 'CINQ' };
+const nkJS = s => String(s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
+let _tousCache = null;
+function tousEtudiants() {
+    if (_tousCache) return _tousCache;
+    const L = [];
+    ecolesData.forEach(e => e.anciens.forEach(a => L.push({ a, e, annee: a.annee, groupe: estGrandeEcole(e) ? 'GE' : 'FAC', src: 'carte' })));
+    (typeof etudiantsHorsCarte !== 'undefined' ? etudiantsHorsCarte : []).forEach(h => {
+        const a = { prenom: h.prenom || 'Inconnu', initiale_nom: h.initiale_nom || '', nom: '', annee: h.annee, classe: h.classe, lien_video: h.lien_video, lien_fiche_poste: h.lien_fiche_poste,
+                    fonctionnaire: h.fonctionnaire, apres_ecole: h.apres_ecole, cinq_demi: h.cinq_demi };
+        const cinq = h.categorie === '5/2';
+        L.push({ a, e: { nom: h.categorie, couleur: cinq ? '#7c3aed' : '#6b7280', anciens: [] }, annee: h.annee, groupe: GROUPE_HC[h.categorie] || 'AUTRE', src: cinq ? 'cinq' : 'hors' });
+    });
+    // un étudiant en 5/2 compte dans les deux promotions : « 5/2 » l'année où il redouble, sa destination l'année suivante
+    const clef = (a, y) => [nkJS(a.prenom), nkJS(a.initiale_nom), a.classe, y].join('|');
+    const explicites = new Set(L.filter(x => x.src === 'cinq').map(x => clef(x.a, x.annee)));
+    L.filter(x => x.a.cinq_demi && x.src !== 'cinq').forEach(x => {
+        if (explicites.has(clef(x.a, x.annee - 1))) return;
+        L.push({ a: Object.assign({}, x.a, { annee: x.annee - 1, cinq_demi: false, lien_video: '', lien_fiche_poste: '', apres_ecole: '', fonctionnaire: '' }),
+                 e: { nom: '5/2', couleur: '#7c3aed', anciens: [] }, annee: x.annee - 1, groupe: 'CINQ', src: 'cinq' });
+    });
+    return (_tousCache = L);
+}
+
 // ---------- Onglet Promotions ----------
-const etatPromos = { filiere: 'TOUT', annee: 'TOUT', q: '' };
+const GROUPES_PROMO = [['GE', 'Grandes écoles'], ['FAC', 'Facultés'], ['CINQ', '5/2'], ['AUTRE', 'Autres (BUT, BTS, sans nouvelles…)']];
+const etatPromos = { filiere: 'TOUT', annee: 'TOUT', q: '', groupes: new Set(['GE']) };
+function basculerGroupePromo(g) { etatPromos.groupes.has(g) ? etatPromos.groupes.delete(g) : etatPromos.groupes.add(g); rendrePromos(); }
 function rendrePromos() {
     const c = document.getElementById('promos-content');
     const chip = (act, lab, fn) => '<button onclick="' + fn + '" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all whitespace-nowrap ' + (act ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200') + '">' + lab + '</button>';
-    const tous = [];
-    ecolesData.forEach(e => e.anciens.forEach(a => tous.push({ a, e })));
-    // BUT, BTS, fac non précisée… : pas sur la carte, mais listés ici (prénom + initiale)
-    (typeof etudiantsHorsCarte !== 'undefined' ? etudiantsHorsCarte : []).filter(h => h.prenom).forEach(h =>
-        tous.push({ a: { prenom: h.prenom, initiale_nom: h.initiale_nom, nom: '', annee: h.annee, classe: h.classe, lien_video: h.lien_video, lien_fiche_poste: h.lien_fiche_poste,
-                         fonctionnaire: h.fonctionnaire, apres_ecole: h.apres_ecole, cinq_demi: h.cinq_demi }, e: { nom: h.categorie, type_bcpst: null, type_tb: null, anciens: [] } }));
-    const annees = [...new Set(tous.map(x => x.a.annee).filter(Boolean))].sort((x, y) => y - x);
+    const tous = tousEtudiants();
+    const annees = [...new Set(tous.map(x => x.annee).filter(Boolean))].sort((x, y) => y - x);
     const q = etatPromos.q.trim().toLowerCase();
-    const liste = tous.filter(({ a, e }) => (etatPromos.filiere === 'TOUT' || (a.classe || '').includes(etatPromos.filiere)) &&
-        (etatPromos.annee === 'TOUT' || a.annee === +etatPromos.annee) &&
-        (!q || [a.prenom, a.initiale_nom, a.nom, e.nom, a.apres_ecole].join(' ').toLowerCase().includes(q)))
-        .sort((x, y) => y.a.annee - x.a.annee || ((x.a.nom || x.a.prenom) || '').localeCompare((y.a.nom || y.a.prenom) || '', 'fr') || (x.a.prenom || '').localeCompare(y.a.prenom || '', 'fr'));
+    const liste = tous.filter(x => etatPromos.groupes.has(x.groupe) && (etatPromos.filiere === 'TOUT' || (x.a.classe || '').includes(etatPromos.filiere)) &&
+        (etatPromos.annee === 'TOUT' || x.annee === +etatPromos.annee) &&
+        (!q || [x.a.prenom, x.a.initiale_nom, x.e.nom, x.a.apres_ecole].join(' ').toLowerCase().includes(q)))
+        .sort((x, y) => y.annee - x.annee || ((x.a.nom || x.a.prenom) || '').localeCompare((y.a.nom || y.a.prenom) || '', 'fr') || (x.a.prenom || '').localeCompare(y.a.prenom || '', 'fr'));
     c.innerHTML = '<h2 class="text-lg font-extrabold text-emerald-950 mb-3">🎓 Promotions</h2>' +
-        '<input id="promos-q" type="search" value="' + esc(etatPromos.q) + '" placeholder="🔍 Rechercher un étudiant, une école, un métier…" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-3">' +
+        '<input id="promos-q" type="search" value="' + esc(etatPromos.q) + '" placeholder="🔍 Rechercher un prénom, une école, un métier…" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-3">' +
         '<div class="flex gap-2 mb-2">' + [['TOUT', 'Toutes filières'], ['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) => chip(etatPromos.filiere === k, l, "etatPromos.filiere='" + k + "';rendrePromos()")).join('') + '</div>' +
-        '<div class="flex gap-2 overflow-x-auto pb-2 mb-3">' + [['TOUT', 'Toutes les années']].concat(annees.map(y => [String(y), String(y)])).map(([k, l]) => chip(String(etatPromos.annee) === k, l, "etatPromos.annee='" + k + "';rendrePromos()")).join('') + '</div>' +
+        '<div class="flex gap-2 overflow-x-auto pb-2 mb-2">' + [['TOUT', 'Toutes les années']].concat(annees.map(y => [String(y), String(y)])).map(([k, l]) => chip(String(etatPromos.annee) === k, l, "etatPromos.annee='" + k + "';rendrePromos()")).join('') + '</div>' +
+        '<p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Afficher</p>' +
+        '<div class="flex flex-wrap gap-2 mb-3">' + GROUPES_PROMO.map(([k, l]) => chip(etatPromos.groupes.has(k), (etatPromos.groupes.has(k) ? '✓ ' : '') + l, "basculerGroupePromo('" + k + "')")).join('') + '</div>' +
         '<p class="text-[11px] text-gray-500 mb-2">' + liste.length + ' étudiant' + (liste.length > 1 ? 's' : '') + '</p>' +
-        '<div class="hidden md:grid md:grid-cols-[10rem_4.5rem_minmax(0,1fr)_3.5rem_minmax(0,1fr)_7rem] md:gap-x-3 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400"><span>Étudiant</span><span>Filière</span><span>École intégrée</span><span>Statut</span><span>Métier</span><span class="text-right">Liens</span></div>' +
+        '<div class="hidden md:grid md:grid-cols-[10rem_4.5rem_minmax(0,1fr)_3.5rem_minmax(0,1fr)_7rem] md:gap-x-3 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400"><span>Étudiant</span><span>Filière</span><span>École / voie</span><span>Statut</span><span>Métier</span><span class="text-right">Liens</span></div>' +
         '<div id="promos-liste"></div>';
     const inp = document.getElementById('promos-q');
     inp.oninput = () => { etatPromos.q = inp.value; const pos = inp.selectionStart; rendrePromos(); const n = document.getElementById('promos-q'); n.focus(); n.setSelectionRange(pos, pos); };
     const cont = document.getElementById('promos-liste');
-    if (!liste.length) cont.innerHTML = '<p class="text-xs italic text-gray-500 py-6 text-center">Aucun étudiant ne correspond.</p>';
+    if (!etatPromos.groupes.size) cont.innerHTML = '<p class="text-xs italic text-gray-500 py-6 text-center">Cochez au moins une catégorie ci-dessus.</p>';
+    else if (!liste.length) cont.innerHTML = '<p class="text-xs italic text-gray-500 py-6 text-center">Aucun étudiant ne correspond.</p>';
     let an = null, groupe = null;
     const nouveauGroupe = () => { groupe = document.createElement('div'); groupe.className = 'bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden'; cont.appendChild(groupe); };
     if (etatPromos.annee !== 'TOUT') nouveauGroupe();
-    liste.forEach(({ a, e }) => {
-        if (etatPromos.annee === 'TOUT' && a.annee !== an) {
-            an = a.annee;
+    liste.forEach(({ a, e, annee }) => {
+        if (etatPromos.annee === 'TOUT' && annee !== an) {
+            an = annee;
             const h = document.createElement('h3'); h.className = 'text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-4 mb-2 flex items-center gap-2';
-            h.innerHTML = 'Promotion ' + an + '<span class="flex-1 border-t border-emerald-200"></span>'; cont.appendChild(h);
+            h.innerHTML = 'Promotion ' + an + ' · ' + liste.filter(x => x.annee === an).length + '<span class="flex-1 border-t border-emerald-200"></span>'; cont.appendChild(h);
             nouveauGroupe();
         }
         groupe.appendChild(ligneCompacte(a, e));
@@ -692,63 +718,48 @@ function rendreVideos() {
 
 // ---------- Onglet Statistiques ----------
 function rendreStats() {
-    const rows = [];
-    ecolesData.forEach(e => e.anciens.forEach(a => {
-        if (!(a.classe || '').includes(statsFiliere)) return;
-        rows.push({ a, e, ge: estGrandeEcole(e) });
-    }));
-    const hc = (typeof etudiantsHorsCarte !== 'undefined' ? etudiantsHorsCarte : []).filter(h => (h.classe || '').includes(statsFiliere));
-    const nbHC = c => hc.filter(h => h.categorie === c).length;
-    const nbBUT = nbHC('BUT'), nbFacNP = nbHC('Faculté (non précisée)'), nbSN = nbHC('Sans nouvelles');
-    const facsNommees = rows.filter(r => !r.ge);
-    const total = rows.length + hc.length, nbGE = rows.filter(r => r.ge).length, nbFac = facsNommees.length + nbFacNP, nbAutres = nbBUT + nbSN;
-    const nb52 = rows.filter(r => r.a.cinq_demi).length + hc.filter(h => h.cinq_demi).length;
+    const all = tousEtudiants().filter(x => (x.a.classe || '').includes(statsFiliere));
+    const nb = g => all.filter(x => x.groupe === g).length;
+    const total = all.length, nbGE = nb('GE'), nbFac = nb('FAC'), nbAut = nb('AUTRE'), nb52 = nb('CINQ');
+    const carteSeule = all.filter(x => x.src === 'carte');
     const carte = (val, lib, sub, coul) => '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center"><p class="text-2xl font-extrabold ' + coul + '">' + val + '</p><p class="text-[11px] font-bold text-gray-700">' + lib + '</p>' + (sub ? '<p class="text-[10px] text-gray-400">' + sub + '</p>' : '') + '</div>';
-    const annees = [...new Set([...ANNEES, ...hc.map(h => h.annee)])].sort((a, b) => b - a);
-
+    const annees = [...new Set(all.map(x => x.annee))].sort((a, b) => b - a);
     let h = '<h2 class="text-lg font-extrabold text-emerald-950">📊 Statistiques — ' + statsFiliere + '</h2>' +
-        '<p class="text-xs text-gray-500 mb-3">Tous les étudiants du fichier sont comptés, y compris ceux absents de la carte. Réorientations : « Fac » (facultés nommées ou non) et « Autres » (BUT, sans nouvelles…). Aucun pourcentage.</p>' +
+        '<p class="text-xs text-gray-500 mb-3">Un étudiant en 5/2 compte dans deux promotions : « 5/2 » l\'année où il redouble, puis sa destination l\'année suivante. Total = grandes écoles + réorientations + 5/2. Aucun pourcentage.</p>' +
         '<div class="flex gap-2 mb-4">' + [['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) =>
             '<button onclick="statsFiliere=\'' + k + '\';rendreStats()" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all ' +
             (statsFiliere === k ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200 hover:bg-emerald-50') + '">' + l + '</button>').join('') + '</div>';
-
     h += '<div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">' +
-        carte(total, 'étudiants au total', annees.length + ' promotions', 'text-emerald-700') +
+        carte(total, 'étudiants (somme des promotions)', annees.length + ' promotions', 'text-emerald-700') +
         carte(nbGE, 'en grandes écoles', '', 'text-emerald-700') +
         carte(nbFac, 'réorientations : fac', '', 'text-slate-500') +
-        carte(nbAutres, 'réorientations : autres', 'BUT, sans nouvelles…', 'text-slate-500') +
-        carte(rows.filter(r => estFonct(r.a)).length, 'élèves fonctionnaires', '', 'text-blue-600') +
-        carte(nb52, 'étudiants en 5/2', '', 'text-purple-600') +
-        carte(rows.filter(r => aLien(r.a.lien_video)).length, 'témoignages vidéo', '', 'text-red-600') + '</div>';
-
-    h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Par année d\'intégration</h3>' +
+        carte(nbAut, 'réorientations : autres', 'BUT, BTS, sans nouvelles…', 'text-slate-500') +
+        carte(nb52, 'en 5/2', 'redoublements choisis', 'text-purple-600') +
+        carte(carteSeule.filter(r => estFonct(r.a)).length, 'élèves fonctionnaires', '', 'text-blue-600') +
+        carte(carteSeule.filter(r => aLien(r.a.lien_video)).length, 'témoignages vidéo', '', 'text-red-600') + '</div>';
+    h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Par promotion</h3>' +
         '<div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-x-auto mb-6"><table class="w-full text-xs text-center">' +
-        '<thead class="bg-emerald-50 text-emerald-900 text-[10px] uppercase tracking-wide"><tr><th rowspan="2" class="p-2 text-left">Année</th><th rowspan="2" class="p-2">Total</th><th rowspan="2" class="p-2">Grandes écoles</th><th colspan="2" class="p-2 border-l border-emerald-100">Réorientations</th><th rowspan="2" class="p-2 border-l border-emerald-100">Fonct.</th><th rowspan="2" class="p-2">5/2</th></tr><tr><th class="p-1 border-l border-emerald-100">Fac</th><th class="p-1">Autres</th></tr></thead><tbody>';
+        '<thead class="bg-emerald-50 text-emerald-900 text-[10px] uppercase tracking-wide">' +
+        '<tr><th rowspan="2" class="p-2 text-left">Promo</th><th rowspan="2" class="p-2">Total</th><th rowspan="2" class="p-2">Grandes écoles</th>' +
+        '<th colspan="2" class="p-2 border-l border-emerald-100">Réorientations</th><th rowspan="2" class="p-2 border-l border-emerald-100">5/2<br><span class="normal-case font-medium text-[9px]">(→ n+1)</span></th><th rowspan="2" class="p-2 border-l border-emerald-100">Fonct.</th></tr>' +
+        '<tr><th class="p-1 border-l border-emerald-100">Fac</th><th class="p-1">Autres</th></tr></thead><tbody>';
     annees.forEach(y => {
-        const r = rows.filter(x => x.a.annee === y), c = hc.filter(x => x.annee === y);
-        if (!r.length && !c.length) return;
-        const cc = k => c.filter(x => x.categorie === k).length;
-        h += '<tr class="border-t border-gray-100 hover:bg-gray-50"><td class="p-2 text-left font-bold">' + y + '</td><td class="p-2 font-bold">' + (r.length + c.length) + '</td>' +
-            '<td class="p-2 text-emerald-700 font-bold">' + r.filter(x => x.ge).length + '</td><td class="p-2 text-slate-500 border-l border-gray-100">' + (r.filter(x => !x.ge).length + cc('Faculté (non précisée)')) + '</td>' +
-            '<td class="p-2 text-slate-500">' + (cc('BUT') + cc('Sans nouvelles')) + '</td>' +
-            '<td class="p-2 text-blue-600">' + r.filter(x => estFonct(x.a)).length + '</td><td class="p-2 text-purple-600">' + (r.filter(x => x.a.cinq_demi).length + c.filter(x => x.cinq_demi).length) + '</td></tr>';
+        const r = all.filter(x => x.annee === y), c = g => r.filter(x => x.groupe === g).length;
+        h += '<tr class="border-t border-gray-100 hover:bg-gray-50"><td class="p-2 text-left font-bold">' + y + '</td><td class="p-2 font-bold">' + r.length + '</td>' +
+            '<td class="p-2 text-emerald-700 font-bold">' + c('GE') + '</td><td class="p-2 text-slate-500 border-l border-gray-100">' + c('FAC') + '</td><td class="p-2 text-slate-500">' + c('AUTRE') + '</td>' +
+            '<td class="p-2 text-purple-600 font-bold border-l border-gray-100">' + c('CINQ') + '</td><td class="p-2 text-blue-600 border-l border-gray-100">' + r.filter(x => x.src === 'carte' && estFonct(x.a)).length + '</td></tr>';
     });
     h += '</tbody></table></div>';
-
-
-    // Par type d'école (étudiants présents sur la carte)
     const types = {};
-    rows.filter(r => r.ge).forEach(r => { const t = typeColors[r.e.type_bcpst] ? r.e.type_bcpst : typeColors[r.e.type_tb] ? r.e.type_tb : 'Autres'; types[t] = (types[t] || 0) + 1; });
+    carteSeule.filter(r => r.groupe === 'GE').forEach(r => { const t = typeColors[r.e.type_bcpst] ? r.e.type_bcpst : typeColors[r.e.type_tb] ? r.e.type_tb : 'Autres'; types[t] = (types[t] || 0) + 1; });
     const max = Math.max(1, ...Object.values(types));
     h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Grandes écoles par type d\'établissement</h3><div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 space-y-1.5">' +
         Object.entries(types).sort((a, b) => b[1] - a[1]).map(([t, n]) =>
             '<div class="flex items-center gap-2 text-[11px]"><span class="w-28 shrink-0 font-bold text-gray-700 truncate">' + t + '</span>' +
             '<div class="flex-1 bg-gray-100 rounded-full h-3 overflow-hidden"><div class="h-3 rounded-full" style="width:' + (100 * n / max) + '%;background:' + (typeColors[t] || '#6b7280') + '"></div></div>' +
             '<span class="w-8 text-right font-bold text-gray-700">' + n + '</span></div>').join('') + '</div>';
-
     document.getElementById('stats-content').innerHTML = h;
 }
-
 
 // ================================================================
 // CARTE PRINCIPALE
