@@ -203,7 +203,6 @@
         <div id="placeholder-message" class="text-center py-6 text-gray-500">
             <p class="text-3xl mb-2" aria-hidden="true">📍</p>
             <p class="text-sm font-bold text-emerald-950">Choisissez une école</p>
-            <p class="text-xs mt-1">Touchez un point de la carte ou une école de la liste pour voir sa fiche.</p>
         </div>
 
 
@@ -251,7 +250,6 @@
 <section id="tab-videos" class="hidden flex-1 overflow-y-auto bg-gray-50">
     <div class="max-w-6xl mx-auto p-4 md:p-6">
         <h2 class="text-lg font-extrabold text-emerald-950">🎬 Vidéos</h2>
-        <p class="text-xs text-gray-500 mb-3">Forums, conférences, FAQ et témoignages d'anciens élèves.</p>
         <div id="video-subtabs" class="flex flex-wrap gap-2 mb-4"></div>
         <div id="video-grid"></div>
     </div>
@@ -505,13 +503,16 @@ function rendrePromos() {
         (etatPromos.annee === 'TOUT' || x.annee === +etatPromos.annee) &&
         (!q || [x.a.prenom, x.a.initiale_nom, x.e.nom, x.a.apres_ecole].join(' ').toLowerCase().includes(q)))
         .sort((x, y) => y.annee - x.annee || ((x.a.nom || x.a.prenom) || '').localeCompare((y.a.nom || y.a.prenom) || '', 'fr') || (x.a.prenom || '').localeCompare(y.a.prenom || '', 'fr'));
+    // total = élèves distincts parmi ceux affichés (un 5/2 présent dans deux promos n'est compté qu'une fois) ; les effectifs par promo, eux, incluent les 5/2
+    const cleP = x => [nkJS(x.a.prenom), nkJS(x.a.initiale_nom), x.a.classe].join('|');
+    const finalsP = new Set(liste.filter(x => x.groupe !== 'CINQ').map(x => cleP(x) + '|' + x.annee));
+    const nbDistincts = liste.length - liste.filter(x => x.groupe === 'CINQ' && finalsP.has(cleP(x) + '|' + (x.annee + 1))).length;
     c.innerHTML = '<h2 class="text-lg font-extrabold text-emerald-950 mb-3">🎓 Promotions</h2>' +
         '<input id="promos-q" type="search" value="' + esc(etatPromos.q) + '" placeholder="🔍 Rechercher un prénom, une école, un métier…" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-3">' +
         '<div class="flex gap-2 mb-2">' + [['TOUT', 'Toutes filières'], ['BCPST', 'BCPST'], ['TB', 'TB']].map(([k, l]) => chip(etatPromos.filiere === k, l, "etatPromos.filiere='" + k + "';rendrePromos()")).join('') + '</div>' +
         '<div class="flex gap-2 overflow-x-auto pb-2 mb-2">' + [['TOUT', 'Toutes les années']].concat(annees.map(y => [String(y), String(y)])).map(([k, l]) => chip(String(etatPromos.annee) === k, l, "etatPromos.annee='" + k + "';rendrePromos()")).join('') + '</div>' +
-        '<p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">Afficher</p>' +
         '<div class="flex flex-wrap gap-2 mb-3">' + GROUPES_PROMO.map(([k, l]) => chip(etatPromos.groupes.has(k), (etatPromos.groupes.has(k) ? '✓ ' : '') + l, "basculerGroupePromo('" + k + "')")).join('') + '</div>' +
-        '<p class="text-[11px] text-gray-500 mb-2">' + liste.length + ' étudiant' + (liste.length > 1 ? 's' : '') + '</p>' +
+        '<p class="text-[11px] text-gray-500 mb-2">' + nbDistincts + ' étudiant' + (nbDistincts > 1 ? 's' : '') + '</p>' +
         '<div class="hidden md:grid md:grid-cols-[10rem_4.5rem_minmax(0,1fr)_3.5rem_minmax(0,1fr)_7rem] md:gap-x-3 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-gray-400"><span>Étudiant</span><span>Filière</span><span>École / voie</span><span>Statut</span><span>Métier</span><span class="text-right">Liens</span></div>' +
         '<div id="promos-liste"></div>';
     const inp = document.getElementById('promos-q');
@@ -526,7 +527,8 @@ function rendrePromos() {
         if (etatPromos.annee === 'TOUT' && annee !== an) {
             an = annee;
             const h = document.createElement('h3'); h.className = 'text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-4 mb-2 flex items-center gap-2';
-            h.innerHTML = 'Promotion ' + an + ' · ' + liste.filter(x => x.annee === an).length + '<span class="flex-1 border-t border-emerald-200"></span>'; cont.appendChild(h);
+            const nbPromo = liste.filter(x => x.annee === an).length;
+            h.innerHTML = 'Promotion ' + an + ' · ' + nbPromo + ' ancien' + (nbPromo > 1 ? 's' : '') + '<span class="flex-1 border-t border-emerald-200"></span>'; cont.appendChild(h);
             nouveauGroupe();
         }
         groupe.appendChild(ligneCompacte(a, e));
@@ -550,7 +552,7 @@ function rendreEcoles() {
     c.innerHTML = '<h2 class="text-lg font-extrabold text-emerald-950 mb-3">🏫 Écoles</h2>' +
         '<div class="flex gap-2 mb-3">' + ['BCPST', 'TB'].map(k => '<button onclick="etatEcoles.filiere=\'' + k + '\';rendreEcoles()" class="px-4 py-1.5 rounded-full text-xs font-bold border ' + (F === k ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200') + '">' + k + '</button>').join('') + '</div>' +
         '<input id="ecoles-q" type="search" value="' + esc(etatEcoles.q) + '" placeholder="🔍 Rechercher une école ou une ville…" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-2">' +
-        '<p class="text-[11px] text-gray-500 mb-1">Écoles accessibles en ' + F + ' par concours, avec les coefficients (session 2026, à vérifier sur les sites des concours). Les anciens indiqués sont ceux de la filière ' + F + '.</p><div id="ecoles-liste"></div>';
+        '<div id="ecoles-liste"></div>';
     const inp = document.getElementById('ecoles-q');
     inp.oninput = () => { etatEcoles.q = inp.value; const pos = inp.selectionStart; rendreEcoles(); const n = document.getElementById('ecoles-q'); n.focus(); n.setSelectionRange(pos, pos); };
     const cont = document.getElementById('ecoles-liste');
@@ -635,7 +637,6 @@ function rendreFiches() {
     const liste = fiches.filter(f => !q || (f.a.prenom + ' ' + f.a.nom + ' ' + f.e.nom + ' ' + f.a.apres_ecole).toLowerCase().includes(q))
         .sort((x, y) => y.a.annee - x.a.annee || x.e.nom.localeCompare(y.e.nom));
     let h = '<h2 class="text-lg font-extrabold text-emerald-950">📄 Fiches de poste</h2>' +
-        '<p class="text-xs text-gray-500 mb-3">Fiches décrivant le métier exercé par d\'anciens élèves (' + fiches.length + ' disponibles).</p>' +
         '<input id="fiches-search" type="search" value="' + rechercheFiches.replace(/"/g, '&quot;') + '" placeholder="🔍 Prénom, école, métier…" oninput="rechercheFiches=this.value;rendreFiches();document.getElementById(\'fiches-search\').focus()" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-4">';
     if (!liste.length) h += '<p class="text-xs italic text-gray-500">Aucune fiche ne correspond.</p>';
     let an = null;
@@ -722,6 +723,11 @@ function rendreStats() {
     const nb = g => all.filter(x => x.groupe === g).length;
     const total = all.length, nbGE = nb('GE'), nbFac = nb('FAC'), nbAut = nb('AUTRE'), nb52 = nb('CINQ');
     const carteSeule = all.filter(x => x.src === 'carte');
+    // élèves distincts : un 5/2 déjà suivi de sa destination l'année d'après n'est compté qu'une fois
+    const cle = x => [nkJS(x.a.prenom), nkJS(x.a.initiale_nom), x.a.classe].join('|');
+    const finals = new Set(all.filter(x => x.groupe !== 'CINQ').map(x => cle(x) + '|' + x.annee));
+    const doublons = all.filter(x => x.groupe === 'CINQ' && finals.has(cle(x) + '|' + (x.annee + 1))).length;
+    const distincts = total - doublons;
     const carte = (val, lib, sub, coul) => '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center"><p class="text-2xl font-extrabold ' + coul + '">' + val + '</p><p class="text-[11px] font-bold text-gray-700">' + lib + '</p>' + (sub ? '<p class="text-[10px] text-gray-400">' + sub + '</p>' : '') + '</div>';
     const annees = [...new Set(all.map(x => x.annee))].sort((a, b) => b - a);
     let h = '<h2 class="text-lg font-extrabold text-emerald-950">📊 Statistiques — ' + statsFiliere + '</h2>' +
@@ -729,11 +735,11 @@ function rendreStats() {
             '<button onclick="statsFiliere=\'' + k + '\';rendreStats()" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all ' +
             (statsFiliere === k ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200 hover:bg-emerald-50') + '">' + l + '</button>').join('') + '</div>';
     h += '<div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">' +
-        carte(total, 'étudiants (somme des promotions)', annees.length + ' promotions', 'text-emerald-700') +
+        carte(distincts, 'étudiants recensés', annees.length + ' promotions', 'text-emerald-700') +
         carte(nbGE, 'en grandes écoles', '', 'text-emerald-700') +
         carte(nbFac, 'réorientations : fac', '', 'text-slate-500') +
-        carte(nbAut, 'réorientations : autres', 'BUT, BTS, sans nouvelles…', 'text-slate-500') +
-        carte(nb52, 'en 5/2', 'redoublements choisis', 'text-purple-600') +
+        carte(nbAut, 'réorientations : autres', '', 'text-slate-500') +
+        carte(nb52, 'en 5/2', '', 'text-purple-600') +
         carte(carteSeule.filter(r => estFonct(r.a)).length, 'élèves fonctionnaires', '', 'text-blue-600') +
         carte(carteSeule.filter(r => aLien(r.a.lien_video)).length, 'témoignages vidéo', '', 'text-red-600') + '</div>';
     h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Par promotion</h3>' +
