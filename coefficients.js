@@ -59,7 +59,7 @@ const CONCOURS = {
     { banque: 'Agro-Véto', titre: 'Concours TB Véto', types: ['Véto'],
       ecrit: [['SVT', 3], ['Biotechnologies', 3], ['Méthodes de calcul', 2], ['Algorithmique et informatique', 1], ['Physique-chimie (résolution de problème)', 3], ['Composition de français', 2]],
       adm: [['Oral de SVT', 4], ['Oral de biotechnologies', 3], ['Pratique biologie / biotechnologies', 3], ['Oral de mathématiques', 2], ['Oral de physique-chimie', 3], ['Oral de géographie', 1], ['Entretien TIPE', 4], AN(2)] },
-    { banque: 'Agro-Véto', titre: 'Concours TB Polytech', types: ['Polytech'],
+    { banque: 'Polytech', titre: 'Concours TB Polytech', types: ['Polytech'],
       ecrit: [['SVT', 2], ['Biotechnologies', 3], ['Méthodes de calcul', 3], ['Algorithmique et informatique', 1], ['Physique-chimie (résolution de problème)', 3], ['Composition de français', 2], ['Anglais', 2]],
       adm: null, note: 'Barème d\'admission non renseigné (oral de biotechnologies : coef. 3).' },
     { banque: 'Agro-Véto', titre: 'Concours TB ENSTIB', types: ['ENSTIB'],
