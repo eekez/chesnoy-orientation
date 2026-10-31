@@ -11,6 +11,11 @@ def safe_isnan(val):
 def safe_str(val):
     return "" if pd.isna(val) else str(val).strip()
 
+def liste_mots_cles(val):
+    """Colonne « Mots_cles » de l'onglet Ecoles : « A ; B ; C. » -> ["A", "B", "C"]"""
+    mots = [m.strip().rstrip('.').strip() for m in safe_str(val).split(';')]
+    return [m for m in mots if m]
+
 # ================================================================
 # LECTURE DES STATISTIQUES DEPUIS L'ONGLET "Stats"
 # ================================================================
@@ -219,6 +224,7 @@ for _, ecole in ecoles.iterrows():
         "descriptif":   safe_str(ecole.get('Descriptif')),
         "lien_site":    safe_str(ecole.get('Lien')),
         "image":        safe_str(ecole.get('image')),
+        "mots_cles":    liste_mots_cles(ecole.get('Mots_cles')),
         "specs_bcpst":  specs_bcpst,
         "specs_tb":     specs_tb,
         "specs_g2e":    specs_g2e,

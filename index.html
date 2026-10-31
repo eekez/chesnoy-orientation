@@ -552,19 +552,19 @@ const etatEcoles = { filiere: 'BCPST', q: '', ouvertes: new Set(), coefs: new Se
 function deplierEcoles(ouvrir) { const F = etatEcoles.filiere; CONCOURS[F].forEach(sc => { const k = F + '|' + sc.titre; ouvrir ? etatEcoles.ouverts.add(k) : etatEcoles.ouverts.delete(k); }); rendreEcoles(); }
 function rendreEcoles() {
     const c = document.getElementById('ecoles-content');
-    const F = etatEcoles.filiere, q = etatEcoles.q.trim().toLowerCase();
+    const F = etatEcoles.filiere, q = normaliserTexte(etatEcoles.q);
     const somme = l => (l || []).reduce((t, x) => t + x[1], 0);
     const fmt = n => String(n).replace('.', ',');
     const deja = new Set();
     const subs = CONCOURS[F].map(sc => {
         const ecoles = ecolesData.filter(e => !deja.has(e.nom) && sc.types.includes(F === 'TB' ? e.type_tb : e.type_bcpst) && (!sc.noms || sc.noms.includes(e.nom)) &&
-            (!q || (e.nom + ' ' + (e.ville || '')).toLowerCase().includes(q)));
+            (!q || normaliserTexte(e.nom + ' ' + (e.ville || '') + ' ' + listeMotsCles(e).join(' ')).includes(q)));
         ecoles.forEach(e => deja.add(e.nom));
         return { sc, ecoles: ecoles.sort((a, b) => a.nom.localeCompare(b.nom, 'fr')) };
     }).filter(x => x.ecoles.length);
     c.innerHTML = '<h2 class="text-lg font-extrabold text-emerald-950 mb-3">🏫 Écoles</h2>' +
         '<div class="flex gap-2 mb-3">' + ['BCPST', 'TB'].map(k => '<button onclick="etatEcoles.filiere=\'' + k + '\';rendreEcoles()" class="px-4 py-1.5 rounded-full text-xs font-bold border ' + (F === k ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200') + '">' + k + '</button>').join('') + '</div>' +
-        '<input id="ecoles-q" type="search" value="' + esc(etatEcoles.q) + '" placeholder="🔍 Rechercher une école ou une ville…" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-2">' +
+        '<input id="ecoles-q" type="search" value="' + esc(etatEcoles.q) + '" placeholder="🔍 Rechercher une école, une ville ou un mot-clé…" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm mb-2">' +
         '<div class="flex gap-2 mb-1"><button onclick="deplierEcoles(true)" class="text-[11px] font-bold px-3 py-1.5 rounded-full bg-white border border-emerald-300 text-emerald-800">Tout déplier</button><button onclick="deplierEcoles(false)" class="text-[11px] font-bold px-3 py-1.5 rounded-full bg-white border border-gray-300 text-gray-600">Tout replier</button></div>' +
         '<div id="ecoles-liste"></div>';
     const inp = document.getElementById('ecoles-q');
@@ -632,12 +632,15 @@ function carteEcole(e, F) {
         let h = '';
         if (aLien(e.image)) h += '<img src="' + esc(e.image) + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()" class="w-full h-40 object-cover rounded-lg mb-3">';
         if (aLien(e.descriptif)) h += '<p class="text-xs text-gray-700 leading-relaxed mb-3">' + esc(e.descriptif) + '</p>';
+        const kw = listeMotsCles(e);
+        if (kw.length) h += '<div class="flex flex-wrap gap-1 mb-3" data-motscles>' + kw.map((m, i) => '<button type="button" data-kw="' + i + '" title="Rechercher « ' + esc(m) + ' »" class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 hover:border-emerald-400 transition-colors">' + esc(m) + '</button>').join('') + '</div>';
         h += '<div class="flex flex-wrap gap-2 mb-3">' + (aLien(e.lien_site) ? '<a href="' + esc(e.lien_site) + '" target="_blank" rel="noopener" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-700 text-white">🔗 Site de l\'école</a>' : '') +
             '<button data-carte class="text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-800">📍 Voir sur la carte</button></div>';
         corps.innerHTML = h + '<p class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Anciens (' + F + ')</p><div data-anciens></div>';
         const zone = corps.querySelector('[data-anciens]');
         if (!anciens.length) zone.innerHTML = '<p class="text-xs italic text-gray-500">Aucun ancien recensé.</p>';
         anciens.slice().sort((x, y) => y.annee - x.annee).forEach(a => { const l = ligneEtudiant(a, e, false); l.insertAdjacentHTML('afterbegin', '<p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Promotion ' + a.annee + '</p>'); zone.appendChild(l); });
+        corps.querySelectorAll('[data-kw]').forEach(b => { b.onclick = () => { etatEcoles.q = kw[+b.dataset.kw]; rendreEcoles(); }; });
         corps.querySelector('[data-carte]').onclick = () => { changerOnglet('carte'); setTimeout(() => { const m = markers.find(x => x.ecole.nom === e.nom); if (m) { map.setView(m.ecole.coords, 12); afficherEcole(m.ecole); } }, 120); };
     };
     if (ouverte) remplir();
@@ -1300,8 +1303,25 @@ function elevesFiltresPourEcole(ecole, anneeDebut, anneeFin) {
     });
 }
 
+// Normalisation tolérante : minuscules, sans accents, espaces insécables/multiples réduits, jamais d'erreur sur une valeur vide
+function normaliserTexte(s) {
+    return String(s == null ? '' : s)
+        .toLowerCase()
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replace(/[\s\u00a0]+/g, ' ')
+        .trim();
+}
+
+// Mots-clés d'une école, qu'ils arrivent sous forme de liste ou de texte « a ; b ; c »
+function listeMotsCles(e) {
+    const brut = e && e.mots_cles;
+    if (!brut) return [];
+    const liste = Array.isArray(brut) ? brut : String(brut).split(/[;,\n]/);
+    return liste.map(m => String(m == null ? '' : m).trim()).filter(Boolean);
+}
+
 function filtrerTout() {
-    const query      = document.getElementById('search-bar').value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const query      = normaliserTexte(document.getElementById('search-bar').value);
     const anneeDebut = 0;
     const anneeFin = 9999;
     let ecolesCount  = 0, elevesCount = 0;
@@ -1309,20 +1329,18 @@ function filtrerTout() {
     markers.forEach(item => {
         const e = item.ecole;
 
-        const normalize = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
-
         // Élèves correspondant aux filtres (année, filière, banque)
         const filtres = elevesFiltresPourEcole(e, anneeDebut, anneeFin);
 
         // Recherche texte : école, ville, élève ou mot-clé
         const matchTexte =
             !query ||
-            normalize(e.nom).includes(query) ||
-            normalize(e.ville).includes(query) ||
-            (e.mots_cles && e.mots_cles.some(m => normalize(m).includes(query))) ||
+            normaliserTexte(e.nom).includes(query) ||
+            normaliserTexte(e.ville).includes(query) ||
+            listeMotsCles(e).some(m => normaliserTexte(m).includes(query)) ||
             filtres.some(a =>
-                normalize(a.prenom + " " + a.nom).includes(query) ||
-                normalize(a.nom).includes(query)
+                normaliserTexte((a.prenom || '') + " " + (a.nom || '')).includes(query) ||
+                normaliserTexte(a.nom).includes(query)
             );
 
         // Compatibilité avec les écoles sans anciens
@@ -1471,9 +1489,10 @@ function afficherEcole(ecole, depuisFiltre) {
     // Mots-clés
     const kwEl = document.getElementById('school-keywords');
     kwEl.innerHTML = '';
-    if (ecole.mots_cles && ecole.mots_cles.length) {
+    const motsCles = listeMotsCles(ecole);
+    if (motsCles.length) {
         kwEl.classList.remove('hidden');
-        ecole.mots_cles.forEach(mot => {
+        motsCles.forEach(mot => {
             const span = document.createElement('span');
             span.textContent = mot.trim();
             span.title = 'Rechercher "' + mot.trim() + '"';
