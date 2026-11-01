@@ -462,7 +462,7 @@ window.addEventListener('unhandledrejection', ev => signalerErreur('promesse', e
 // ---------- Statistiques d'utilisation (GoatCounter : sans cookie, sans donnée personnelle) ----------
 // 1) Crée un compteur gratuit sur https://www.goatcounter.com (« code » choisi à l'inscription, ex. « chesnoy »).
 // 2) Renseigne ce code ci-dessous : tant qu'il est vide, aucun suivi n'est activé.
-const GOATCOUNTER_CODE = '';
+const GOATCOUNTER_CODE = 'chesnoy';
 const SUIVI_ACTIF = !!GOATCOUNTER_CODE && navigator.doNotTrack !== '1';
 if (SUIVI_ACTIF) {
     const gc = document.createElement('script');
