@@ -43,7 +43,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "MORANDO",
                 "prenom": "Gabriel",
                 "initiale_nom": "M",
                 "annee": 2025,
@@ -55,7 +54,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "AYMON",
                 "prenom": "Julien",
                 "initiale_nom": "A",
                 "annee": 2021,
@@ -67,7 +65,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "MURAT",
                 "prenom": "Quentin",
                 "initiale_nom": "M",
                 "annee": 2021,
@@ -79,7 +76,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BROUILLARD",
                 "prenom": "Benjamin",
                 "initiale_nom": "B",
                 "annee": 2020,
@@ -91,7 +87,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BARTKOWSKI",
                 "prenom": "Romane",
                 "initiale_nom": "B",
                 "annee": 2019,
@@ -103,7 +98,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "HERAIL",
                 "prenom": "Théo",
                 "initiale_nom": "H",
                 "annee": 2018,
@@ -115,7 +109,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "MITTEREAU",
                 "prenom": "Kévin",
                 "initiale_nom": "M",
                 "annee": 2018,
@@ -127,7 +120,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "PERDEREAU",
                 "prenom": "Antoine",
                 "initiale_nom": "P",
                 "annee": 2018,
@@ -139,7 +131,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "HELLER",
                 "prenom": "Joël",
                 "initiale_nom": "H",
                 "annee": 2014,
@@ -151,7 +142,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "PRUGNEAU",
                 "prenom": "Thomas",
                 "initiale_nom": "P",
                 "annee": 2024,
@@ -163,7 +153,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LEBON",
                 "prenom": "Olivia",
                 "initiale_nom": "L",
                 "annee": 2024,
@@ -175,7 +164,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "REVEILLARD",
                 "prenom": "Antoine",
                 "initiale_nom": "R",
                 "annee": 2021,
@@ -187,7 +175,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "AUROUX",
                 "prenom": "Ophélie",
                 "initiale_nom": "A",
                 "annee": 2020,
@@ -199,7 +186,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DUMEZ",
                 "prenom": "Lucie",
                 "initiale_nom": "D",
                 "annee": 2017,
@@ -211,7 +197,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BARDON",
                 "prenom": "Camille",
                 "initiale_nom": "B",
                 "annee": 2016,
@@ -223,7 +208,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ZIMMERMANN",
                 "prenom": "Rudi",
                 "initiale_nom": "Z",
                 "annee": 2015,
@@ -284,7 +268,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "RONCERET--ARTAL",
                 "prenom": "Lola",
                 "initiale_nom": "R",
                 "annee": 2026,
@@ -296,7 +279,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LELEU--RIOU",
                 "prenom": "Ines",
                 "initiale_nom": "L",
                 "annee": 2025,
@@ -308,7 +290,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "NICOLLEAU",
                 "prenom": "Léna",
                 "initiale_nom": "N",
                 "annee": 2024,
@@ -320,7 +301,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SAILLARD",
                 "prenom": "Laurine",
                 "initiale_nom": "S",
                 "annee": 2024,
@@ -332,7 +312,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SILVERT",
                 "prenom": "Agathe",
                 "initiale_nom": "S",
                 "annee": 2024,
@@ -344,7 +323,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BLOCQUEL",
                 "prenom": "Camille",
                 "initiale_nom": "B",
                 "annee": 2014,
@@ -356,7 +334,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "CHOCHOY",
                 "prenom": "Emie",
                 "initiale_nom": "C",
                 "annee": 2026,
@@ -368,7 +345,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BATUT",
                 "prenom": "Siriane",
                 "initiale_nom": "B",
                 "annee": 2026,
@@ -380,7 +356,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MAURY",
                 "prenom": "Lisa",
                 "initiale_nom": "M",
                 "annee": 2026,
@@ -392,7 +367,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MANAS",
                 "prenom": "Léa",
                 "initiale_nom": "M",
                 "annee": 2026,
@@ -404,7 +378,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MERCIER",
                 "prenom": "Emma",
                 "initiale_nom": "M",
                 "annee": 2026,
@@ -416,7 +389,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "SEMHOUN",
                 "prenom": "Bastien",
                 "initiale_nom": "S",
                 "annee": 2025,
@@ -428,7 +400,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BHATTI",
                 "prenom": "Bilal",
                 "initiale_nom": "B",
                 "annee": 2024,
@@ -440,7 +411,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GUEDON",
                 "prenom": "Eline",
                 "initiale_nom": "G",
                 "annee": 2024,
@@ -452,7 +422,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "HEREMBERT",
                 "prenom": "Elsa",
                 "initiale_nom": "H",
                 "annee": 2024,
@@ -464,7 +433,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MOKRANI",
                 "prenom": "Alan",
                 "initiale_nom": "M",
                 "annee": 2024,
@@ -476,7 +444,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BOUTET",
                 "prenom": "Anaïs",
                 "initiale_nom": "B",
                 "annee": 2021,
@@ -488,7 +455,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LEBLOND",
                 "prenom": "Benoît",
                 "initiale_nom": "L",
                 "annee": 2021,
@@ -500,7 +466,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "THAUVIN",
                 "prenom": "Bastien",
                 "initiale_nom": "T",
                 "annee": 2018,
@@ -512,7 +477,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VOLENA",
                 "prenom": "Lucas",
                 "initiale_nom": "V",
                 "annee": 2018,
@@ -524,7 +488,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "FOUGERE",
                 "prenom": "Louise",
                 "initiale_nom": "F",
                 "annee": 2017,
@@ -581,7 +544,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "DELAITRE",
                 "prenom": "Emma",
                 "initiale_nom": "D",
                 "annee": 2025,
@@ -593,7 +555,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "RENOUX",
                 "prenom": "Arthur",
                 "initiale_nom": "R",
                 "annee": 2024,
@@ -605,7 +566,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BABO",
                 "prenom": "Martine",
                 "initiale_nom": "B",
                 "annee": 2022,
@@ -617,7 +577,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "GODOT",
                 "prenom": "Camille",
                 "initiale_nom": "G",
                 "annee": 2022,
@@ -629,7 +588,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BLANCO",
                 "prenom": "Orane",
                 "initiale_nom": "B",
                 "annee": 2021,
@@ -641,7 +599,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "ESCOMS",
                 "prenom": "Sarah",
                 "initiale_nom": "E",
                 "annee": 2021,
@@ -653,7 +610,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "AGOGUE",
                 "prenom": "Arnaud",
                 "initiale_nom": "A",
                 "annee": 2019,
@@ -665,7 +621,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "GALVAGNON",
                 "prenom": "Coralie",
                 "initiale_nom": "G",
                 "annee": 2020,
@@ -677,7 +632,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BATIER",
                 "prenom": "Emilie",
                 "initiale_nom": "B",
                 "annee": 2019,
@@ -689,7 +643,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CHAUDY",
                 "prenom": "Manon",
                 "initiale_nom": "C",
                 "annee": 2019,
@@ -701,7 +654,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DUPRE",
                 "prenom": "Eliot",
                 "initiale_nom": "D",
                 "annee": 2019,
@@ -713,7 +665,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "CAMUS",
                 "prenom": "Théo",
                 "initiale_nom": "C",
                 "annee": 2018,
@@ -725,7 +676,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DUPRE",
                 "prenom": "Clément",
                 "initiale_nom": "D",
                 "annee": 2017,
@@ -737,7 +687,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DESMAISON",
                 "prenom": "Marie",
                 "initiale_nom": "D",
                 "annee": 2016,
@@ -749,7 +698,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "TOURNANT",
                 "prenom": "Nicolas",
                 "initiale_nom": "T",
                 "annee": 2016,
@@ -761,7 +709,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "WALCZAK",
                 "prenom": "Loic",
                 "initiale_nom": "W",
                 "annee": 2025,
@@ -773,7 +720,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "TURPIN",
                 "prenom": "Doriane",
                 "initiale_nom": "T",
                 "annee": 2025,
@@ -785,7 +731,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SAUTET",
                 "prenom": "Aristide",
                 "initiale_nom": "S",
                 "annee": 2023,
@@ -797,7 +742,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LECLOUX",
                 "prenom": "Marion",
                 "initiale_nom": "L",
                 "annee": 2017,
@@ -858,7 +802,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "LOAËC",
                 "prenom": "Mélina",
                 "initiale_nom": "L",
                 "annee": 2025,
@@ -870,7 +813,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DOS SANTOS",
                 "prenom": "Lola",
                 "initiale_nom": "D",
                 "annee": 2022,
@@ -882,7 +824,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "RICHER",
                 "prenom": "Salomé",
                 "initiale_nom": "R",
                 "annee": 2022,
@@ -894,7 +835,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "CHAMPIN",
                 "prenom": "Clarisse",
                 "initiale_nom": "C",
                 "annee": 2021,
@@ -906,7 +846,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CLEMENT",
                 "prenom": "Louna",
                 "initiale_nom": "C",
                 "annee": 2021,
@@ -918,7 +857,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "NINCLAUS",
                 "prenom": "Tristan",
                 "initiale_nom": "N",
                 "annee": 2021,
@@ -930,7 +868,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ROBILLARD",
                 "prenom": "Julien",
                 "initiale_nom": "R",
                 "annee": 2021,
@@ -942,7 +879,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GAUCHER",
                 "prenom": "Éric",
                 "initiale_nom": "G",
                 "annee": 2017,
@@ -954,7 +890,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DOUILLARD",
                 "prenom": "Louis marie",
                 "initiale_nom": "D",
                 "annee": 2014,
@@ -966,7 +901,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "JOHNS",
                 "prenom": "Johnathan",
                 "initiale_nom": "J",
                 "annee": 2014,
@@ -978,7 +912,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CHRETIEN",
                 "prenom": "Amélie",
                 "initiale_nom": "C",
                 "annee": 2013,
@@ -990,7 +923,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "LAVEAU",
                 "prenom": "Charles",
                 "initiale_nom": "L",
                 "annee": 2013,
@@ -1002,7 +934,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "REGIMBART",
                 "prenom": "Amélie",
                 "initiale_nom": "R",
                 "annee": 2013,
@@ -1014,7 +945,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SEGRET",
                 "prenom": "Emilien",
                 "initiale_nom": "S",
                 "annee": 2013,
@@ -1026,7 +956,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "LEFRANCOIS",
                 "prenom": "Jérémy",
                 "initiale_nom": "L",
                 "annee": 2012,
@@ -1038,7 +967,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "MASSON",
                 "prenom": "Arthur",
                 "initiale_nom": "M",
                 "annee": 2012,
@@ -1050,7 +978,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "PEROTEAU",
                 "prenom": "Augustin",
                 "initiale_nom": "P",
                 "annee": 2012,
@@ -1062,7 +989,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "VALLES",
                 "prenom": "Alice",
                 "initiale_nom": "V",
                 "annee": 2012,
@@ -1074,7 +1000,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BOUCAUD--GAILLET",
                 "prenom": "Alexia",
                 "initiale_nom": "B",
                 "annee": 2026,
@@ -1086,7 +1011,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GAUTHIER",
                 "prenom": "Lysandre",
                 "initiale_nom": "G",
                 "annee": 2025,
@@ -1098,7 +1022,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "EL-TAIB",
                 "prenom": "Chaïma",
                 "initiale_nom": "E",
                 "annee": 2024,
@@ -1110,7 +1033,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GEBER",
                 "prenom": "Léonie",
                 "initiale_nom": "G",
                 "annee": 2023,
@@ -1122,7 +1044,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "KENFAR",
                 "prenom": "Salma",
                 "initiale_nom": "K",
                 "annee": 2021,
@@ -1134,7 +1055,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "PETEL",
                 "prenom": "Elodie",
                 "initiale_nom": "P",
                 "annee": 2021,
@@ -1146,7 +1066,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "CHASSIN",
                 "prenom": "Camille",
                 "initiale_nom": "C",
                 "annee": 2020,
@@ -1158,7 +1077,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ROGERON",
                 "prenom": "Léna",
                 "initiale_nom": "R",
                 "annee": 2019,
@@ -1170,7 +1088,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VIRAPIN",
                 "prenom": "Morgane",
                 "initiale_nom": "V",
                 "annee": 2017,
@@ -1182,7 +1099,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "RIVET",
                 "prenom": "Mélanie",
                 "initiale_nom": "R",
                 "annee": 2016,
@@ -1270,7 +1186,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "THOMAS",
                 "prenom": "Titouan",
                 "initiale_nom": "T",
                 "annee": 2026,
@@ -1282,7 +1197,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "SAVORGNANO",
                 "prenom": "Jimmy",
                 "initiale_nom": "S",
                 "annee": 2026,
@@ -1294,7 +1208,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "VANSEVEREN",
                 "prenom": "Carla",
                 "initiale_nom": "V",
                 "annee": 2026,
@@ -1306,7 +1219,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "FEVRE",
                 "prenom": "Logann",
                 "initiale_nom": "F",
                 "annee": 2025,
@@ -1318,7 +1230,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "HARIVEL",
                 "prenom": "Angel",
                 "initiale_nom": "H",
                 "annee": 2025,
@@ -1330,7 +1241,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VIOLAIN JOUVENE",
                 "prenom": "Jade",
                 "initiale_nom": "V",
                 "annee": 2025,
@@ -1342,7 +1252,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DEVAUX",
                 "prenom": "Alexy",
                 "initiale_nom": "D",
                 "annee": 2024,
@@ -1354,7 +1263,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "FOUSSEREAU",
                 "prenom": "Nathan",
                 "initiale_nom": "F",
                 "annee": 2024,
@@ -1366,7 +1274,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "COURALET",
                 "prenom": "Amaia",
                 "initiale_nom": "C",
                 "annee": 2023,
@@ -1378,7 +1285,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DEVOS",
                 "prenom": "Raphael",
                 "initiale_nom": "D",
                 "annee": 2023,
@@ -1390,7 +1296,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MANSART",
                 "prenom": "Amandine",
                 "initiale_nom": "M",
                 "annee": 2023,
@@ -1402,7 +1307,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "PHILIPPE",
                 "prenom": "Coline",
                 "initiale_nom": "P",
                 "annee": 2023,
@@ -1414,7 +1318,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VERMET",
                 "prenom": "Marie",
                 "initiale_nom": "V",
                 "annee": 2023,
@@ -1426,7 +1329,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GARDES",
                 "prenom": "Roman",
                 "initiale_nom": "G",
                 "annee": 2022,
@@ -1438,7 +1340,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MATHELIN",
                 "prenom": "Mattéo",
                 "initiale_nom": "M",
                 "annee": 2022,
@@ -1450,7 +1351,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "JARREAU",
                 "prenom": "Lucie",
                 "initiale_nom": "J",
                 "annee": 2021,
@@ -1462,7 +1362,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LASSALLETTE",
                 "prenom": "Elodie",
                 "initiale_nom": "L",
                 "annee": 2020,
@@ -1474,7 +1373,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CHARTIER",
                 "prenom": "Jérémy",
                 "initiale_nom": "C",
                 "annee": 2019,
@@ -1486,7 +1384,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "MAMMAR",
                 "prenom": "Elodie",
                 "initiale_nom": "M",
                 "annee": 2019,
@@ -1498,7 +1395,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BURDIN",
                 "prenom": "Camille",
                 "initiale_nom": "B",
                 "annee": 2018,
@@ -1510,7 +1406,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "JOSSELIN",
                 "prenom": "Ludye-Ann",
                 "initiale_nom": "J",
                 "annee": 2018,
@@ -1522,7 +1417,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "PESSON",
                 "prenom": "Alison",
                 "initiale_nom": "P",
                 "annee": 2018,
@@ -1534,7 +1428,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SAN FRANCISCO",
                 "prenom": "Marina",
                 "initiale_nom": "S",
                 "annee": 2018,
@@ -1546,7 +1439,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BENSAADI",
                 "prenom": "Anouchka",
                 "initiale_nom": "B",
                 "annee": 2017,
@@ -1558,7 +1450,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CHOPINEAU",
                 "prenom": "Bastien",
                 "initiale_nom": "C",
                 "annee": 2017,
@@ -1570,7 +1461,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MUSSIER",
                 "prenom": "Corentin",
                 "initiale_nom": "M",
                 "annee": 2017,
@@ -1582,7 +1472,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "JAEGY",
                 "prenom": "Bérénice",
                 "initiale_nom": "J",
                 "annee": 2016,
@@ -1594,7 +1483,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "KELLER",
                 "prenom": "Éloïse",
                 "initiale_nom": "K",
                 "annee": 2016,
@@ -1606,7 +1494,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MORIN",
                 "prenom": "Marlène",
                 "initiale_nom": "M",
                 "annee": 2014,
@@ -1618,7 +1505,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "MARIAT",
                 "prenom": "Paul",
                 "initiale_nom": "M",
                 "annee": 2019,
@@ -1630,7 +1516,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GUILLERAULT",
                 "prenom": "Inconnu",
                 "initiale_nom": "G",
                 "annee": 2023,
@@ -1642,7 +1527,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BARRE",
                 "prenom": "Chloe",
                 "initiale_nom": "B",
                 "annee": 2012,
@@ -1654,7 +1538,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BREAN",
                 "prenom": "Marion",
                 "initiale_nom": "B",
                 "annee": 2012,
@@ -1666,7 +1549,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DIARD",
                 "prenom": "Céline",
                 "initiale_nom": "D",
                 "annee": 2012,
@@ -1678,7 +1560,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DUVAL",
                 "prenom": "Sophie",
                 "initiale_nom": "D",
                 "annee": 2011,
@@ -1690,7 +1571,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "SPAGNOL",
                 "prenom": "Flavio",
                 "initiale_nom": "S",
                 "annee": 2025,
@@ -1702,7 +1582,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ROLLAND",
                 "prenom": "Nathan",
                 "initiale_nom": "R",
                 "annee": 2024,
@@ -1714,7 +1593,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DROIN",
                 "prenom": "Salomé",
                 "initiale_nom": "D",
                 "annee": 2023,
@@ -1726,7 +1604,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "RENAULT",
                 "prenom": "Jean",
                 "initiale_nom": "R",
                 "annee": 2022,
@@ -1738,7 +1615,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MORRETTON",
                 "prenom": "Laureen",
                 "initiale_nom": "M",
                 "annee": 2020,
@@ -1750,7 +1626,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VIARD",
                 "prenom": "Quentin",
                 "initiale_nom": "V",
                 "annee": 2019,
@@ -1762,7 +1637,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GUY",
                 "prenom": "Quentin",
                 "initiale_nom": "G",
                 "annee": 2018,
@@ -1774,7 +1648,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "POIRRIER",
                 "prenom": "Fanny",
                 "initiale_nom": "P",
                 "annee": 2016,
@@ -1786,7 +1659,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BORIE",
                 "prenom": "Léa",
                 "initiale_nom": "B",
                 "annee": 2014,
@@ -1847,7 +1719,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "BARBEAU",
                 "prenom": "Laura",
                 "initiale_nom": "B",
                 "annee": 2024,
@@ -1859,7 +1730,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "LE PANS",
                 "prenom": "Blandine",
                 "initiale_nom": "L",
                 "annee": 2024,
@@ -1871,7 +1741,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BATTAIS",
                 "prenom": "Alexandre",
                 "initiale_nom": "B",
                 "annee": 2023,
@@ -1883,7 +1752,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GUYON",
                 "prenom": "Pauline",
                 "initiale_nom": "G",
                 "annee": 2023,
@@ -1895,7 +1763,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "VUILLE",
                 "prenom": "Léa",
                 "initiale_nom": "V",
                 "annee": 2022,
@@ -1907,7 +1774,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "CHAMPOLIVIER",
                 "prenom": "Léa",
                 "initiale_nom": "C",
                 "annee": 2021,
@@ -1919,7 +1785,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "COURCOUX",
                 "prenom": "Eve",
                 "initiale_nom": "C",
                 "annee": 2021,
@@ -1931,7 +1796,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "POLLET",
                 "prenom": "Amandine",
                 "initiale_nom": "P",
                 "annee": 2018,
@@ -1943,7 +1807,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SIMON",
                 "prenom": "Thibaut",
                 "initiale_nom": "S",
                 "annee": 2017,
@@ -1955,7 +1818,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MASSON",
                 "prenom": "Auréliane",
                 "initiale_nom": "M",
                 "annee": 2014,
@@ -1967,7 +1829,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "POISSON",
                 "prenom": "Aurore",
                 "initiale_nom": "P",
                 "annee": 2014,
@@ -1979,7 +1840,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CHIEZE",
                 "prenom": "Lorène",
                 "initiale_nom": "C",
                 "annee": 2013,
@@ -1991,7 +1851,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GAUTIER",
                 "prenom": "Pauline",
                 "initiale_nom": "G",
                 "annee": 2013,
@@ -2003,7 +1862,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BOILEAU",
                 "prenom": "Jules",
                 "initiale_nom": "B",
                 "annee": 2012,
@@ -2015,7 +1873,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "HABBANI",
                 "prenom": "Adem",
                 "initiale_nom": "H",
                 "annee": 2026,
@@ -2027,7 +1884,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "CHOMPRET",
                 "prenom": "Louise-Karol",
                 "initiale_nom": "C",
                 "annee": 2025,
@@ -2039,7 +1895,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LAURENT",
                 "prenom": "Thibault",
                 "initiale_nom": "L",
                 "annee": 2022,
@@ -2051,7 +1906,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ROUQUIE",
                 "prenom": "Julien",
                 "initiale_nom": "R",
                 "annee": 2019,
@@ -2063,7 +1917,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "HERTAULT",
                 "prenom": "Emeline",
                 "initiale_nom": "H",
                 "annee": 2019,
@@ -2075,7 +1928,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "PAYEN",
                 "prenom": "Romain",
                 "initiale_nom": "P",
                 "annee": 2016,
@@ -2087,7 +1939,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "D'ANDRIA",
                 "prenom": "Gabriel",
                 "initiale_nom": "D",
                 "annee": 2014,
@@ -2099,7 +1950,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MODE",
                 "prenom": "Eline",
                 "initiale_nom": "M",
                 "annee": 2014,
@@ -2161,7 +2011,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "BONNIN",
                 "prenom": "Laurine",
                 "initiale_nom": "B",
                 "annee": 2026,
@@ -2173,7 +2022,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "JOSEPH-EDOUARD",
                 "prenom": "Ana",
                 "initiale_nom": "J",
                 "annee": 2025,
@@ -2185,7 +2033,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "SANCHEZ-RICHARD",
                 "prenom": "Aubin",
                 "initiale_nom": "S",
                 "annee": 2025,
@@ -2197,7 +2044,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BOUILLY",
                 "prenom": "Camille",
                 "initiale_nom": "B",
                 "annee": 2023,
@@ -2209,7 +2055,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "JACOB",
                 "prenom": "Elise",
                 "initiale_nom": "J",
                 "annee": 2023,
@@ -2221,7 +2066,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "KASPEREK",
                 "prenom": "Manon",
                 "initiale_nom": "K",
                 "annee": 2023,
@@ -2233,7 +2077,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MATIVET",
                 "prenom": "Ilona",
                 "initiale_nom": "M",
                 "annee": 2023,
@@ -2245,7 +2088,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "COMBE",
                 "prenom": "Nicolas",
                 "initiale_nom": "C",
                 "annee": 2022,
@@ -2257,7 +2099,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MARCHAL",
                 "prenom": "Lily",
                 "initiale_nom": "M",
                 "annee": 2021,
@@ -2269,7 +2110,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VIALLARD",
                 "prenom": "Flore",
                 "initiale_nom": "V",
                 "annee": 2018,
@@ -2281,7 +2121,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "NOEL",
                 "prenom": "Elodie",
                 "initiale_nom": "N",
                 "annee": 2020,
@@ -2293,7 +2132,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "RIVIERE",
                 "prenom": "Hélène",
                 "initiale_nom": "R",
                 "annee": 2020,
@@ -2305,7 +2143,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "PICARD-PAYS",
                 "prenom": "Léa",
                 "initiale_nom": "P",
                 "annee": 2019,
@@ -2317,7 +2154,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ALFROIT",
                 "prenom": "Margot",
                 "initiale_nom": "A",
                 "annee": 2017,
@@ -2329,7 +2165,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DAUVISSAT",
                 "prenom": "Antonin",
                 "initiale_nom": "D",
                 "annee": 2017,
@@ -2341,7 +2176,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "FAVEREAU",
                 "prenom": "Marie",
                 "initiale_nom": "F",
                 "annee": 2017,
@@ -2353,7 +2187,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DEGOTTEX",
                 "prenom": "Faustine",
                 "initiale_nom": "D",
                 "annee": 2016,
@@ -2365,7 +2198,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LEGENDRE",
                 "prenom": "Estelle",
                 "initiale_nom": "L",
                 "annee": 2016,
@@ -2377,7 +2209,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "ROUSSELOT",
                 "prenom": "Constance",
                 "initiale_nom": "R",
                 "annee": 2016,
@@ -2389,7 +2220,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "FAGNIOT",
                 "prenom": "Nicolas",
                 "initiale_nom": "F",
                 "annee": 2023,
@@ -2401,7 +2231,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VALETTE",
                 "prenom": "Firmin",
                 "initiale_nom": "V",
                 "annee": 2023,
@@ -2413,7 +2242,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BERTHAULT",
                 "prenom": "Alison",
                 "initiale_nom": "B",
                 "annee": 2023,
@@ -2425,7 +2253,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CAILLETTE",
                 "prenom": "Anna",
                 "initiale_nom": "C",
                 "annee": 2022,
@@ -2437,7 +2264,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "CRÉTÉ",
                 "prenom": "Sandra",
                 "initiale_nom": "C",
                 "annee": 2022,
@@ -2449,7 +2275,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "POUPA",
                 "prenom": "Jade",
                 "initiale_nom": "P",
                 "annee": 2021,
@@ -2461,7 +2286,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "RENARD",
                 "prenom": "Thibault",
                 "initiale_nom": "R",
                 "annee": 2018,
@@ -2521,7 +2345,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "COSKOY",
                 "prenom": "Elif",
                 "initiale_nom": "C",
                 "annee": 2026,
@@ -2533,7 +2356,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "WIETRICH",
                 "prenom": "Vanessa",
                 "initiale_nom": "W",
                 "annee": 2025,
@@ -2545,7 +2367,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "HERING",
                 "prenom": "Ingrid",
                 "initiale_nom": "H",
                 "annee": 2024,
@@ -2557,7 +2378,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MORIN",
                 "prenom": "Anouk",
                 "initiale_nom": "M",
                 "annee": 2017,
@@ -2569,7 +2389,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GABRIEL-REGIS",
                 "prenom": "Grégory",
                 "initiale_nom": "G",
                 "annee": 2012,
@@ -2581,7 +2400,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "GUÉRINI",
                 "prenom": "Alice",
                 "initiale_nom": "G",
                 "annee": 2026,
@@ -2593,7 +2411,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "FOUCAULT",
                 "prenom": "Julien",
                 "initiale_nom": "F",
                 "annee": 2017,
@@ -2605,7 +2422,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BALOUX",
                 "prenom": "Louison",
                 "initiale_nom": "B",
                 "annee": 2015,
@@ -2677,7 +2493,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "DROUAUD",
                 "prenom": "Léo",
                 "initiale_nom": "D",
                 "annee": 2025,
@@ -2689,7 +2504,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "TRICHARD",
                 "prenom": "Téva",
                 "initiale_nom": "T",
                 "annee": 2024,
@@ -2701,7 +2515,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DOUSSAN",
                 "prenom": "Célia",
                 "initiale_nom": "D",
                 "annee": 2020,
@@ -2713,7 +2526,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BREANT",
                 "prenom": "Antoine",
                 "initiale_nom": "B",
                 "annee": 2018,
@@ -2725,7 +2537,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SARCOU",
                 "prenom": "Cyril",
                 "initiale_nom": "S",
                 "annee": 2015,
@@ -2737,7 +2548,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VANDENBAVIERE",
                 "prenom": "Julien",
                 "initiale_nom": "V",
                 "annee": 2015,
@@ -2795,7 +2605,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "JACQUET",
                 "prenom": "Benjamin",
                 "initiale_nom": "J",
                 "annee": 2022,
@@ -2854,7 +2663,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "BOURDOUNE",
                 "prenom": "Lauryne",
                 "initiale_nom": "B",
                 "annee": 2021,
@@ -2912,7 +2720,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "BOURGEOIS",
                 "prenom": "Emilie",
                 "initiale_nom": "B",
                 "annee": 2024,
@@ -2924,7 +2731,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SPAGNOL",
                 "prenom": "Luka",
                 "initiale_nom": "S",
                 "annee": 2021,
@@ -2936,7 +2742,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "PLET",
                 "prenom": "Audrey",
                 "initiale_nom": "P",
                 "annee": 2018,
@@ -2948,7 +2753,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CHARBONNEAU",
                 "prenom": "Mathilde",
                 "initiale_nom": "C",
                 "annee": 2015,
@@ -2960,7 +2764,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MICHOUX",
                 "prenom": "Andréa",
                 "initiale_nom": "M",
                 "annee": 2015,
@@ -3017,7 +2820,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "LEMOINE",
                 "prenom": "Yanis",
                 "initiale_nom": "L",
                 "annee": 2021,
@@ -3029,7 +2831,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "MONROCQ",
                 "prenom": "Tristan",
                 "initiale_nom": "M",
                 "annee": 2020,
@@ -3041,7 +2842,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BROSSIER",
                 "prenom": "Quentin",
                 "initiale_nom": "B",
                 "annee": 2016,
@@ -3053,7 +2853,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CATAZZO",
                 "prenom": "Justine",
                 "initiale_nom": "C",
                 "annee": 2015,
@@ -3065,7 +2864,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BOURGOIN",
                 "prenom": "Johana",
                 "initiale_nom": "B",
                 "annee": 2013,
@@ -3077,7 +2875,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DAUCHEL",
                 "prenom": "Diane",
                 "initiale_nom": "D",
                 "annee": 2012,
@@ -3089,7 +2886,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "MILLIERE",
                 "prenom": "Justine",
                 "initiale_nom": "M",
                 "annee": 2011,
@@ -3101,7 +2897,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "JEANROY",
                 "prenom": "Anaïs",
                 "initiale_nom": "J",
                 "annee": 2023,
@@ -3113,7 +2908,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "AUDOUARD",
                 "prenom": "Lucie",
                 "initiale_nom": "A",
                 "annee": 2021,
@@ -3125,7 +2919,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "THUILLIER",
                 "prenom": "Amandine",
                 "initiale_nom": "T",
                 "annee": 2020,
@@ -3178,7 +2971,6 @@ const ecolesData = [
         ],
         "anciens": [
             {
-                "nom": "DUTILLEUL",
                 "prenom": "Joana",
                 "initiale_nom": "D",
                 "annee": 2022,
@@ -3190,7 +2982,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ROUSTAN",
                 "prenom": "Louis",
                 "initiale_nom": "R",
                 "annee": 2022,
@@ -3202,7 +2993,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CHERAMY",
                 "prenom": "Antoine",
                 "initiale_nom": "C",
                 "annee": 2018,
@@ -3214,7 +3004,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "FROSSARD",
                 "prenom": "Alexandre",
                 "initiale_nom": "F",
                 "annee": 2018,
@@ -3226,7 +3015,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "VALAT",
                 "prenom": "Charles",
                 "initiale_nom": "V",
                 "annee": 2016,
@@ -3238,7 +3026,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SANCHEZ ARIAS",
                 "prenom": "Ludivine",
                 "initiale_nom": "S",
                 "annee": 2015,
@@ -3250,7 +3037,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "ANCIAUX",
                 "prenom": "Jean-Sébastien",
                 "initiale_nom": "A",
                 "annee": 2011,
@@ -3262,7 +3048,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DETROYAT",
                 "prenom": "mickael",
                 "initiale_nom": "D",
                 "annee": 2025,
@@ -3274,7 +3059,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ESTEVE",
                 "prenom": "Maylis",
                 "initiale_nom": "E",
                 "annee": 2021,
@@ -3286,7 +3070,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BADIER",
                 "prenom": "Kelig",
                 "initiale_nom": "B",
                 "annee": 2018,
@@ -3298,7 +3081,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BORGNE",
                 "prenom": "Alexia",
                 "initiale_nom": "B",
                 "annee": 2017,
@@ -3310,7 +3092,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "FOCH",
                 "prenom": "Marie",
                 "initiale_nom": "F",
                 "annee": 2016,
@@ -3322,7 +3103,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DUCARNE",
                 "prenom": "Alexandre",
                 "initiale_nom": "D",
                 "annee": 2016,
@@ -3388,7 +3168,6 @@ const ecolesData = [
         ],
         "anciens": [
             {
-                "nom": "AUCHERE",
                 "prenom": "Auriane",
                 "initiale_nom": "A",
                 "annee": 2025,
@@ -3400,7 +3179,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BECK",
                 "prenom": "Anne-Laure",
                 "initiale_nom": "B",
                 "annee": 2015,
@@ -3451,7 +3229,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "PREGERMAIN",
                 "prenom": "Laly",
                 "initiale_nom": "P",
                 "annee": 2024,
@@ -3463,7 +3240,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "THEBAULT",
                 "prenom": "Morgane",
                 "initiale_nom": "T",
                 "annee": 2023,
@@ -3475,7 +3251,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BELHACEL",
                 "prenom": "Thomas",
                 "initiale_nom": "B",
                 "annee": 2014,
@@ -3535,7 +3310,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "BOUFDI",
                 "prenom": "Zakaria",
                 "initiale_nom": "B",
                 "annee": 2025,
@@ -3547,7 +3321,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DI PIPPO",
                 "prenom": "Anaïs",
                 "initiale_nom": "D",
                 "annee": 2024,
@@ -3559,7 +3332,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GRIEU",
                 "prenom": "Mégane",
                 "initiale_nom": "G",
                 "annee": 2020,
@@ -3571,7 +3343,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CHAMPION",
                 "prenom": "Camille",
                 "initiale_nom": "C",
                 "annee": 2018,
@@ -3583,7 +3354,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "PENDJE",
                 "prenom": "Danielle",
                 "initiale_nom": "P",
                 "annee": 2017,
@@ -3595,7 +3365,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "SULLY",
                 "prenom": "Mégane",
                 "initiale_nom": "S",
                 "annee": 2016,
@@ -3607,7 +3376,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BEAUDOIN",
                 "prenom": "Anne-Laure",
                 "initiale_nom": "B",
                 "annee": 2014,
@@ -3619,7 +3387,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "URBINI",
                 "prenom": "Ulysse",
                 "initiale_nom": "U",
                 "annee": 2025,
@@ -3631,7 +3398,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DUBOC",
                 "prenom": "Daphné",
                 "initiale_nom": "D",
                 "annee": 2018,
@@ -3643,7 +3409,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "MARTINS",
                 "prenom": "Mégane",
                 "initiale_nom": "M",
                 "annee": 2016,
@@ -3655,7 +3420,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "POMARES",
                 "prenom": "Lorelei",
                 "initiale_nom": "P",
                 "annee": 2015,
@@ -3715,7 +3479,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "LESIEUR",
                 "prenom": "Céline",
                 "initiale_nom": "L",
                 "annee": 2023,
@@ -3727,7 +3490,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "RAFFAULT",
                 "prenom": "Éva",
                 "initiale_nom": "R",
                 "annee": 2026,
@@ -3785,7 +3547,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "CARTERON",
                 "prenom": "Mélissa",
                 "initiale_nom": "C",
                 "annee": 2024,
@@ -3797,7 +3558,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "SALATTI",
                 "prenom": "Emma",
                 "initiale_nom": "S",
                 "annee": 2019,
@@ -3809,7 +3569,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ADELARD",
                 "prenom": "Jérémy",
                 "initiale_nom": "A",
                 "annee": 2012,
@@ -3821,7 +3580,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "RAULT",
                 "prenom": "Kévin",
                 "initiale_nom": "R",
                 "annee": 2024,
@@ -3833,7 +3591,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "REMOND",
                 "prenom": "Antoine",
                 "initiale_nom": "R",
                 "annee": 2021,
@@ -3845,7 +3602,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "AZZOUN",
                 "prenom": "Corentin",
                 "initiale_nom": "A",
                 "annee": 2020,
@@ -3899,7 +3655,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "AMOUR",
                 "prenom": "Elise",
                 "initiale_nom": "A",
                 "annee": 2025,
@@ -3911,7 +3666,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "FERNANDEZ-CHAPUT",
                 "prenom": "Nathan",
                 "initiale_nom": "F",
                 "annee": 2025,
@@ -3923,7 +3677,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "NORE",
                 "prenom": "Adrien",
                 "initiale_nom": "N",
                 "annee": 2024,
@@ -3935,7 +3688,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "PETIT",
                 "prenom": "Margot",
                 "initiale_nom": "P",
                 "annee": 2024,
@@ -3947,7 +3699,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "TREMBLAIS",
                 "prenom": "Clara",
                 "initiale_nom": "T",
                 "annee": 2023,
@@ -3959,7 +3710,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "FOLLIN",
                 "prenom": "Léna",
                 "initiale_nom": "F",
                 "annee": 2017,
@@ -3971,7 +3721,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "RIPOTEAU",
                 "prenom": "Agathe",
                 "initiale_nom": "R",
                 "annee": 2016,
@@ -4016,7 +3765,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "LESSIRE",
                 "prenom": "Ugo",
                 "initiale_nom": "L",
                 "annee": 2025,
@@ -4090,7 +3838,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "BARBIER",
                 "prenom": "Louis",
                 "initiale_nom": "B",
                 "annee": 2022,
@@ -4102,7 +3849,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LEWANDOWSKI",
                 "prenom": "Maud",
                 "initiale_nom": "L",
                 "annee": 2019,
@@ -4176,7 +3922,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "GAUTIER",
                 "prenom": "Amanda",
                 "initiale_nom": "G",
                 "annee": 2025,
@@ -4188,7 +3933,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DE GOEYSE",
                 "prenom": "Côme",
                 "initiale_nom": "D",
                 "annee": 2019,
@@ -4200,7 +3944,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "TIEO",
                 "prenom": "Inconnu",
                 "initiale_nom": "T",
                 "annee": 2015,
@@ -4212,7 +3955,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DURAND",
                 "prenom": "Emilie",
                 "initiale_nom": "D",
                 "annee": 2016,
@@ -4254,7 +3996,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "OUZAITE",
                 "prenom": "Ikram",
                 "initiale_nom": "O",
                 "annee": 2026,
@@ -4266,7 +4007,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "COLLIN",
                 "prenom": "Aurélie",
                 "initiale_nom": "C",
                 "annee": 2025,
@@ -4278,7 +4018,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "JOLY",
                 "prenom": "Arthur",
                 "initiale_nom": "J",
                 "annee": 2024,
@@ -4290,7 +4029,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BRUERE",
                 "prenom": "Amandine",
                 "initiale_nom": "B",
                 "annee": 2020,
@@ -4302,7 +4040,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "IELPO",
                 "prenom": "Meggy",
                 "initiale_nom": "I",
                 "annee": 2020,
@@ -4314,7 +4051,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LANGE",
                 "prenom": "Mélina",
                 "initiale_nom": "L",
                 "annee": 2026,
@@ -4326,7 +4062,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "PAVARD",
                 "prenom": "Gaëtan",
                 "initiale_nom": "P",
                 "annee": 2016,
@@ -4338,7 +4073,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "RICHARD",
                 "prenom": "Victoire",
                 "initiale_nom": "R",
                 "annee": 2015,
@@ -4380,7 +4114,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "PINQUIER",
                 "prenom": "Camille",
                 "initiale_nom": "P",
                 "annee": 2025,
@@ -4438,7 +4171,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "NONET",
                 "prenom": "Margot",
                 "initiale_nom": "N",
                 "annee": 2024,
@@ -4450,7 +4182,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LOPES",
                 "prenom": "Alice",
                 "initiale_nom": "L",
                 "annee": 2023,
@@ -4462,7 +4193,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MAUGER-BIROCHEAU",
                 "prenom": "Tom",
                 "initiale_nom": "M",
                 "annee": 2020,
@@ -4474,7 +4204,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "COLVE",
                 "prenom": "Grégoire",
                 "initiale_nom": "C",
                 "annee": 2019,
@@ -4516,7 +4245,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "LAFARGE",
                 "prenom": "Pauline",
                 "initiale_nom": "L",
                 "annee": 2016,
@@ -4528,7 +4256,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ROUX",
                 "prenom": "Margaux",
                 "initiale_nom": "R",
                 "annee": 2016,
@@ -4540,7 +4267,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "PRESA",
                 "prenom": "Quentin",
                 "initiale_nom": "P",
                 "annee": 2023,
@@ -4552,7 +4278,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BARDIN",
                 "prenom": "Alycia",
                 "initiale_nom": "B",
                 "annee": 2022,
@@ -4612,7 +4337,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "FRERE",
                 "prenom": "Nathan",
                 "initiale_nom": "F",
                 "annee": 2022,
@@ -4624,7 +4348,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LEBEAU",
                 "prenom": "Simon",
                 "initiale_nom": "L",
                 "annee": 2021,
@@ -4636,7 +4359,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "LAHARGOUE",
                 "prenom": "Elise",
                 "initiale_nom": "L",
                 "annee": 2023,
@@ -4698,7 +4420,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "PENOCHET",
                 "prenom": "Laure",
                 "initiale_nom": "P",
                 "annee": 2021,
@@ -4710,7 +4431,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "COMPAGNON",
                 "prenom": "Gabriel",
                 "initiale_nom": "C",
                 "annee": 2026,
@@ -4722,7 +4442,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VANTOMME",
                 "prenom": "Matthis",
                 "initiale_nom": "V",
                 "annee": 2022,
@@ -4734,7 +4453,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MONNIER",
                 "prenom": "Manon",
                 "initiale_nom": "M",
                 "annee": 2016,
@@ -4776,7 +4494,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "WITKOWSKI",
                 "prenom": "Sébastien",
                 "initiale_nom": "W",
                 "annee": 2022,
@@ -4836,7 +4553,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "AMARY",
                 "prenom": "Justine",
                 "initiale_nom": "A",
                 "annee": 2022,
@@ -4848,7 +4564,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "REDONNET",
                 "prenom": "Antoine",
                 "initiale_nom": "R",
                 "annee": 2021,
@@ -4860,7 +4575,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "JULES",
                 "prenom": "Mathilde",
                 "initiale_nom": "J",
                 "annee": 2018,
@@ -4872,7 +4586,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DUCHALAIS",
                 "prenom": "Apolline",
                 "initiale_nom": "D",
                 "annee": 2017,
@@ -4884,7 +4597,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CANEVET",
                 "prenom": "Morgan",
                 "initiale_nom": "C",
                 "annee": 2019,
@@ -4928,7 +4640,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "MARC",
                 "prenom": "Justine",
                 "initiale_nom": "M",
                 "annee": 2020,
@@ -4940,7 +4651,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "AW",
                 "prenom": "Inconnu",
                 "initiale_nom": "A",
                 "annee": 2015,
@@ -4952,7 +4662,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LEGENDRE",
                 "prenom": "Inconnu",
                 "initiale_nom": "L",
                 "annee": 2015,
@@ -4964,7 +4673,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MARCHEVAL",
                 "prenom": "Lisa",
                 "initiale_nom": "M",
                 "annee": 2018,
@@ -4976,7 +4684,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GIBERT",
                 "prenom": "Joséphine",
                 "initiale_nom": "G",
                 "annee": 2017,
@@ -5027,7 +4734,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "GARNIER",
                 "prenom": "Alexandre",
                 "initiale_nom": "G",
                 "annee": 2026,
@@ -5039,7 +4745,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "HEISSLER",
                 "prenom": "Claire",
                 "initiale_nom": "H",
                 "annee": 2017,
@@ -5051,7 +4756,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GODEST",
                 "prenom": "Vincent",
                 "initiale_nom": "G",
                 "annee": 2016,
@@ -5093,7 +4797,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "LASSAGNE",
                 "prenom": "Céline",
                 "initiale_nom": "L",
                 "annee": 2012,
@@ -5105,7 +4808,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MARET",
                 "prenom": "Sophie",
                 "initiale_nom": "M",
                 "annee": 2016,
@@ -5148,7 +4850,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "MERISSI",
                 "prenom": "Florian",
                 "initiale_nom": "M",
                 "annee": 2016,
@@ -5191,7 +4892,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "ORTUSO",
                 "prenom": "Marion",
                 "initiale_nom": "O",
                 "annee": 2016,
@@ -5234,7 +4934,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "WYSOCKI",
                 "prenom": "Léa",
                 "initiale_nom": "W",
                 "annee": 2016,
@@ -5246,7 +4945,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "THUEGAZ",
                 "prenom": "April",
                 "initiale_nom": "T",
                 "annee": 2015,
@@ -5289,7 +4987,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "DETOURNAY",
                 "prenom": "Matthieu",
                 "initiale_nom": "D",
                 "annee": 2016,
@@ -5343,7 +5040,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "HAZARD",
                 "prenom": "Estéban",
                 "initiale_nom": "H",
                 "annee": 2026,
@@ -5355,7 +5051,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "NEDELEC",
                 "prenom": "Marine",
                 "initiale_nom": "N",
                 "annee": 2019,
@@ -5367,7 +5062,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DOUSSET",
                 "prenom": "Alexandre",
                 "initiale_nom": "D",
                 "annee": 2014,
@@ -5379,7 +5073,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "WONG",
                 "prenom": "Alizée",
                 "initiale_nom": "W",
                 "annee": 2011,
@@ -5391,7 +5084,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "FIGUIER",
                 "prenom": "Valentin",
                 "initiale_nom": "F",
                 "annee": 2016,
@@ -5403,7 +5095,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BLANCHARD",
                 "prenom": "Thibault",
                 "initiale_nom": "B",
                 "annee": 2014,
@@ -5446,7 +5137,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "BURETTE",
                 "prenom": "Inconnu",
                 "initiale_nom": "B",
                 "annee": 2023,
@@ -5458,7 +5148,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "PICQ",
                 "prenom": "Kévin",
                 "initiale_nom": "P",
                 "annee": 2015,
@@ -5706,7 +5395,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "PICORON",
                 "prenom": "Mathis",
                 "initiale_nom": "P",
                 "annee": 2020,
@@ -5758,7 +5446,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "TARENNE",
                 "prenom": "Ludivine",
                 "initiale_nom": "T",
                 "annee": 2011,
@@ -5850,7 +5537,6 @@ const ecolesData = [
         ],
         "anciens": [
             {
-                "nom": "BOUIN",
                 "prenom": "Bénédicte",
                 "initiale_nom": "B",
                 "annee": 2019,
@@ -5862,7 +5548,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SAN FRANCISCO",
                 "prenom": "Maya",
                 "initiale_nom": "S",
                 "annee": 2019,
@@ -5874,7 +5559,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "SAVARIS",
                 "prenom": "Romain",
                 "initiale_nom": "S",
                 "annee": 2019,
@@ -5886,7 +5570,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BALAT",
                 "prenom": "Emeline",
                 "initiale_nom": "B",
                 "annee": 2016,
@@ -5898,7 +5581,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DECACHELEU",
                 "prenom": "Quentin",
                 "initiale_nom": "D",
                 "annee": 2014,
@@ -6000,7 +5682,7 @@ const ecolesData = [
         "banque_bcpst": "G2E",
         "banque_tb": "",
         "descriptif": "L’ENSG, Ecole Nationale Supérieure de Géologie, de Nancy est une école d’Ingénieurs, Observatoire des Sciences de l'Univers et associé du Groupe des Ecoles des Mines. Elle forme dans plusieurs domaines des Géosciences grâce à des parcours de spécialisation et d’approfondissement : géotechnie, eau et environnement, matières premières minérales, géologie des énergies, réservoirs et stockages d’énergie, géologie Numérique. La formation inclut 10 semaines d’écoles de terrain et des projets de laboratoire. Elle propose des mobilités internationales et des doubles diplômes notamment avec l’ENS Paris, l’EOST, l’ENTPE, l’ENSPM, l'École Polytechnique de Montréal et la PUC de Rio de Janeiro. L’école est également associée à des laboratoires de recherche du CNRS et 2 écoles doctorales.",
-        "lien_site": "https://ensg.univ-lorraine.fr/",
+        "lien_site": "https://www.groupe-inp.fr/la-prepa-des-inp/ensg-geol-ecole-nationale-superieure-de-geologie",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%2Fid%2FOIP.pv9j6Bsty9Xu3R-5cl4u8gHaFZ%3Fcb%3Ducfimg2%26pid%3DApi%26ucfimg%3D1&f=1&ipt=c3d65733f3b1ec15ff94676f9cc0025a9a497a4e33474b7b6f2ab4d1d49d55f9&ipo=images",
         "mots_cles": [
             "Génie du sol",
@@ -6017,7 +5699,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "THIBAULT",
                 "prenom": "Joan",
                 "initiale_nom": "T",
                 "annee": 2026,
@@ -6029,7 +5710,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GIMENEZ",
                 "prenom": "Grégoire",
                 "initiale_nom": "G",
                 "annee": 2021,
@@ -6041,7 +5721,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "LARODE",
                 "prenom": "Céline",
                 "initiale_nom": "L",
                 "annee": 2017,
@@ -6053,7 +5732,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CIOLCZYK",
                 "prenom": "Damien",
                 "initiale_nom": "C",
                 "annee": 2016,
@@ -6065,7 +5743,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CAYAMBO",
                 "prenom": "Sidonie",
                 "initiale_nom": "C",
                 "annee": 2015,
@@ -6506,7 +6183,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "MALARD",
                 "prenom": "Gabrielle",
                 "initiale_nom": "M",
                 "annee": 2023,
@@ -6568,7 +6244,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "GLAZ",
                 "prenom": "Marine",
                 "initiale_nom": "G",
                 "annee": 2026,
@@ -6580,7 +6255,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BRONSIN",
                 "prenom": "Cléa",
                 "initiale_nom": "B",
                 "annee": 2026,
@@ -6592,7 +6266,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "HENRIET",
                 "prenom": "Mélanie",
                 "initiale_nom": "H",
                 "annee": 2024,
@@ -6604,7 +6277,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "HENRY",
                 "prenom": "Severine",
                 "initiale_nom": "H",
                 "annee": 2023,
@@ -6616,7 +6288,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "AUCLER",
                 "prenom": "Montaine",
                 "initiale_nom": "A",
                 "annee": 2022,
@@ -6628,7 +6299,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "BEAUMONT",
                 "prenom": "Caroline",
                 "initiale_nom": "B",
                 "annee": 2021,
@@ -6640,7 +6310,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BOUTY",
                 "prenom": "Aurore",
                 "initiale_nom": "B",
                 "annee": 2020,
@@ -6652,7 +6321,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "DEMEULEMEESTER",
                 "prenom": "Léa",
                 "initiale_nom": "D",
                 "annee": 2018,
@@ -6664,7 +6332,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BERTHOT",
                 "prenom": "Camille",
                 "initiale_nom": "B",
                 "annee": 2015,
@@ -6676,7 +6343,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "HOMMES",
                 "prenom": "Léa",
                 "initiale_nom": "H",
                 "annee": 2012,
@@ -6688,7 +6354,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "LAMPARIELLO",
                 "prenom": "Maily",
                 "initiale_nom": "L",
                 "annee": 2011,
@@ -6700,7 +6365,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BOMPART",
                 "prenom": "Clara",
                 "initiale_nom": "B",
                 "annee": 2025,
@@ -6712,7 +6376,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "FOUQUET",
                 "prenom": "Zoé",
                 "initiale_nom": "F",
                 "annee": 2025,
@@ -6724,7 +6387,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GOUIN",
                 "prenom": "Matthis",
                 "initiale_nom": "G",
                 "annee": 2022,
@@ -6736,7 +6398,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MORATA",
                 "prenom": "Jade",
                 "initiale_nom": "M",
                 "annee": 2022,
@@ -6748,7 +6409,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "PLANTARD",
                 "prenom": "Yves",
                 "initiale_nom": "P",
                 "annee": 2022,
@@ -6760,7 +6420,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "PRESTREAU",
                 "prenom": "Charlotte",
                 "initiale_nom": "P",
                 "annee": 2020,
@@ -6772,7 +6431,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "CROIBIER-MUSCAT",
                 "prenom": "Antoine",
                 "initiale_nom": "C",
                 "annee": 2016,
@@ -6820,7 +6478,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "KOUSSAFI",
                 "prenom": "Selma",
                 "initiale_nom": "K",
                 "annee": 2026,
@@ -6832,7 +6489,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "PERNY",
                 "prenom": "Maëla",
                 "initiale_nom": "P",
                 "annee": 2016,
@@ -6872,7 +6528,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "MARIANT",
                 "prenom": "Chloé",
                 "initiale_nom": "M",
                 "annee": 2017,
@@ -6884,7 +6539,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BOUILLET",
                 "prenom": "Enzo",
                 "initiale_nom": "B",
                 "annee": 2026,
@@ -6928,7 +6582,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "COURTHIAL",
                 "prenom": "Emma",
                 "initiale_nom": "C",
                 "annee": 2026,
@@ -6974,7 +6627,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "HAMAÎMI",
                 "prenom": "Hugo",
                 "initiale_nom": "H",
                 "annee": 2020,
@@ -6986,7 +6638,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "AMIOT",
                 "prenom": "Rose",
                 "initiale_nom": "A",
                 "annee": 2019,
@@ -6998,7 +6649,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DEKETELAERE",
                 "prenom": "Isaure",
                 "initiale_nom": "D",
                 "annee": 2018,
@@ -7010,7 +6660,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "CARTON",
                 "prenom": "Inconnu",
                 "initiale_nom": "C",
                 "annee": 2020,
@@ -7022,7 +6671,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "DESCHAMPS",
                 "prenom": "Lucie",
                 "initiale_nom": "D",
                 "annee": 2013,
@@ -7034,7 +6682,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "GRANGER",
                 "prenom": "Etienne",
                 "initiale_nom": "G",
                 "annee": 2016,
@@ -7046,7 +6693,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "CARNIS",
                 "prenom": "Victor",
                 "initiale_nom": "C",
                 "annee": 2015,
@@ -7094,7 +6740,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "LAMBERT",
                 "prenom": "Lou-Anne",
                 "initiale_nom": "L",
                 "annee": 2020,
@@ -7106,7 +6751,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "BOURNIGAULT",
                 "prenom": "Lorène",
                 "initiale_nom": "B",
                 "annee": 2011,
@@ -7118,7 +6762,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "MESNARD",
                 "prenom": "Amélie",
                 "initiale_nom": "M",
                 "annee": 2011,
@@ -7171,7 +6814,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "LASCOMBES",
                 "prenom": "Manon",
                 "initiale_nom": "L",
                 "annee": 2020,
@@ -7219,7 +6861,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "ROHÉ",
                 "prenom": "Jimmy",
                 "initiale_nom": "R",
                 "annee": 2020,
@@ -7231,7 +6872,6 @@ const ecolesData = [
                 "cinq_demi": true
             },
             {
-                "nom": "JACLIN",
                 "prenom": "Émeline",
                 "initiale_nom": "J",
                 "annee": 2017,
@@ -7243,7 +6883,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VANDEN ABEELE",
                 "prenom": "Estelle",
                 "initiale_nom": "V",
                 "annee": 2014,
@@ -7294,7 +6933,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "TURGAULT",
                 "prenom": "Marion",
                 "initiale_nom": "T",
                 "annee": 2020,
@@ -7306,7 +6944,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "VALLERIE",
                 "prenom": "Laura",
                 "initiale_nom": "V",
                 "annee": 2016,
@@ -7358,7 +6995,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "LANG",
                 "prenom": "Audélie",
                 "initiale_nom": "L",
                 "annee": 2018,
@@ -7409,7 +7045,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "MERCIER",
                 "prenom": "Audrey",
                 "initiale_nom": "M",
                 "annee": 2017,
@@ -7421,7 +7056,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "CONOIR-SEZNEC",
                 "prenom": "Pierre",
                 "initiale_nom": "C",
                 "annee": 2018,
@@ -7472,7 +7106,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "PAGEAUT",
                 "prenom": "Romane",
                 "initiale_nom": "P",
                 "annee": 2026,
@@ -7525,7 +7158,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "RODRIGUEZ",
                 "prenom": "Hélène",
                 "initiale_nom": "R",
                 "annee": 2012,
@@ -7537,7 +7169,6 @@ const ecolesData = [
                 "cinq_demi": false
             },
             {
-                "nom": "ROUSSET",
                 "prenom": "Marie-Laure",
                 "initiale_nom": "R",
                 "annee": 2011,
@@ -7580,7 +7211,6 @@ const ecolesData = [
         "specs_g2e": null,
         "anciens": [
             {
-                "nom": "BROSSET",
                 "prenom": "Lisa",
                 "initiale_nom": "B",
                 "annee": 2025,

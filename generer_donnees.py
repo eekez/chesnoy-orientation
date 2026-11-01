@@ -3,6 +3,8 @@ import json
 import math
 import os
 import re
+import sys
+import datetime
 from thefuzz import process as fuzz_process
 
 def safe_isnan(val):
@@ -126,6 +128,101 @@ def construire_specs(specs_list):
 # Types d'écoles sans données de sélectivité pertinentes
 TYPES_SANS_RANG = {'Fac', 'INSA', 'ENS', 'Centrale', 'Centrale-Supélec', 'Mines-Pont', 'X-BIO', ''}
 
+
+# ================================================================
+# CONTRÔLE QUALITÉ (exécuté avant l'écriture de data.js)
+# ================================================================
+# - ERREURS      : problèmes bloquants -> data.js N'EST PAS réécrit (l'ancien reste en place) et le script
+#                  s'arrête avec un code d'erreur (visible dans GitHub Actions).
+# - AVERTISSEMENTS : données incomplètes ou suspectes -> data.js est écrit, mais la liste s'affiche.
+def controle_qualite(donnees_web, hors_carte, stats):
+    erreurs, avert = [], []
+    annee_max = datetime.date.today().year + 1
+    ANNEE_MIN = 2011                      # le classeur commence en 2011
+    CLASSES = {'BCPST', 'TB'}
+    noms = [e['nom'] for e in donnees_web]
+
+    def lien_ok(v):
+        return v.lower().startswith(('http://', 'https://'))
+
+    # ---------- Erreurs bloquantes ----------
+    if not donnees_web:
+        erreurs.append("Aucune école lue : onglet « Ecoles » vide, renommé ou colonne « Nom » absente ?")
+    elif sum(len(e['anciens']) for e in donnees_web) == 0:
+        erreurs.append("Aucun ancien rattaché à une école : colonne « École intégrée » ou onglets Elèves_* modifiés ?")
+    doubles = sorted({n for n in noms if noms.count(n) > 1})
+    if doubles:
+        erreurs.append(f"École(s) en double dans l'onglet Ecoles : {doubles}")
+    for e in donnees_web:
+        lat, lon = e['coords']
+        if (lat, lon) == (0, 0) or not (-90 <= lat <= 90 and -180 <= lon <= 180):
+            erreurs.append(f"Coordonnées invalides pour « {e['nom']} » : {e['coords']} (colonne « coords »)")
+
+    # ---------- Avertissements : écoles ----------
+    def groupe(titre, liste):
+        if liste:
+            avert.append((titre, liste))
+
+    groupe("École sans mots-clés (colonne « Mots_cles »)",  [e['nom'] for e in donnees_web if not e['mots_cles']])
+    groupe("École sans descriptif",                          [e['nom'] for e in donnees_web if not e['descriptif']])
+    groupe("École sans lien vers son site (colonne « Lien »)", [e['nom'] for e in donnees_web if not e['lien_site']])
+    groupe("École sans image (colonne « image »)",           [e['nom'] for e in donnees_web if not e['image']])
+    groupe("Lien de site cassé (ne commence pas par http) ou image illisible (ni http ni data:image)",
+           [f"{e['nom']} : « {(e['lien_site'] if e['lien_site'] and not lien_ok(e['lien_site']) else e['image'])[:40]} »"
+            for e in donnees_web
+            if (e['lien_site'] and not lien_ok(e['lien_site']))
+            or (e['image'] and not (lien_ok(e['image']) or e['image'].startswith('data:image')))])
+    groupe("Mot-clé avec une virgule (séparateur attendu : « ; ») ou de plus de 60 caractères",
+           [f"{e['nom']} : « {m[:60]} »" for e in donnees_web for m in e['mots_cles'] if ',' in m or len(m) > 60])
+    inconnues_stats = sorted(n for n in stats if n not in set(noms))
+    groupe("Nom de l'onglet « Stats » absent de l'onglet Ecoles (faute de frappe ?)", inconnues_stats)
+
+    # ---------- Avertissements : anciens ----------
+    tous = [(e['nom'], a) for e in donnees_web for a in e['anciens']] + \
+           [(a.get('categorie', 'Hors carte'), a) for a in hors_carte]
+    def ident(a):
+        return f"{a.get('prenom', '?')} {a.get('initiale_nom', '')}. ({a.get('annee')} {a.get('classe')})"
+
+    groupe("Année hors de la plage attendue (%d-%d)" % (ANNEE_MIN, annee_max),
+           [f"{ident(a)} → {ec}" for ec, a in tous if not (ANNEE_MIN <= a.get('annee', 0) <= annee_max)])
+    groupe("Classe inattendue (attendu : BCPST ou TB)",
+           [f"{ident(a)} → {ec}" for ec, a in tous if a.get('classe') not in CLASSES])
+    groupe("Lien vidéo ou fiche de poste qui ne commence pas par http(s)",
+           [f"{ident(a)} → {ec}" for ec, a in tous
+            if (a.get('lien_video') and not lien_ok(a['lien_video'])) or (a.get('lien_fiche_poste') and not lien_ok(a['lien_fiche_poste']))])
+    vus, doublons = {}, []
+    for ec, a in tous:
+        cle = (a.get('prenom', '').lower(), a.get('initiale_nom', ''), a.get('annee'), a.get('classe'))
+        if a.get('prenom') != 'Inconnu':
+            if cle in vus:
+                doublons.append(f"{ident(a)} → {vus[cle]} et {ec}" if vus[cle] != ec else f"{ident(a)} → {ec}")
+            vus[cle] = ec
+    groupe("Doublon possible (même prénom, initiale, année et classe)", doublons)
+    n_inconnus = sum(1 for _, a in tous if a.get('prenom') == 'Inconnu')
+    if n_inconnus:
+        avert.append((f"{n_inconnus} ancien(s) sans prénom (affichés « Inconnu »)", []))
+
+    # ---------- Confidentialité ----------
+    n_noms = sum(1 for e in donnees_web for a in e['anciens'] if a.get('nom'))
+    if n_noms:
+        avert.append((f"🔒 data.js est public et contient le NOM DE FAMILLE COMPLET de {n_noms} ancien(s)", []))
+
+    return erreurs, avert
+
+
+def afficher_controle(erreurs, avert, limite=8):
+    print("\n🔎 Contrôle qualité")
+    if not erreurs and not avert:
+        print("   ✅ Aucun problème détecté")
+    for titre, liste in avert:
+        print(f"   ⚠️  {titre}" + (f" ({len(liste)})" if liste else ""))
+        for x in liste[:limite]:
+            print(f"        - {x}")
+        if len(liste) > limite:
+            print(f"        … et {len(liste) - limite} autre(s)")
+    for err in erreurs:
+        print(f"   ❌ {err}")
+
 # ================================================================
 # SCRIPT PRINCIPAL
 # ================================================================
@@ -190,7 +287,7 @@ for _, ecole in ecoles.iterrows():
     liste_anciens = []
     for _, eleve in eleves_ecole.iterrows():
         liste_anciens.append({
-            "nom":              safe_str(eleve.get('NOM')),
+            # Confidentialité : data.js est PUBLIC -> jamais le nom de famille complet, seulement l'initiale
             "prenom":           safe_str(eleve.get('Prénom')) or "Inconnu",
             "initiale_nom":     safe_str(eleve.get('NOM'))[:1].upper(),   # calculée depuis le nom (indépendante de la colonne B)
             "annee":            int(eleve.get('Année')) if not safe_isnan(eleve.get('Année')) else 0,
@@ -252,6 +349,12 @@ connus = {norm(e['nom']) for e in donnees_web} | set(hors_noms)
 inconnus = sorted({safe_str(v) for v in eleves['École intégrée'] if norm(v) not in connus})
 if inconnus:
     print("\n⚠️  'École intégrée' absente de l'onglet Ecoles (non affichée) :", inconnus)
+
+erreurs_qc, avert_qc = controle_qualite(donnees_web, hors_carte, stats)
+afficher_controle(erreurs_qc, avert_qc)
+if erreurs_qc:
+    print("\n⛔ Génération interrompue : data.js n'a PAS été modifié. Corrige les erreurs ci-dessus puis relance le script.")
+    sys.exit(1)
 
 with open('data.js', 'w', encoding='utf-8') as f:
     f.write("const ecolesData = " + json.dumps(donnees_web, ensure_ascii=False, indent=4) + ";\n")

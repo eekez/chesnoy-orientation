@@ -420,6 +420,7 @@ function changerOnglet(o, init) {
     const ONGLETS = ['carte', 'promos', 'ecoles', 'videos', 'fiches', 'stats'];
     if (!ONGLETS.includes(o)) o = 'carte';
     ongletCourant = o;
+    if (!init) suivre('onglet-' + o);
     fermerModalGlobale();
     ONGLETS.forEach(k => {
         document.getElementById('tab-' + k).classList.toggle('hidden', k !== o);
@@ -429,7 +430,8 @@ function changerOnglet(o, init) {
             (k === o ? 'border-amber-400 text-emerald-900 bg-emerald-50/60' : 'border-transparent text-gray-500 hover:text-emerald-800');
     });
     if (o === 'carte') setTimeout(() => map.invalidateSize(), 50);
-    ({ promos: rendrePromos, ecoles: rendreEcoles, videos: rendreVideos, fiches: rendreFiches, stats: rendreStats })[o]?.();
+    try { ({ promos: rendrePromos, ecoles: rendreEcoles, videos: rendreVideos, fiches: rendreFiches, stats: rendreStats })[o]?.(); }
+    catch (err) { signalerErreur('onglet ' + o, err); }
     if (!init) sauvegarderEtat();
 }
 
@@ -437,6 +439,67 @@ function changerOnglet(o, init) {
 const typeDe = (e, classe) => (classe || '').includes('TB') ? (typeColors[e.type_tb] ? e.type_tb : typeColors[e.type_bcpst] ? e.type_bcpst : null)
                                                             : (typeColors[e.type_bcpst] ? e.type_bcpst : typeColors[e.type_tb] ? e.type_tb : null);
 const nomAffiche = a => (a.prenom || 'Inconnu') + (a.initiale_nom ? ' ' + a.initiale_nom + '.' : '');
+// ---------- Gestion des erreurs : le site signale le problème au lieu d'échouer en silence ----------
+const _erreursSignalees = new Set();
+function signalerErreur(contexte, err) {
+    console.error('[Chesnoy] Erreur dans « ' + contexte + ' » :', err);
+    if (_erreursSignalees.has(contexte)) return;          // une seule bannière par contexte
+    _erreursSignalees.add(contexte);
+    suivre('erreur-' + contexte, 'Erreur : ' + contexte + ' — ' + String(err && err.message || err).slice(0, 80));
+    const b = document.createElement('div');
+    b.setAttribute('role', 'alert');
+    b.className = 'fixed left-2 right-2 bottom-2 z-[10000] max-w-md mx-auto bg-amber-50 border border-amber-400 text-amber-900 text-xs rounded-lg shadow-lg p-3 flex items-start gap-2';
+    b.innerHTML = '<span>⚠️ Un problème est survenu (' + String(contexte).replace(/[<>&"]/g, '') + '). Certaines informations peuvent être incomplètes : recharge la page, et signale-le à ton professeur si cela persiste.</span>' +
+                  '<button type="button" class="ml-auto font-bold px-1" aria-label="Fermer">✕</button>';
+    b.querySelector('button').onclick = () => b.remove();
+    document.body.appendChild(b);
+}
+window.addEventListener('error', ev => {
+    if (ev.message && ev.message !== 'Script error.' && !/ResizeObserver/.test(ev.message)) signalerErreur('page', ev.error || ev.message);
+});
+window.addEventListener('unhandledrejection', ev => signalerErreur('promesse', ev.reason));
+
+// ---------- Statistiques d'utilisation (GoatCounter : sans cookie, sans donnée personnelle) ----------
+// 1) Crée un compteur gratuit sur https://www.goatcounter.com (« code » choisi à l'inscription, ex. « chesnoy »).
+// 2) Renseigne ce code ci-dessous : tant qu'il est vide, aucun suivi n'est activé.
+const GOATCOUNTER_CODE = '';
+const SUIVI_ACTIF = !!GOATCOUNTER_CODE && navigator.doNotTrack !== '1';
+if (SUIVI_ACTIF) {
+    const gc = document.createElement('script');
+    gc.async = true;
+    gc.dataset.goatcounter = 'https://' + GOATCOUNTER_CODE + '.goatcounter.com/count';
+    gc.src = 'https://gc.zgo.at/count.js';
+    document.head.appendChild(gc);
+}
+// Enregistre un évènement nommé (jamais de nom d'élève ni de donnée personnelle dans le nom)
+function suivre(nom, titre) {
+    try {
+        if (!SUIVI_ACTIF) return;
+        const n = String(nom).toLowerCase().replace(/^\/+/, '').slice(0, 80);
+        if (window.goatcounter && typeof window.goatcounter.count === 'function')
+            window.goatcounter.count({ path: n, title: titre || n, event: true });
+    } catch (e) { /* le suivi ne doit jamais gêner le site */ }
+}
+// Recherches saisies (carte, onglet Écoles, onglet Fiches) : enregistrées après 1,5 s sans frappe
+(function () {
+    const CHAMPS = { 'search-bar': 'carte', 'ecoles-q': 'ecoles', 'fiches-search': 'fiches' };
+    let t = null;
+    document.addEventListener('input', ev => {
+        const zone = CHAMPS[ev.target && ev.target.id];
+        if (!zone) return;
+        clearTimeout(t);
+        t = setTimeout(() => {
+            const q = normaliserTexte(ev.target.value).slice(0, 40);
+            if (q.length >= 3) suivre('recherche-' + zone + '-' + q, 'Recherche (' + zone + ') : ' + q);
+        }, 1500);
+    });
+    // Clics sur les éléments marqués data-suivi (fiches de poste, sites d'écoles)
+    document.addEventListener('click', ev => {
+        const el = ev.target.closest && ev.target.closest('[data-suivi]');
+        if (el) suivre(el.getAttribute('data-suivi'));
+    });
+})();
+
 const esc = t => String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const badgeFiliere = c => '<span class="text-[9px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded ' + ((c || '').includes('BCPST') ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700') + '">' + esc(c) + '</span>';
 const badgeEcole = (e, classe) => '<span class="text-[10px] font-bold px-2 py-0.5 rounded-full text-white" style="background:' + (e.couleur || typeColors[typeDe(e, classe)] || '#6b7280') + '" title="' + esc(typeDe(e, classe) || 'École') + '">' + esc(e.nom) + '</span>';
@@ -449,7 +512,7 @@ function ligneEtudiant(a, e, avecEcole) {
     const div = document.createElement('div');
     div.className = 'bg-white rounded-xl border border-gray-100 shadow-sm p-3 mb-2';
     const liens = (aLien(a.lien_video) ? '<button data-v class="text-[9px] font-bold uppercase px-2 py-1 rounded-full bg-[#cc0000] text-white active:scale-95">▶ Vidéo</button>' : '') +
-                  (aLien(a.lien_fiche_poste) ? '<a href="' + esc(a.lien_fiche_poste) + '" target="_blank" rel="noopener" class="text-[9px] font-bold uppercase px-2 py-1 rounded-full bg-amber-500 text-white active:scale-95">📄 Fiche</a>' : '');
+                  (aLien(a.lien_fiche_poste) ? '<a href="' + esc(a.lien_fiche_poste) + '" target="_blank" rel="noopener" data-suivi="fiche-poste" class="text-[9px] font-bold uppercase px-2 py-1 rounded-full bg-amber-500 text-white active:scale-95">📄 Fiche</a>' : '');
     div.innerHTML = '<div class="flex items-start justify-between gap-2"><div class="min-w-0 flex-1">' +
         '<div class="flex items-center flex-wrap gap-1.5"><span class="font-bold text-sm text-gray-800">' + esc(nomAffiche(a)) + '</span>' + badgeFiliere(a.classe) + (estFonct(a) ? badgeFonct : '') + '</div>' +
         '<div class="flex items-center flex-wrap gap-1.5 mt-1.5">' + (avecEcole ? badgeEcole(e, a.classe) : '') + (aLien(a.apres_ecole) ? badgeMetier(a.apres_ecole) : '') + '</div></div>' +
@@ -464,7 +527,7 @@ function ligneCompacte(a, e) {
     div.className = 'px-3 py-2 border-t border-gray-100 first:border-t-0 flex flex-wrap items-center gap-x-2 gap-y-1 hover:bg-emerald-50/40 md:grid md:grid-cols-[10rem_4.5rem_minmax(0,1fr)_3.5rem_minmax(0,1fr)_7rem] md:gap-x-3';
     const cell = (h, extra) => '<span class="min-w-0 empty:hidden md:empty:block ' + (extra || '') + '">' + h + '</span>';
     const liens = (aLien(a.lien_video) ? '<button data-v class="text-[9px] font-bold uppercase px-2 py-1 rounded-full bg-[#cc0000] text-white active:scale-95">▶ Vidéo</button>' : '') +
-                  (aLien(a.lien_fiche_poste) ? '<a href="' + esc(a.lien_fiche_poste) + '" target="_blank" rel="noopener" class="text-[9px] font-bold uppercase px-2 py-1 rounded-full bg-amber-500 text-white active:scale-95">📄 Fiche</a>' : '');
+                  (aLien(a.lien_fiche_poste) ? '<a href="' + esc(a.lien_fiche_poste) + '" target="_blank" rel="noopener" data-suivi="fiche-poste" class="text-[9px] font-bold uppercase px-2 py-1 rounded-full bg-amber-500 text-white active:scale-95">📄 Fiche</a>' : '');
     div.innerHTML = cell('<span class="font-bold text-sm text-gray-800 truncate block">' + esc(nomAffiche(a)) + '</span>') +
         cell(badgeFiliere(a.classe)) +
         cell(badgeEcole(e, a.classe).replace('class="', 'class="inline-block max-w-full truncate align-middle '), '') +
@@ -514,7 +577,7 @@ function rendrePromos() {
     const liste = tous.filter(x => etatPromos.groupes.has(x.groupe) && (etatPromos.filiere === 'TOUT' || (x.a.classe || '').includes(etatPromos.filiere)) &&
         (etatPromos.annee === 'TOUT' || x.annee === +etatPromos.annee) &&
         (!q || [x.a.prenom, x.a.initiale_nom, x.e.nom, x.a.apres_ecole].join(' ').toLowerCase().includes(q)))
-        .sort((x, y) => y.annee - x.annee || ((x.a.nom || x.a.prenom) || '').localeCompare((y.a.nom || y.a.prenom) || '', 'fr') || (x.a.prenom || '').localeCompare(y.a.prenom || '', 'fr'));
+        .sort((x, y) => y.annee - x.annee || (x.a.initiale_nom || '').localeCompare(y.a.initiale_nom || '', 'fr') || (x.a.prenom || '').localeCompare(y.a.prenom || '', 'fr'));
     // total = élèves distincts parmi ceux affichés (un 5/2 présent dans deux promos n'est compté qu'une fois) ; les effectifs par promo, eux, incluent les 5/2
     const cleP = x => [nkJS(x.a.prenom), nkJS(x.a.initiale_nom), x.a.classe].join('|');
     const finalsP = new Set(liste.filter(x => x.groupe !== 'CINQ').map(x => cleP(x) + '|' + x.annee));
@@ -634,19 +697,20 @@ function carteEcole(e, F) {
         if (aLien(e.descriptif)) h += '<p class="text-xs text-gray-700 leading-relaxed mb-3">' + esc(e.descriptif) + '</p>';
         const kw = listeMotsCles(e);
         if (kw.length) h += '<div class="flex flex-wrap gap-1 mb-3" data-motscles>' + kw.map((m, i) => '<button type="button" data-kw="' + i + '" title="Rechercher « ' + esc(m) + ' »" class="inline-block text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100 hover:border-emerald-400 transition-colors">' + esc(m) + '</button>').join('') + '</div>';
-        h += '<div class="flex flex-wrap gap-2 mb-3">' + (aLien(e.lien_site) ? '<a href="' + esc(e.lien_site) + '" target="_blank" rel="noopener" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-700 text-white">🔗 Site de l\'école</a>' : '') +
+        h += '<div class="flex flex-wrap gap-2 mb-3">' + (aLien(e.lien_site) ? '<a href="' + esc(e.lien_site) + '" target="_blank" rel="noopener" data-suivi="site-ecole" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-700 text-white">🔗 Site de l\'école</a>' : '') +
             '<button data-carte class="text-xs font-bold px-3 py-1.5 rounded-lg bg-white border border-emerald-300 text-emerald-800">📍 Voir sur la carte</button></div>';
         corps.innerHTML = h + '<p class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mb-2">Anciens (' + F + ')</p><div data-anciens></div>';
         const zone = corps.querySelector('[data-anciens]');
         if (!anciens.length) zone.innerHTML = '<p class="text-xs italic text-gray-500">Aucun ancien recensé.</p>';
         anciens.slice().sort((x, y) => y.annee - x.annee).forEach(a => { const l = ligneEtudiant(a, e, false); l.insertAdjacentHTML('afterbegin', '<p class="text-[9px] font-black uppercase tracking-widest text-gray-400 mb-1">Promotion ' + a.annee + '</p>'); zone.appendChild(l); });
-        corps.querySelectorAll('[data-kw]').forEach(b => { b.onclick = () => { etatEcoles.q = kw[+b.dataset.kw]; rendreEcoles(); }; });
+        corps.querySelectorAll('[data-kw]').forEach(b => { b.onclick = () => { etatEcoles.q = kw[+b.dataset.kw]; suivre('mot-cle-' + normaliserTexte(kw[+b.dataset.kw]), 'Mot-clé (clic) : ' + kw[+b.dataset.kw]); rendreEcoles(); }; });
         corps.querySelector('[data-carte]').onclick = () => { changerOnglet('carte'); setTimeout(() => { const m = markers.find(x => x.ecole.nom === e.nom); if (m) { map.setView(m.ecole.coords, 12); afficherEcole(m.ecole); } }, 120); };
     };
     if (ouverte) remplir();
     div.querySelector('button').onclick = () => {
         const ouvre = corps.classList.toggle('hidden') === false;
         ouvre ? etatEcoles.ouvertes.add(e.nom) : etatEcoles.ouvertes.delete(e.nom);
+        if (ouvre) suivre('ecole-' + e.nom, 'École (onglet Écoles) : ' + e.nom);
         div.querySelector('button').setAttribute('aria-expanded', String(ouvre));
         div.querySelector('button > span:last-child').classList.toggle('rotate-90', ouvre);
         if (ouvre && !corps.innerHTML) remplir();
@@ -668,7 +732,7 @@ function rendreFiches() {
     let an = null;
     liste.forEach(({ a, e }) => {
         if (a.annee !== an) { an = a.annee; h += '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-4 mb-2">Promotion ' + an + '</h3>'; }
-        h += '<a href="' + a.lien_fiche_poste + '" target="_blank" rel="noopener" class="flex items-center gap-3 bg-white rounded-xl border border-gray-100 shadow-sm p-3 mb-2 active:scale-[0.99]">' +
+        h += '<a href="' + a.lien_fiche_poste + '" target="_blank" rel="noopener" data-suivi="fiche-poste" class="flex items-center gap-3 bg-white rounded-xl border border-gray-100 shadow-sm p-3 mb-2 active:scale-[0.99]">' +
             '<span class="text-2xl" aria-hidden="true">📄</span><span class="flex-1 min-w-0"><span class="block text-sm font-bold text-gray-800 truncate">' + nomAffiche(a) + '</span>' +
             '<span class="block text-xs text-gray-500 truncate">' + e.nom + ' · ' + a.classe + '</span>' +
             (a.apres_ecole ? '<span class="block text-xs text-emerald-700 truncate">' + a.apres_ecole + '</span>' : '') + '</span><span class="text-xs font-bold text-emerald-700">Ouvrir ↗</span></a>';
@@ -1320,7 +1384,13 @@ function listeMotsCles(e) {
     return liste.map(m => String(m == null ? '' : m).trim()).filter(Boolean);
 }
 
+// Enveloppe de sécurité : une donnée inattendue ne doit plus bloquer toute la carte
 function filtrerTout() {
+    try { filtrerToutInterne(); }
+    catch (err) { signalerErreur('filtrage de la carte', err); }
+}
+
+function filtrerToutInterne() {
     const query      = normaliserTexte(document.getElementById('search-bar').value);
     const anneeDebut = 0;
     const anneeFin = 9999;
@@ -1339,8 +1409,7 @@ function filtrerTout() {
             normaliserTexte(e.ville).includes(query) ||
             listeMotsCles(e).some(m => normaliserTexte(m).includes(query)) ||
             filtres.some(a =>
-                normaliserTexte((a.prenom || '') + " " + (a.nom || '')).includes(query) ||
-                normaliserTexte(a.nom).includes(query)
+                normaliserTexte((a.prenom || '') + " " + (a.initiale_nom || '')).includes(query)
             );
 
         // Compatibilité avec les écoles sans anciens
@@ -1468,6 +1537,7 @@ function basculerFiltresFiche() {
 
 function afficherEcole(ecole, depuisFiltre) {
     const nouvelle = !ecoleActuelleObj || ecoleActuelleObj.nom !== ecole.nom;
+    if (nouvelle && !depuisFiltre) suivre('ecole-' + ecole.nom, 'École (carte) : ' + ecole.nom);
     if (estMobile() && !depuisFiltre) { feuilleReduite() ? null : ouvrirFeuille(); }
     if (nouvelle) {
         document.getElementById('filters-block').classList.add('hidden');
@@ -1502,6 +1572,7 @@ function afficherEcole(ecole, depuisFiltre) {
                 'cursor-pointer select-none hover:bg-emerald-100 hover:border-emerald-400 transition-colors';
             span.onclick = () => {
                 document.getElementById('search-bar').value = mot.trim();
+                suivre('mot-cle-' + normaliserTexte(mot), 'Mot-clé (clic) : ' + mot.trim());
                 filtrerTout();
             };
             kwEl.appendChild(span);
@@ -1511,6 +1582,7 @@ function afficherEcole(ecole, depuisFiltre) {
     }
 
     document.getElementById('school-link').href = ecole.lien_site;
+    document.getElementById('school-link').setAttribute('data-suivi', 'site-ecole');
 
     // Bloc sélectivité (rangs SCEI par spécialité)
     const rangEl = document.getElementById('school-rang');
@@ -1816,6 +1888,7 @@ function lancerVideo(lien, prenom) {
     if (videoId) {
         ouvrirModalGlobale(lien, "Témoignage de " + prenom);
     } else {
+        suivre('video-externe');
         window.open(lien, "_blank");
     }
 }
@@ -1825,6 +1898,8 @@ function lancerVideo(lien, prenom) {
 function ouvrirModalGlobale(lien, titre) {
     const videoId = extraireIdYoutube(lien);
     if (videoId) {
+        // Le titre d'un témoignage contient un prénom : on ne l'envoie pas, seul l'identifiant YouTube est enregistré
+        suivre('video-' + videoId, /^Témoignage de /.test(titre) ? 'Témoignage' : titre);
         document.getElementById('global-video-title-text').innerText = titre;
 		document.getElementById('global-video-player').src =    "https://www.youtube-nocookie.com/embed/" +    videoId +    "?autoplay=1&rel=0&modestbranding=1&playsinline=1";
         document.getElementById('global-video-modal').classList.remove('hidden');
