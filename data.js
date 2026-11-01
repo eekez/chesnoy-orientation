@@ -1688,7 +1688,8 @@ const ecolesData = [
         "mots_cles": [
             "Biologie moléculaire et cellulaire",
             "Sciences halieutiques",
-            "Data Science, Sciences de l’animal pour l’élevage",
+            "Data Science",
+            "Sciences de l’animal pour l’élevage",
             "Santé des plantes",
             "Nutrition santé",
             "Hydrogéologie",
@@ -3636,7 +3637,8 @@ const ecolesData = [
             "Collectivités",
             "Prévention des risques inondations",
             "Eco-quartier",
-            "Economie circulaire, Restauration et aménagement d’espaces naturels",
+            "Economie circulaire",
+            "Restauration et aménagement d’espaces naturels",
             "Gestion de projet",
             "Alternance",
             "Double diplôme",
@@ -5378,7 +5380,7 @@ const ecolesData = [
         "banque_bcpst": "Agro-Véto",
         "banque_tb": "Polytech",
         "descriptif": "Polytech Annecy-Chambéry, école d’ingénieurs de l’Université Savoie Mont Blanc (réseau Polytech), propose cinq spécialités d’ingénieur, dont la spécialité Bâtiment (Bâtiment – Écoconstruction – Énergie) et la mécanique. Les études comprennent environ 39 semaines de stage sur l’ensemble du cursus.",
-        "lien_site": "Chambéry",
+        "lien_site": "https://www.polytech.univ-smb.fr › ecole › polytech-annecy-chambery",
         "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.polytech.univ-smb.fr%2Ffileadmin%2FPolytech_Internet%2FCommunication%2FActus%2F2019%2FPolytech_site_Annecy_vu_du_ciel_bis.jpg&f=1&nofb=1&ipt=e4f36724d1237f0de7793edf46199c56ca493ce19b3d9a40d1200a0001e6ed58",
         "mots_cles": [
             "Bâtiment",
@@ -7194,7 +7196,7 @@ const ecolesData = [
         "banque_tb": "Aucune",
         "descriptif": "L’Université de Pau et des Pays de l’Adour (UPPA) propose, au sein de son collège Sciences et technologies pour l’énergie et l’environnement, des licences en sciences de la vie, sciences de la Terre et physique-chimie sur ses campus de Pau et d’Anglet. À Anglet, la licence de sciences de la vie propose un parcours « biologie des organismes » ; à Pau, la L3 propose les parcours biologie générale et sciences de la Terre, et biologie cellulaire et moléculaire.",
         "lien_site": "https://www.univ-pau.fr",
-        "image": "",
+        "image": "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%2Fid%2FOIP.FQlxAojaoIAisb9JODC31QHaE8%3Fr%3D0%26pid%3DApi&f=1&ipt=1a050e9e65683d12a11bc3e3d8c48abaab1f01a0180db91c4955d9f0074e875a&ipo=images",
         "mots_cles": [
             "Sciences de la vie",
             "Biologie des organismes",
