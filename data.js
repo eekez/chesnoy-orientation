@@ -2275,7 +2275,7 @@ const ecolesData = [
                 "annee": 2018,
                 "classe": "BCPST",
                 "lien_video": "https://www.youtube.com/watch?v=W3h5KG5xogA",
-                "date_ajout": "",
+                "date_ajout": "2026-11-03",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
                 "apres_ecole": "Nutritionniste en parc zoologique/Thésarde/Enseignement",
