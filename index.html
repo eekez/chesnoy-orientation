@@ -106,7 +106,7 @@
     <button id="tab-btn-carte"  role="tab" onclick="changerOnglet('carte')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🗺 Carte</button>
     <button id="tab-btn-promos" role="tab" onclick="changerOnglet('promos')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🎓 Promotions</button>
     <button id="tab-btn-ecoles" role="tab" onclick="changerOnglet('ecoles')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🏫 Écoles</button>
-    <button id="tab-btn-videos" role="tab" onclick="changerOnglet('videos')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🎬 Vidéos</button>
+    <button id="tab-btn-videos" role="tab" onclick="changerOnglet('videos')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🎬 Vidéos<span id="badge-videos" class="hidden ml-1 align-middle inline-flex items-center justify-center min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-red-600 text-white text-[10px] font-black"></span></button>
     <button id="tab-btn-fiches" role="tab" onclick="changerOnglet('fiches')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📄 Fiches de poste</button>
     <button id="tab-btn-stats"  role="tab" onclick="changerOnglet('stats')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📊 Statistiques</button>
 </nav>
@@ -432,6 +432,10 @@ function changerOnglet(o, init) {
     if (o === 'carte') setTimeout(() => map.invalidateSize(), 50);
     try { ({ promos: rendrePromos, ecoles: rendreEcoles, videos: rendreVideos, fiches: rendreFiches, stats: rendreStats })[o]?.(); }
     catch (err) { signalerErreur('onglet ' + o, err); }
+    try {
+        if (o === 'videos') marquerVideosVues();
+        majNotifVideos(!!init && o !== 'videos');
+    } catch (err) { signalerErreur('notification vidéos', err); }
     if (!init) sauvegarderEtat();
 }
 
@@ -439,6 +443,71 @@ function changerOnglet(o, init) {
 const typeDe = (e, classe) => (classe || '').includes('TB') ? (typeColors[e.type_tb] ? e.type_tb : typeColors[e.type_bcpst] ? e.type_bcpst : null)
                                                             : (typeColors[e.type_bcpst] ? e.type_bcpst : typeColors[e.type_tb] ? e.type_tb : null);
 const nomAffiche = a => (a.prenom || 'Inconnu') + (a.initiale_nom ? ' ' + a.initiale_nom + '.' : '');
+// ---------- Nouvelles vidéos : pastille sur l'onglet, bandeau à l'arrivée, étiquette « Nouveau » ----------
+// Une vidéo est « récente » pendant NOUVEAU_JOURS jours après sa date d'ajout (colonne Excel « Date_ajout » pour les
+// témoignages ; propriété  date: "AAAA-MM-JJ"  dans VIDEOS_CATEGORISEES pour les forums, conférences et FAQ).
+// Le navigateur retient les vidéos déjà vues sur l'appareil (localStorage) : pas d'alerte en double.
+const NOUVEAU_JOURS = 30;
+const CLE_VIDEOS_VUES = 'chesnoy_videos_vues', CLE_BANDEAU_VIDEOS = 'chesnoy_bandeau_videos';
+function estRecente(date) {
+    const d = Date.parse(date || '');
+    if (isNaN(d)) return false;
+    const age = (Date.now() - d) / 86400000;
+    return age >= -1 && age <= NOUVEAU_JOURS;
+}
+function lireEnsemble(cle) { try { return new Set(JSON.parse(localStorage.getItem(cle) || '[]')); } catch (e) { return new Set(); } }
+function ecrireEnsemble(cle, ens) { try { localStorage.setItem(cle, JSON.stringify([...ens].slice(-200))); } catch (e) { /* stockage indisponible : sans conséquence */ } }
+function videosRecentes() {
+    const liste = [];
+    ecolesData.forEach(e => (e.anciens || []).forEach(a => {
+        if (aLien(a.lien_video) && estRecente(a.date_ajout))
+            liste.push({ lien: a.lien_video.trim(), titre: nomAffiche(a), sous: e.nom, date: a.date_ajout, rubrique: 'temoignages', temoignage: true });
+    }));
+    VIDEOS_CATEGORISEES.forEach(c => (c.videos || []).forEach(v => {
+        if (estRecente(v.date)) {
+            const r = SOUS_ONGLETS_VIDEOS.find(x => !x.temoignages && x.test(c.categorie));
+            liste.push({ lien: v.lien, titre: v.titre, sous: c.categorie, date: v.date, rubrique: r ? r.id : 'forums', temoignage: false });
+        }
+    }));
+    return liste.sort((x, y) => y.date.localeCompare(x.date));
+}
+function marquerVideosVues() {
+    const vues = lireEnsemble(CLE_VIDEOS_VUES);
+    videosRecentes().forEach(v => vues.add(v.lien));
+    ecrireEnsemble(CLE_VIDEOS_VUES, vues);
+}
+function majNotifVideos(afficherBandeau) {
+    const badge = document.getElementById('badge-videos');
+    const vues = lireEnsemble(CLE_VIDEOS_VUES);
+    const nouvelles = ongletCourant === 'videos' ? [] : videosRecentes().filter(v => !vues.has(v.lien));
+    if (badge) {
+        badge.classList.toggle('hidden', !nouvelles.length);
+        badge.textContent = nouvelles.length;
+        badge.setAttribute('aria-label', nouvelles.length + (nouvelles.length > 1 ? ' nouvelles vidéos' : ' nouvelle vidéo'));
+    }
+    const ancien = document.getElementById('bandeau-videos');
+    if (ancien && (ongletCourant === 'videos' || !nouvelles.length)) ancien.remove();
+    if (!afficherBandeau || !nouvelles.length || document.getElementById('bandeau-videos')) return;
+    const dejaVuBandeau = lireEnsemble(CLE_BANDEAU_VIDEOS);
+    const aMontrer = nouvelles.filter(v => !dejaVuBandeau.has(v.lien));
+    if (!aMontrer.length) return;
+    const v = aMontrer[0];
+    const texte = aMontrer.length > 1 ? aMontrer.length + ' nouvelles vidéos sont disponibles'
+                : v.temoignage ? 'Nouveau témoignage : ' + v.titre + ' (' + v.sous + ')'
+                : 'Nouvelle vidéo : ' + v.titre;
+    const b = document.createElement('div');
+    b.id = 'bandeau-videos';
+    b.setAttribute('role', 'status');
+    b.className = 'fixed left-2 right-2 bottom-4 z-[9000] max-w-md mx-auto bg-emerald-900 text-white text-xs rounded-xl shadow-xl p-3 flex items-center gap-3';
+    b.innerHTML = '<span class="text-lg" aria-hidden="true">🎬</span><span class="min-w-0 flex-1 font-semibold leading-snug">' + esc(texte) + '</span>' +
+                  '<button type="button" data-voir class="shrink-0 bg-amber-400 text-emerald-950 font-black px-3 py-1.5 rounded-full active:scale-95">Voir</button>' +
+                  '<button type="button" data-fermer aria-label="Fermer" class="shrink-0 font-bold px-1">✕</button>';
+    const memoriser = () => { aMontrer.forEach(x => dejaVuBandeau.add(x.lien)); ecrireEnsemble(CLE_BANDEAU_VIDEOS, dejaVuBandeau); };
+    b.querySelector('[data-fermer]').onclick = () => { memoriser(); b.remove(); };
+    b.querySelector('[data-voir]').onclick = () => { memoriser(); b.remove(); suivre('bandeau-video-clic'); sousOngletVideo = v.rubrique; changerOnglet('videos'); };
+    document.body.appendChild(b);
+}
+
 // ---------- Gestion des erreurs : le site signale le problème au lieu d'échouer en silence ----------
 const _erreursSignalees = new Set();
 function signalerErreur(contexte, err) {
@@ -463,13 +532,19 @@ window.addEventListener('unhandledrejection', ev => signalerErreur('promesse', e
 // 1) Crée un compteur gratuit sur https://www.goatcounter.com (« code » choisi à l'inscription, ex. « chesnoy »).
 // 2) Renseigne ce code ci-dessous : tant qu'il est vide, aucun suivi n'est activé.
 const GOATCOUNTER_CODE = 'chesnoy';
-const SUIVI_ACTIF = !!GOATCOUNTER_CODE && navigator.doNotTrack !== '1';
+const RESPECTER_NE_PAS_SUIVRE = true;   // true : aucun suivi si le navigateur envoie « Ne pas suivre » (GoatCounter, lui, ignore ce signal) ; false : suivi anonyme dans tous les cas
+const SUIVI_ACTIF = !!GOATCOUNTER_CODE && !(RESPECTER_NE_PAS_SUIVRE && (navigator.doNotTrack === '1' || navigator.globalPrivacyControl === true));
 if (SUIVI_ACTIF) {
     const gc = document.createElement('script');
     gc.async = true;
     gc.dataset.goatcounter = 'https://' + GOATCOUNTER_CODE + '.goatcounter.com/count';
     gc.src = 'https://gc.zgo.at/count.js';
+    // Diagnostic (console du navigateur, touche F12) : indique si le script de comptage a pu être chargé
+    gc.onload  = () => console.info('[Chesnoy] Suivi d\'usage : script GoatCounter chargé (compteur « ' + GOATCOUNTER_CODE + ' »).');
+    gc.onerror = () => console.warn('[Chesnoy] Suivi d\'usage : script GoatCounter BLOQUÉ (bloqueur de publicités, protection du navigateur ou filtre réseau).');
     document.head.appendChild(gc);
+} else {
+    console.info('[Chesnoy] Suivi d\'usage inactif : ' + (!GOATCOUNTER_CODE ? 'aucun code GoatCounter renseigné.' : 'le navigateur envoie « Ne pas suivre » / Global Privacy Control.'));
 }
 // Enregistre un évènement nommé (jamais de nom d'élève ni de donnée personnelle dans le nom)
 function suivre(nom, titre) {
@@ -748,13 +823,14 @@ const SOUS_ONGLETS_VIDEOS = [
     { id: 'temoignages', label: 'Témoignages', icone: '🗣️', temoignages: true }
 ];
 
-function carteVideo(titre, sous, lien) {
+function carteVideo(titre, sous, lien, nouvelle) {
     const id = extraireIdYoutube(lien);
     const el = document.createElement('button');
     el.className = 'group text-left bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden active:scale-[0.98]';
     el.innerHTML =
         '<div class="relative aspect-video bg-gradient-to-br from-emerald-700 to-emerald-900">' +
             (id ? '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" onerror="this.remove()">' : '') +
+            (nouvelle ? '<span class="absolute top-1.5 left-1.5 z-10 text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-red-600 text-white shadow">Nouveau</span>' : '') +
             '<span class="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30 transition-colors">' +
                 '<span class="w-11 h-11 rounded-full bg-white/90 flex items-center justify-center shadow text-red-600 text-lg pl-0.5" aria-hidden="true">▶</span></span>' +
         '</div>' +
@@ -770,8 +846,8 @@ function carteVideo(titre, sous, lien) {
 const FAQ_SEUIL_ACCORDEON = 6;
 function rendreFaq(groupes, cont) {
     const accordeon = groupes.reduce((n, g) => n + g.videos.length, 0) >= FAQ_SEUIL_ACCORDEON;
-    const tete = (titre) => '<span class="shrink-0 w-10 h-10 rounded-full bg-emerald-700 text-white text-xl font-black flex items-center justify-center shadow" aria-hidden="true">?</span>' +
-        '<span class="min-w-0 text-left"><span class="block text-[10px] font-black uppercase tracking-widest text-emerald-700 mb-0.5">Question</span>' +
+    const tete = (titre, nouvelle) => '<span class="shrink-0 w-10 h-10 rounded-full bg-emerald-700 text-white text-xl font-black flex items-center justify-center shadow" aria-hidden="true">?</span>' +
+        '<span class="min-w-0 text-left"><span class="block text-[10px] font-black uppercase tracking-widest text-emerald-700 mb-0.5">Question' + (nouvelle ? ' <span class="ml-1 align-middle text-[9px] px-1.5 py-0.5 rounded-full bg-red-600 text-white tracking-wider">Nouveau</span>' : '') + '</span>' +
         '<span class="block text-base md:text-lg font-extrabold text-emerald-950 leading-snug">' + titre + '</span></span>';
     const reponse = (v) => {
         const id = extraireIdYoutube(v.lien), court = /\/shorts\//.test(v.lien);
@@ -799,12 +875,12 @@ function rendreFaq(groupes, cont) {
             const carte = document.createElement('article');
             carte.className = 'bg-white rounded-2xl border border-emerald-100 shadow-sm overflow-hidden flex flex-col';
             if (!accordeon) {
-                const q = document.createElement('div'); q.className = 'flex items-start gap-3 p-4 bg-emerald-50'; q.innerHTML = tete(v.titre);
+                const q = document.createElement('div'); q.className = 'flex items-start gap-3 p-4 bg-emerald-50'; q.innerHTML = tete(v.titre, v.nouvelle);
                 carte.appendChild(q); carte.appendChild(reponse(v));
             } else {
                 const q = document.createElement('button');
                 q.className = 'w-full flex items-start gap-3 p-4 bg-emerald-50 hover:bg-emerald-100/70 transition-colors text-left'; q.setAttribute('aria-expanded', 'false');
-                q.innerHTML = tete(v.titre) + '<span class="ml-auto self-center text-emerald-700 text-xl transition-transform duration-200" aria-hidden="true">▸</span>';
+                q.innerHTML = tete(v.titre, v.nouvelle) + '<span class="ml-auto self-center text-emerald-700 text-xl transition-transform duration-200" aria-hidden="true">▸</span>';
                 const corps = document.createElement('div'); corps.className = 'hidden border-t border-emerald-100'; corps.appendChild(reponse(v));
                 q.onclick = () => {
                     const ouvert = corps.classList.toggle('hidden') === false;
@@ -819,10 +895,11 @@ function rendreFaq(groupes, cont) {
 }
 
 function rendreVideos() {
+    const rubriquesRecentes = new Set(videosRecentes().map(v => v.rubrique));
     document.getElementById('video-subtabs').innerHTML = SOUS_ONGLETS_VIDEOS.map(s => {
         const actif = s.id === sousOngletVideo;
         return '<button onclick="sousOngletVideo=\'' + s.id + '\';rendreVideos()" aria-pressed="' + actif + '" class="px-3 py-1.5 rounded-full text-xs font-bold border transition-all ' +
-            (actif ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200 hover:bg-emerald-50') + '">' + s.icone + ' ' + s.label + '</button>';
+            (actif ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' : 'bg-white text-gray-700 border-gray-200 hover:bg-emerald-50') + '">' + s.icone + ' ' + s.label + (rubriquesRecentes.has(s.id) ? ' <span class="inline-block w-2 h-2 rounded-full bg-red-600 align-middle" title="Nouveau"></span>' : '') + '</button>';
     }).join('');
 
     const s = SOUS_ONGLETS_VIDEOS.find(x => x.id === sousOngletVideo);
@@ -833,13 +910,13 @@ function rendreVideos() {
                 titre: e.nom,
                 videos: e.anciens.filter(a => aLien(a.lien_video))
                     .sort((a, b) => b.annee - a.annee)
-                    .map(a => ({ titre: nomAffiche(a), sous: 'Promotion ' + a.annee + (a.classe ? ' · ' + a.classe : ''), lien: a.lien_video.trim() }))
+                    .map(a => ({ titre: nomAffiche(a), sous: 'Promotion ' + a.annee + (a.classe ? ' · ' + a.classe : ''), lien: a.lien_video.trim(), nouvelle: estRecente(a.date_ajout) }))
             }))
             .filter(g => g.videos.length)
             .sort((a, b) => a.titre.localeCompare(b.titre, 'fr'));
     } else {
         groupes = VIDEOS_CATEGORISEES.filter(c => s.test(c.categorie))
-            .map(c => ({ titre: c.categorie, videos: c.videos.map(v => ({ titre: v.titre, sous: '', lien: v.lien })) }));
+            .map(c => ({ titre: c.categorie, videos: c.videos.map(v => ({ titre: v.titre, sous: '', lien: v.lien, nouvelle: estRecente(v.date) })) }));
     }
 
     const cont = document.getElementById('video-grid');
@@ -856,7 +933,7 @@ function rendreVideos() {
         cont.appendChild(h);
         const grid = document.createElement('div');
         grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3';
-        g.videos.forEach(v => grid.appendChild(carteVideo(v.titre, v.sous, v.lien)));
+        g.videos.forEach(v => grid.appendChild(carteVideo(v.titre, v.sous, v.lien, v.nouvelle)));
         cont.appendChild(grid);
     });
 }

@@ -1,3 +1,8 @@
+import warnings
+# Messages sans gravité : openpyxl signale qu'il ne sait pas lire les listes déroulantes du classeur (il ne fait que LIRE, l'Excel n'est jamais modifié),
+# et pandas annonce un changement futur sur la fusion des deux onglets d'élèves.
+warnings.filterwarnings("ignore", message="Data Validation extension is not supported")
+warnings.filterwarnings("ignore", category=FutureWarning)
 import pandas as pd
 import json
 import math
