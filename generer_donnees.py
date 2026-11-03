@@ -13,6 +13,23 @@ def safe_isnan(val):
 def safe_str(val):
     return "" if pd.isna(val) else str(val).strip()
 
+DATES_INVALIDES = []   # valeurs de « Date_ajout » illisibles, signalées par le contrôle qualité
+
+def date_iso(val):
+    """Colonne facultative « Date_ajout » (date d'ajout d'un témoignage) -> « AAAA-MM-JJ », ou « » si absente."""
+    if pd.isna(val) or str(val).strip() == '':
+        return ""
+    if hasattr(val, 'strftime'):                      # cellule Excel au format date
+        return val.strftime('%Y-%m-%d')
+    brut = str(val).strip()
+    for fmt in ('%Y-%m-%d', '%d/%m/%Y', '%d/%m/%y', '%d-%m-%Y', '%d.%m.%Y'):
+        try:
+            return datetime.datetime.strptime(brut, fmt).strftime('%Y-%m-%d')
+        except ValueError:
+            pass
+    DATES_INVALIDES.append(brut)
+    return ""
+
 def liste_mots_cles(val):
     """Colonne « Mots_cles » de l'onglet Ecoles : « A ; B ; C. » -> ["A", "B", "C"]"""
     mots = [m.strip().rstrip('.').strip() for m in safe_str(val).split(';')]
@@ -202,6 +219,14 @@ def controle_qualite(donnees_web, hors_carte, stats):
     if n_inconnus:
         avert.append((f"{n_inconnus} ancien(s) sans prénom (affichés « Inconnu »)", []))
 
+    # ---------- Dates d'ajout des vidéos (colonne facultative « Date_ajout ») ----------
+    groupe("Date_ajout illisible (formats acceptés : 03/11/2026 ou 2026-11-03)", sorted(set(DATES_INVALIDES)))
+    demain = (datetime.date.today() + datetime.timedelta(days=1)).isoformat()
+    groupe("Date_ajout dans le futur",
+           [f"{ident(a)} → {ec} ({a['date_ajout']})" for ec, a in tous if a.get('date_ajout', '') > demain])
+    groupe("Date_ajout renseignée mais pas de lien vidéo",
+           [f"{ident(a)} → {ec}" for ec, a in tous if a.get('date_ajout') and not a.get('lien_video')])
+
     # ---------- Confidentialité ----------
     n_noms = sum(1 for e in donnees_web for a in e['anciens'] if a.get('nom'))
     if n_noms:
@@ -293,6 +318,7 @@ for _, ecole in ecoles.iterrows():
             "annee":            int(eleve.get('Année')) if not safe_isnan(eleve.get('Année')) else 0,
             "classe":           safe_str(eleve.get('Classe')),
             "lien_video":       safe_str(eleve.get('Lien_Video')),
+            "date_ajout":       date_iso(eleve.get('Date_ajout')),        # facultatif : sert à signaler les nouvelles vidéos sur le site
             "lien_fiche_poste": safe_str(eleve.get('Lien_Fiche_Poste')),
             "fonctionnaire":    safe_str(eleve.get('Fonctionnaire')),
             "apres_ecole":      safe_str(eleve.get("Après l'école")),
