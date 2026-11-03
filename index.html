@@ -320,7 +320,11 @@ const CONFIG_BANQUES = {
         "ENS": ["ENS","Centrale","Mines-Pont"]
     }
 };
-const VIDEOS_CATEGORISEES = [
+// Vidéos hors témoignages (forums, conférences, FAQ…) : elles se gèrent dans l'onglet « Videos » de l'Excel
+// (colonnes Categorie, Titre, Lien, Date_ajout) et arrivent ici via data.js (videosData).
+// La liste ci-dessous n'est qu'une liste de secours, utilisée seulement si data.js ne contient pas videosData
+// (ancien data.js) ; elle peut être supprimée une fois l'onglet « Videos » en place.
+const VIDEOS_DE_SECOURS = [
     {
         categorie: "Forums des Anciens 2025",
         videos: [
@@ -341,6 +345,17 @@ const VIDEOS_CATEGORISEES = [
         ]
     }
 ];
+function grouperVideos(liste) {
+    const groupes = [];
+    (liste || []).forEach(v => {
+        if (!v || !v.lien || !v.titre) return;
+        let g = groupes.find(x => x.categorie === v.categorie);
+        if (!g) { g = { categorie: v.categorie, videos: [] }; groupes.push(g); }
+        g.videos.push({ titre: v.titre, lien: v.lien, date: v.date_ajout || '' });
+    });
+    return groupes;
+}
+const VIDEOS_CATEGORISEES = (typeof videosData !== 'undefined') ? grouperVideos(videosData) : VIDEOS_DE_SECOURS;
 
 const typeColors = {
     "Agro":             "#059669",
@@ -445,7 +460,7 @@ const typeDe = (e, classe) => (classe || '').includes('TB') ? (typeColors[e.type
 const nomAffiche = a => (a.prenom || 'Inconnu') + (a.initiale_nom ? ' ' + a.initiale_nom + '.' : '');
 // ---------- Nouvelles vidéos : pastille sur l'onglet, bandeau à l'arrivée, étiquette « Nouveau » ----------
 // Une vidéo est « récente » pendant NOUVEAU_JOURS jours après sa date d'ajout (colonne Excel « Date_ajout » pour les
-// témoignages ; propriété  date: "AAAA-MM-JJ"  dans VIDEOS_CATEGORISEES pour les forums, conférences et FAQ).
+// témoignages ; colonne « Date_ajout » de l'onglet « Videos » pour les forums, conférences et FAQ).
 // Le navigateur retient les vidéos déjà vues sur l'appareil (localStorage) : pas d'alerte en double.
 const NOUVEAU_JOURS = 30;
 const CLE_VIDEOS_VUES = 'chesnoy_videos_vues', CLE_BANDEAU_VIDEOS = 'chesnoy_bandeau_videos';

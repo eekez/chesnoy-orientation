@@ -35,6 +35,31 @@ def date_iso(val):
     DATES_INVALIDES.append(brut)
     return ""
 
+VIDEOS_PROBLEMES = []   # lignes de l'onglet « Videos » inutilisables, signalées par le contrôle qualité
+
+def lire_videos(chemin):
+    """Onglet facultatif « Videos » (forums, conférences, FAQ…) : colonnes Categorie, Titre, Lien, Date_ajout.
+    Retourne la liste des vidéos valides, ou None si l'onglet n'existe pas (le site garde alors sa liste de secours)."""
+    try:
+        df = pd.read_excel(chemin, sheet_name="Videos")
+    except ValueError:
+        return None
+    manquantes = [c for c in ("Categorie", "Titre", "Lien") if c not in df.columns]
+    if manquantes:
+        VIDEOS_PROBLEMES.append(("Onglet « Videos » : colonne(s) absente(s) " + ", ".join(manquantes), []))
+        return None
+    videos = []
+    for i, ligne in df.iterrows():
+        cat, titre, lien = safe_str(ligne.get("Categorie")), safe_str(ligne.get("Titre")), safe_str(ligne.get("Lien"))
+        if not (cat or titre or lien):
+            continue                                   # ligne vide
+        n = i + 2                                      # numéro de ligne dans Excel (1 = en-têtes)
+        if not (cat and titre and lien):
+            VIDEOS_PROBLEMES.append((f"Ligne {n} ignorée : Categorie, Titre et Lien sont tous les trois obligatoires", [f"{cat or '?'} | {titre[:40] or '?'} | {lien[:30] or '?'}"]))
+            continue
+        videos.append({"categorie": cat, "titre": titre, "lien": lien, "date_ajout": date_iso(ligne.get("Date_ajout")), "_ligne": n})
+    return videos
+
 def liste_mots_cles(val):
     """Colonne « Mots_cles » de l'onglet Ecoles : « A ; B ; C. » -> ["A", "B", "C"]"""
     mots = [m.strip().rstrip('.').strip() for m in safe_str(val).split(';')]
@@ -157,7 +182,7 @@ TYPES_SANS_RANG = {'Fac', 'INSA', 'ENS', 'Centrale', 'Centrale-Supélec', 'Mines
 # - ERREURS      : problèmes bloquants -> data.js N'EST PAS réécrit (l'ancien reste en place) et le script
 #                  s'arrête avec un code d'erreur (visible dans GitHub Actions).
 # - AVERTISSEMENTS : données incomplètes ou suspectes -> data.js est écrit, mais la liste s'affiche.
-def controle_qualite(donnees_web, hors_carte, stats):
+def controle_qualite(donnees_web, hors_carte, stats, videos=None):
     erreurs, avert = [], []
     annee_max = datetime.date.today().year + 1
     ANNEE_MIN = 2011                      # le classeur commence en 2011
@@ -232,6 +257,24 @@ def controle_qualite(donnees_web, hors_carte, stats):
     groupe("Date_ajout renseignée mais pas de lien vidéo",
            [f"{ident(a)} → {ec}" for ec, a in tous if a.get('date_ajout') and not a.get('lien_video')])
 
+    # ---------- Onglet « Videos » (forums, conférences, FAQ…) ----------
+    if videos is None:
+        avert.append(("Onglet « Videos » absent ou incomplet : le site utilise la liste de vidéos intégrée à index.html", []))
+    else:
+        for titre, liste in VIDEOS_PROBLEMES:
+            avert.append((titre, liste))
+        groupe("Catégorie de vidéo sans rubrique (le nom doit contenir « forum », « conf » ou « faq ») : la vidéo ne s'affichera nulle part",
+               [f"ligne {v['_ligne']} : « {v['categorie']} »" for v in videos if not re.search(r'forum|conf|faq', v['categorie'], re.I)])
+        groupe("Lien de vidéo qui ne commence pas par http(s)",
+               [f"ligne {v['_ligne']} : {v['lien'][:40]}" for v in videos if not lien_ok(v['lien'])])
+        vus_liens = {}
+        for v in videos:
+            vus_liens.setdefault(v['lien'], []).append(v['_ligne'])
+        groupe("Même lien présent sur plusieurs lignes",
+               [f"lignes {', '.join(map(str, l))} : {k[:40]}" for k, l in vus_liens.items() if len(l) > 1])
+        groupe("Date_ajout dans le futur (onglet Videos)",
+               [f"ligne {v['_ligne']} ({v['date_ajout']})" for v in videos if v['date_ajout'] > demain])
+
     # ---------- Confidentialité ----------
     n_noms = sum(1 for e in donnees_web for a in e['anciens'] if a.get('nom'))
     if n_noms:
@@ -270,6 +313,7 @@ print("📖 Lecture du fichier Excel…")
 eleves_BCPST = pd.read_excel(excel_path, sheet_name="Elèves_BCPST")
 eleves_TB    = pd.read_excel(excel_path, sheet_name="Elèves_TB")
 ecoles       = pd.read_excel(excel_path, sheet_name="Ecoles")
+videos_hors_temoignages = lire_videos(excel_path)   # onglet facultatif « Videos »
 
 if 'Nom' in eleves_BCPST.columns and 'NOM' not in eleves_BCPST.columns:
     eleves_BCPST = eleves_BCPST.rename(columns={'Nom': 'NOM'})
@@ -381,7 +425,7 @@ inconnus = sorted({safe_str(v) for v in eleves['École intégrée'] if norm(v) n
 if inconnus:
     print("\n⚠️  'École intégrée' absente de l'onglet Ecoles (non affichée) :", inconnus)
 
-erreurs_qc, avert_qc = controle_qualite(donnees_web, hors_carte, stats)
+erreurs_qc, avert_qc = controle_qualite(donnees_web, hors_carte, stats, videos_hors_temoignages)
 afficher_controle(erreurs_qc, avert_qc)
 if erreurs_qc:
     print("\n⛔ Génération interrompue : data.js n'a PAS été modifié. Corrige les erreurs ci-dessus puis relance le script.")
@@ -389,9 +433,14 @@ if erreurs_qc:
 
 with open('data.js', 'w', encoding='utf-8') as f:
     f.write("const ecolesData = " + json.dumps(donnees_web, ensure_ascii=False, indent=4) + ";\n")
-    f.write("const etudiantsHorsCarte = " + json.dumps(hors_carte, ensure_ascii=False) + ";")
+    f.write("const etudiantsHorsCarte = " + json.dumps(hors_carte, ensure_ascii=False) + ";\n")
+    if videos_hors_temoignages is not None:      # sans onglet « Videos », data.js n'en contient pas et le site garde sa liste de secours
+        f.write("const videosData = " + json.dumps([{k: v for k, v in x.items() if k != '_ligne'} for x in videos_hors_temoignages],
+                                                   ensure_ascii=False, indent=4) + ";")
 
 total = sum(len(e['anciens']) for e in donnees_web)
 print(f"\n✅ data.js généré : {len(donnees_web)} écoles, {total} anciens")
 print(f"   ↳ {avec_rang} avec données de sélectivité  |  {sans_rang} sans")
 print(f"   ↳ {len(hors_carte)} étudiants hors carte (stats uniquement)")
+if videos_hors_temoignages is not None:
+    print(f"   ↳ {len(videos_hors_temoignages)} vidéos (forums, conférences, FAQ) lues dans l'onglet « Videos »")
