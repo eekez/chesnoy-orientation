@@ -7625,7 +7625,7 @@ const videosData = [
     {
         "categorie": "Forums des Anciens 2026",
         "titre": "Être ingénieur en production",
-        "lien": "https://youtu.be/ADG6QL4rVXE",
+        "lien": "https://youtu.be/4ken5KdegjE",
         "date_ajout": "2026-11-08"
     },
     {
