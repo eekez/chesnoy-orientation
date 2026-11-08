@@ -862,7 +862,7 @@ const SOUS_ONGLETS_VIDEOS = [
     { id: 'temoignages', label: 'Témoignages', icone: '🗣️', temoignages: true }
 ];
 
-function carteVideo(titre, sous, lien, nouvelle) {
+function carteVideo(titre, sous, lien, nouvelle, duo) {
     const id = extraireIdYoutube(lien);
     const el = document.createElement('button');
     el.className = 'group text-left bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden active:scale-[0.98]';
@@ -870,12 +870,14 @@ function carteVideo(titre, sous, lien, nouvelle) {
         '<div class="relative aspect-video bg-gradient-to-br from-emerald-700 to-emerald-900">' +
             (id ? '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" onerror="this.remove()">' : '') +
             (nouvelle ? '<span class="absolute top-1.5 left-1.5 z-10 text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-red-600 text-white shadow">Nouveau</span>' : '') +
+            (duo ? '<span class="absolute top-1.5 right-1.5 z-10 text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-amber-400 text-emerald-950 shadow">👥 Duo</span>' : '') +
             '<span class="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30 transition-colors">' +
                 '<span class="w-11 h-11 rounded-full bg-white/90 flex items-center justify-center shadow text-red-600 text-lg pl-0.5" aria-hidden="true">▶</span></span>' +
         '</div>' +
         '<div class="p-2.5"><p class="text-xs font-bold text-gray-900 leading-snug line-clamp-2">' + titre + '</p>' +
-        (sous ? '<p class="text-[10px] text-gray-500 mt-0.5 truncate">' + sous + '</p>' : '') + '</div>';
+        (sous ? '<p class="text-[10px] text-gray-500 mt-0.5 ' + (duo ? 'line-clamp-2' : 'truncate') + '">' + sous + '</p>' : '') + '</div>';
     el.setAttribute('aria-label', 'Lire : ' + titre);
+    if (duo) el.title = titre + (sous ? ' — ' + sous : '');
     el.onclick = () => ouvrirModalGlobale(lien, titre);
     return el;
 }
@@ -933,6 +935,39 @@ function rendreFaq(groupes, cont) {
     });
 }
 
+// Témoignages groupés par école. Une vidéo en duo n'est qu'une carte par école : si les deux élèves sont dans la même école,
+// leurs noms sont réunis ; s'ils sont dans des écoles différentes, la carte apparaît sous chaque école, avec le nom de l'élève
+// de cette école en premier, la mention « duo avec … (école) » et un badge « Duo » sur la vignette.
+function groupesTemoignages() {
+    const horsCarte = (typeof etudiantsHorsCarte !== 'undefined') ? etudiantsHorsCarte : [];
+    const partenaires = (lien, eCourante) => {
+        const k = cleVideo(lien), L = [];
+        ecolesData.forEach(e => { if (e !== eCourante) (e.anciens || []).forEach(a => { if (aLien(a.lien_video) && cleVideo(a.lien_video) === k) L.push({ nom: nomAffiche(a), ecole: e.nom }); }); });
+        horsCarte.forEach(a => { if (aLien(a.lien_video) && cleVideo(a.lien_video) === k) L.push({ nom: nomAffiche(a), ecole: a.categorie || 'hors carte' }); });
+        return L;
+    };
+    return ecolesData
+        .map(e => {
+            const parLien = new Map();
+            (e.anciens || []).filter(a => aLien(a.lien_video)).sort((a, b) => b.annee - a.annee)
+                .forEach(a => { const k = cleVideo(a.lien_video); if (!parLien.has(k)) parLien.set(k, []); parLien.get(k).push(a); });
+            return {
+                titre: e.nom,
+                videos: [...parLien].map(([lien, part]) => {
+                    const autres = partenaires(lien, e);
+                    const annees = [...new Set(part.map(a => a.annee))], classes = [...new Set(part.map(a => a.classe).filter(Boolean))];
+                    const promo = 'Promotion ' + annees.join(' / ') + (classes.length ? ' · ' + classes.join(' / ') : '');
+                    const duo = part.length + autres.length > 1;
+                    return { titre: joindreNoms(part.map(nomAffiche).concat(autres.map(o => o.nom))),
+                             sous: autres.length ? 'Duo avec ' + joindreNoms(autres.map(o => o.nom + ' (' + o.ecole + ')')) + ' · ' + promo
+                                                 : (duo ? 'Duo · ' : '') + promo,
+                             lien, nouvelle: part.some(a => estRecente(a.date_ajout)), duo };
+                })
+            };
+        })
+        .filter(g => g.videos.length)
+        .sort((a, b) => a.titre.localeCompare(b.titre, 'fr'));
+}
 function rendreVideos() {
     const rubriquesRecentes = new Set(videosRecentes().map(v => v.rubrique));
     document.getElementById('video-subtabs').innerHTML = SOUS_ONGLETS_VIDEOS.map(s => {
@@ -944,24 +979,7 @@ function rendreVideos() {
     const s = SOUS_ONGLETS_VIDEOS.find(x => x.id === sousOngletVideo);
     let groupes;
     if (s.temoignages) {
-        groupes = ecolesData
-            .map(e => ({
-                titre: e.nom,
-                videos: (() => {
-                    // Une carte par vidéo : si deux élèves partagent le même lien (témoignage en duo), leurs noms sont réunis.
-                    const parLien = new Map();
-                    e.anciens.filter(a => aLien(a.lien_video)).sort((a, b) => b.annee - a.annee)
-                        .forEach(a => { const k = cleVideo(a.lien_video); if (!parLien.has(k)) parLien.set(k, []); parLien.get(k).push(a); });
-                    return [...parLien].map(([lien, part]) => {
-                        const annees = [...new Set(part.map(a => a.annee))], classes = [...new Set(part.map(a => a.classe).filter(Boolean))];
-                        return { titre: joindreNoms(part.map(nomAffiche)),
-                                 sous: (part.length > 1 ? 'Duo · ' : '') + 'Promotion ' + annees.join(' / ') + (classes.length ? ' · ' + classes.join(' / ') : ''),
-                                 lien, nouvelle: part.some(a => estRecente(a.date_ajout)) };
-                    });
-                })()
-            }))
-            .filter(g => g.videos.length)
-            .sort((a, b) => a.titre.localeCompare(b.titre, 'fr'));
+        groupes = groupesTemoignages();
     } else {
         groupes = VIDEOS_CATEGORISEES.filter(c => s.test(c.categorie))
             .map(c => ({ titre: c.categorie, videos: c.videos.map(v => ({ titre: v.titre, sous: '', lien: v.lien, nouvelle: estRecente(v.date) })) }));
@@ -981,7 +999,7 @@ function rendreVideos() {
         cont.appendChild(h);
         const grid = document.createElement('div');
         grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3';
-        g.videos.forEach(v => grid.appendChild(carteVideo(v.titre, v.sous, v.lien, v.nouvelle)));
+        g.videos.forEach(v => grid.appendChild(carteVideo(v.titre, v.sous, v.lien, v.nouvelle, v.duo)));
         cont.appendChild(grid);
     });
 }
