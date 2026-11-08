@@ -862,7 +862,7 @@ const SOUS_ONGLETS_VIDEOS = [
     { id: 'temoignages', label: 'Témoignages', icone: '🗣️', temoignages: true }
 ];
 
-function carteVideo(titre, sous, lien, nouvelle, duo) {
+function carteVideo(titre, sous, lien, nouvelle, duo, titreComplet) {
     const id = extraireIdYoutube(lien);
     const el = document.createElement('button');
     el.className = 'group text-left bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden active:scale-[0.98]';
@@ -876,9 +876,10 @@ function carteVideo(titre, sous, lien, nouvelle, duo) {
         '</div>' +
         '<div class="p-2.5"><p class="text-xs font-bold text-gray-900 leading-snug line-clamp-2">' + titre + '</p>' +
         (sous ? '<p class="text-[10px] text-gray-500 mt-0.5 ' + (duo ? 'line-clamp-2' : 'truncate') + '">' + sous + '</p>' : '') + '</div>';
-    el.setAttribute('aria-label', 'Lire : ' + titre);
+    // titreComplet : pour un duo entre écoles différentes, la carte n'affiche que l'élève de l'école, la fenêtre de lecture cite les deux
+    el.setAttribute('aria-label', 'Lire : ' + (titreComplet || titre));
     if (duo) el.title = titre + (sous ? ' — ' + sous : '');
-    el.onclick = () => ouvrirModalGlobale(lien, titre);
+    el.onclick = () => ouvrirModalGlobale(lien, titreComplet || titre);
     return el;
 }
 
@@ -958,7 +959,9 @@ function groupesTemoignages() {
                     const annees = [...new Set(part.map(a => a.annee))], classes = [...new Set(part.map(a => a.classe).filter(Boolean))];
                     const promo = 'Promotion ' + annees.join(' / ') + (classes.length ? ' · ' + classes.join(' / ') : '');
                     const duo = part.length + autres.length > 1;
-                    return { titre: joindreNoms(part.map(nomAffiche).concat(autres.map(o => o.nom))),
+                    const noms = part.map(nomAffiche), nomsAutres = autres.map(o => o.nom);
+                    return { titre: joindreNoms(noms),   // seul(s) le(s) élève(s) de cette école ; le partenaire d'une autre école figure dans le sous-titre
+                             titreComplet: nomsAutres.length ? joindreNoms(noms.concat(nomsAutres)) : '',
                              sous: autres.length ? 'Duo avec ' + joindreNoms(autres.map(o => o.nom + ' (' + o.ecole + ')')) + ' · ' + promo
                                                  : (duo ? 'Duo · ' : '') + promo,
                              lien, nouvelle: part.some(a => estRecente(a.date_ajout)), duo };
@@ -999,7 +1002,7 @@ function rendreVideos() {
         cont.appendChild(h);
         const grid = document.createElement('div');
         grid.className = 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3';
-        g.videos.forEach(v => grid.appendChild(carteVideo(v.titre, v.sous, v.lien, v.nouvelle, v.duo)));
+        g.videos.forEach(v => grid.appendChild(carteVideo(v.titre, v.sous, v.lien, v.nouvelle, v.duo, v.titreComplet)));
         cont.appendChild(grid);
     });
 }
