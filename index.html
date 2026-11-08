@@ -355,7 +355,18 @@ function grouperVideos(liste) {
     });
     return groupes;
 }
-const VIDEOS_CATEGORISEES = (typeof videosData !== 'undefined') ? grouperVideos(videosData) : VIDEOS_DE_SECOURS;
+// Catégories avec une année dans leur nom (ex. « Forums des Anciens 2026 ») : les plus récentes en premier ;
+// les catégories sans année gardent leur ordre d'origine, après celles-ci.
+function anneeDeCategorie(nom) {
+    const m = String(nom || '').match(/\b(19|20)\d{2}\b/g);
+    return m ? Math.max(...m.map(Number)) : -Infinity;
+}
+function trierCategoriesParAnnee(groupes) {
+    return groupes.map((g, i) => ({ g, i, a: anneeDeCategorie(g.categorie) }))
+        .sort((x, y) => (y.a === x.a ? x.i - y.i : (y.a === -Infinity ? -1 : x.a === -Infinity ? 1 : y.a - x.a)))
+        .map(x => x.g);
+}
+const VIDEOS_CATEGORISEES = trierCategoriesParAnnee((typeof videosData !== 'undefined') ? grouperVideos(videosData) : VIDEOS_DE_SECOURS);
 
 const typeColors = {
     "Agro":             "#059669",
@@ -458,6 +469,14 @@ function changerOnglet(o, init) {
 const typeDe = (e, classe) => (classe || '').includes('TB') ? (typeColors[e.type_tb] ? e.type_tb : typeColors[e.type_bcpst] ? e.type_bcpst : null)
                                                             : (typeColors[e.type_bcpst] ? e.type_bcpst : typeColors[e.type_tb] ? e.type_tb : null);
 const nomAffiche = a => (a.prenom || 'Inconnu') + (a.initiale_nom ? ' ' + a.initiale_nom + '.' : '');
+// ---------- Témoignages en duo : plusieurs élèves partageant le même lien vidéo ----------
+const cleVideo = l => (l || '').toString().trim();
+const joindreNoms = noms => noms.length < 2 ? (noms[0] || '') : noms.slice(0, -1).join(', ') + ' et ' + noms[noms.length - 1];
+function participantsVideo(lien) {
+    const k = cleVideo(lien), L = [];
+    ecolesData.forEach(e => (e.anciens || []).forEach(a => { if (aLien(a.lien_video) && cleVideo(a.lien_video) === k) L.push(a); }));
+    return L;
+}
 // ---------- Nouvelles vidéos : pastille sur l'onglet, bandeau à l'arrivée, étiquette « Nouveau » ----------
 // Une vidéo est « récente » pendant NOUVEAU_JOURS jours après sa date d'ajout (colonne Excel « Date_ajout » pour les
 // témoignages ; colonne « Date_ajout » de l'onglet « Videos » pour les forums, conférences et FAQ).
@@ -473,10 +492,15 @@ function estRecente(date) {
 function lireEnsemble(cle) { try { return new Set(JSON.parse(localStorage.getItem(cle) || '[]')); } catch (e) { return new Set(); } }
 function ecrireEnsemble(cle, ens) { try { localStorage.setItem(cle, JSON.stringify([...ens].slice(-200))); } catch (e) { /* stockage indisponible : sans conséquence */ } }
 function videosRecentes() {
-    const liste = [];
+    const liste = [], dejaVu = new Set();
     ecolesData.forEach(e => (e.anciens || []).forEach(a => {
-        if (aLien(a.lien_video) && estRecente(a.date_ajout))
-            liste.push({ lien: a.lien_video.trim(), titre: nomAffiche(a), sous: e.nom, date: a.date_ajout, rubrique: 'temoignages', temoignage: true });
+        if (aLien(a.lien_video) && estRecente(a.date_ajout)) {
+            const k = cleVideo(a.lien_video);
+            if (dejaVu.has(k)) return;            // duo : une seule entrée pour la vidéo
+            dejaVu.add(k);
+            const duo = e.anciens.filter(x => aLien(x.lien_video) && cleVideo(x.lien_video) === k);
+            liste.push({ lien: k, titre: joindreNoms(duo.map(nomAffiche)), sous: e.nom, date: a.date_ajout, rubrique: 'temoignages', temoignage: true });
+        }
     }));
     VIDEOS_CATEGORISEES.forEach(c => (c.videos || []).forEach(v => {
         if (estRecente(v.date)) {
@@ -923,9 +947,18 @@ function rendreVideos() {
         groupes = ecolesData
             .map(e => ({
                 titre: e.nom,
-                videos: e.anciens.filter(a => aLien(a.lien_video))
-                    .sort((a, b) => b.annee - a.annee)
-                    .map(a => ({ titre: nomAffiche(a), sous: 'Promotion ' + a.annee + (a.classe ? ' · ' + a.classe : ''), lien: a.lien_video.trim(), nouvelle: estRecente(a.date_ajout) }))
+                videos: (() => {
+                    // Une carte par vidéo : si deux élèves partagent le même lien (témoignage en duo), leurs noms sont réunis.
+                    const parLien = new Map();
+                    e.anciens.filter(a => aLien(a.lien_video)).sort((a, b) => b.annee - a.annee)
+                        .forEach(a => { const k = cleVideo(a.lien_video); if (!parLien.has(k)) parLien.set(k, []); parLien.get(k).push(a); });
+                    return [...parLien].map(([lien, part]) => {
+                        const annees = [...new Set(part.map(a => a.annee))], classes = [...new Set(part.map(a => a.classe).filter(Boolean))];
+                        return { titre: joindreNoms(part.map(nomAffiche)),
+                                 sous: (part.length > 1 ? 'Duo · ' : '') + 'Promotion ' + annees.join(' / ') + (classes.length ? ' · ' + classes.join(' / ') : ''),
+                                 lien, nouvelle: part.some(a => estRecente(a.date_ajout)) };
+                    });
+                })()
             }))
             .filter(g => g.videos.length)
             .sort((a, b) => a.titre.localeCompare(b.titre, 'fr'));
@@ -1978,7 +2011,9 @@ function lancerVideo(lien, prenom) {
     const videoId = extraireIdYoutube(lien);
 
     if (videoId) {
-        ouvrirModalGlobale(lien, "Témoignage de " + prenom);
+        const duo = participantsVideo(lien);
+        const noms = duo.length > 1 ? joindreNoms(duo.map(a => a.prenom || 'Inconnu')) : prenom;
+        ouvrirModalGlobale(lien, "Témoignage de " + noms);
     } else {
         suivre('video-externe');
         window.open(lien, "_blank");
