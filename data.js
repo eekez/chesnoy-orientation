@@ -3720,7 +3720,7 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2023,
                 "classe": "BCPST",
-                "lien_video": "",
+                "lien_video": "https://youtu.be/g7YA3UO_QUA",
                 "date_ajout": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
