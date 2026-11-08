@@ -7621,5 +7621,23 @@ const videosData = [
         "titre": "Devenir ingénieur agro après une classe prépa BCPST/TB",
         "lien": "https://www.youtube.com/watch?v=MsNjJ3jfTVA",
         "date_ajout": ""
+    },
+    {
+        "categorie": "Forums des Anciens 2026",
+        "titre": "Être ingénieur en production",
+        "lien": "https://youtu.be/ADG6QL4rVXE",
+        "date_ajout": "2026-11-08"
+    },
+    {
+        "categorie": "Forums des Anciens 2026",
+        "titre": "Travailler dans un institut de recherche",
+        "lien": "https://youtu.be/bLHmhELxRi4",
+        "date_ajout": "2026-11-08"
+    },
+    {
+        "categorie": "Forums des Anciens 2026",
+        "titre": "Table ronde : la vie de jeune diplômé(e)",
+        "lien": "https://youtu.be/lv-hv31b-ZQ",
+        "date_ajout": "2026-11-08"
     }
 ];
