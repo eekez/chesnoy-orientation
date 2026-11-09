@@ -7636,13 +7636,13 @@ const videosData = [
     },
     {
         "categorie": "Forums des Anciens 2026",
-        "titre": "Table ronde : la vie de jeune diplômé(e)",
+        "titre": "Table ronde 2 : la vie de jeune diplômé(e)",
         "lien": "https://youtu.be/lv-hv31b-ZQ",
         "date_ajout": "2026-11-08"
     },
     {
         "categorie": "Forums des Anciens 2026",
-        "titre": "Table ronde : la vie en école",
+        "titre": "Table ronde 1 : la vie en école",
         "lien": "https://youtu.be/LxAydH_kH5w",
         "date_ajout": "2026-11-09"
     }
