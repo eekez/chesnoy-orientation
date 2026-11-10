@@ -7645,5 +7645,11 @@ const videosData = [
         "titre": "Table ronde 1 : la vie en école",
         "lien": "https://youtu.be/LxAydH_kH5w",
         "date_ajout": "2026-11-09"
+    },
+    {
+        "categorie": "Forums des Anciens 2026",
+        "titre": "Être vétérinaire",
+        "lien": "https://youtu.be/KtXT998QiNY",
+        "date_ajout": "2026-11-10"
     }
 ];
