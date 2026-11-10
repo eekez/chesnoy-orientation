@@ -47,7 +47,7 @@ const ecolesData = [
                 "initiale_nom": "M",
                 "annee": 2025,
                 "classe": "BCPST",
-                "lien_video": "",
+                "lien_video": "https://youtu.be/2ZJo5lKwykE",
                 "date_ajout": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
