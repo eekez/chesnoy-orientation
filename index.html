@@ -106,6 +106,7 @@
     <button id="tab-btn-carte"  role="tab" onclick="changerOnglet('carte')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🗺 Carte</button>
     <button id="tab-btn-promos" role="tab" onclick="changerOnglet('promos')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🎓 Promotions</button>
     <button id="tab-btn-ecoles" role="tab" onclick="changerOnglet('ecoles')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🏫 Écoles</button>
+    <button id="tab-btn-concours" role="tab" onclick="changerOnglet('concours')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🏆 Concours</button>
     <button id="tab-btn-videos" role="tab" onclick="changerOnglet('videos')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🎬 Vidéos<span id="badge-videos" class="hidden ml-1 align-middle inline-flex items-center justify-center min-w-[1.1rem] h-[1.1rem] px-1 rounded-full bg-red-600 text-white text-[10px] font-black"></span></button>
     <button id="tab-btn-fiches" role="tab" onclick="changerOnglet('fiches')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📄 Fiches de poste</button>
     <button id="tab-btn-stats"  role="tab" onclick="changerOnglet('stats')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📊 Statistiques</button>
@@ -266,6 +267,7 @@
 </section>
 <section id="tab-promos" class="hidden flex-1 overflow-y-auto bg-gray-50"><div id="promos-content" class="max-w-5xl mx-auto p-4 md:p-6"></div></section>
 <section id="tab-ecoles" class="hidden flex-1 overflow-y-auto bg-gray-50"><div id="ecoles-content" class="max-w-3xl mx-auto p-4 md:p-6"></div></section>
+<section id="tab-concours" class="hidden flex-1 overflow-y-auto bg-gray-50"><div id="concours-content" class="max-w-3xl mx-auto p-4 md:p-6"></div></section>
 <section id="tab-fiches" class="hidden flex-1 overflow-y-auto bg-gray-50">
     <div id="fiches-content" class="max-w-5xl mx-auto p-4 md:p-6"></div>
 </section>
@@ -442,8 +444,154 @@ function setGrandesEcoles(v, refresh = true) {
     if (refresh) filtrerTout();
 }
 
+// ================================================================
+// ONGLET CONCOURS : les banques d'épreuves expliquées simplement
+// (les banques de chaque école viennent des champs banque_bcpst / banque_tb de data.js)
+// ================================================================
+const etatConcours = { filiere: 'BCPST', sel: new Set(), q: '' };
+const BANQUES_ORDRE = ['Agro-Véto', 'G2E', 'ENS', 'INSA', 'Polytech', 'Aucune'];
+const BANQUES_INFO = {
+    'Agro-Véto': { BCPST: `La plus large : écoles d'agronomie, écoles vétérinaires et plusieurs écoles d'ingénieurs associées. Les mêmes écrits servent à plusieurs concours.`,
+                   TB:    `Écoles d'agronomie, écoles vétérinaires et quelques écoles associées, avec des écrits communs.` },
+    'G2E':       { BCPST: `Géologie, Eau, Environnement : une banque à part, pour les écoles de ces domaines.`, TB: '' },
+    'ENS':       { BCPST: `La voie « recherche » : les ENS et les écoles associées.`, TB: `La voie « recherche » : les ENS et les écoles associées.` },
+    'INSA':      { BCPST: `Un recrutement propre au groupe INSA.`, TB: `Un recrutement propre au groupe INSA.` },
+    'Polytech':  { BCPST: `Le réseau des écoles Polytech.`, TB: `Le réseau des écoles Polytech.` },
+    'Aucune':    { BCPST: `Pas de concours commun : l'admission passe par une autre voie (dossier, parcours universitaire…). Voir la fiche de l'école.`,
+                   TB:    `Pas de concours commun : l'admission passe par une autre voie (dossier, parcours universitaire…). Voir la fiche de l'école.` }
+};
+const couleurBanque = b => ({ 'Agro-Véto': typeColors.Agro, 'G2E': typeColors.G2E, 'ENS': typeColors.ENS, 'INSA': typeColors.INSA,
+                              'Polytech': typeColors.Polytech, 'Aucune': typeColors.Fac })[b] || '#6b7280';
+const libelleBanque = b => b === 'Aucune' ? 'Sans concours commun' : b;
+const badgeBanque = b => '<span class="inline-block text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full text-white" style="background:' + couleurBanque(b) + '">' + esc(libelleBanque(b)) + '</span>';
+const banqueDe = (e, f) => ((f === 'TB' ? e.banque_tb : e.banque_bcpst) || '').toString().trim();
+function ecolesConcours() {
+    return ecolesData.filter(e => banqueDe(e, etatConcours.filiere)).sort((a, b) => a.nom.localeCompare(b.nom, 'fr'));
+}
+function voirEcoleSurCarte(nom) {
+    changerOnglet('carte');
+    setTimeout(() => { const m = markers.find(x => x.ecole.nom === nom); if (m) { map.setView(m.ecole.coords, 12); afficherEcole(m.ecole); } }, 120);
+}
+const CONCOURS_ETAPES = [
+    ['📚', 'Deux ans de prépa', `Vous préparez en deux ans les épreuves des concours. Le programme est le même, quelles que soient les écoles visées.`],
+    ['📝', `L'inscription`, `Autour de décembre-janvier de la 2e année, on s'inscrit aux concours qui mènent aux écoles visées. Les frais sont réduits, voire nuls, pour les boursiers.`],
+    ['✍️', 'Les écrits (avril-mai)', `Les mêmes épreuves, au même moment, partout en France. Une épreuve compte pour toutes les écoles d'une même banque, avec des coefficients différents selon le concours.`],
+    ['🗣️', 'Les oraux (juin-juillet)', `Selon les banques, tous les candidats ou seulement les « admissibles » (ceux qui ont réussi les écrits) passent des oraux dans les écoles.`],
+    ['🏁', 'Classement, vœux, affectation', `Chaque concours classe les candidats. On classe ensuite ses vœux d'école, et l'affectation dépend de son rang et de ses vœux.`]
+];
+const CONCOURS_GLOSSAIRE = [
+    [`Banque d'épreuves`, `Ensemble d'épreuves passées une seule fois, dont les notes servent à plusieurs concours et à plusieurs écoles.`],
+    [`Concours`, `Un classement des candidats pour un groupe d'écoles. Un même candidat peut figurer dans plusieurs concours d'une même banque, avec des coefficients différents.`],
+    [`Écrits`, `Épreuves écrites passées au printemps, au même moment partout en France, dans un centre d'examen.`],
+    [`Admissibilité`, `Résultat des écrits. Selon la banque, il faut dépasser une note minimale (la « barre ») pour être convoqué aux oraux, ou bien tous les candidats y sont convoqués.`],
+    [`Barre d'admissibilité`, `Note minimale pour être admissible. Elle change chaque année selon le niveau des candidats.`],
+    [`Oraux et admission`, `Épreuves orales dans les écoles. Avec les écrits, elles donnent le classement final qui détermine l'admission.`],
+    [`Coefficient`, `Poids d'une épreuve dans la note finale. Il varie d'un concours à l'autre : une même épreuve ne compte donc pas pareil pour toutes les écoles.`],
+    [`Rang`, `Votre place dans le classement d'un concours. C'est lui, avec vos vœux, qui décide de l'école obtenue.`],
+    [`Vœux`, `Liste ordonnée des écoles que vous souhaitez intégrer, établie après les résultats.`],
+    [`TIPE`, `Travail personnel encadré, préparé pendant la prépa et présenté à certains concours.`],
+    [`Cinq demi (« 5/2 »)`, `Redoubler la 2e année de prépa pour retenter les concours.`],
+    [`Boursier`, `Étudiant qui bénéficie d'une bourse. Les frais d'inscription aux concours sont alors réduits ou nuls, selon le concours.`],
+    [`Admission sur titre`, `Entrer dans une école sans passer par les banques de la prépa, par exemple après une licence, souvent sur dossier et entretien.`]
+];
+
+function rendreConcours() {
+    const f = etatConcours.filiere, cont = document.getElementById('concours-content');
+    const bouton = v => '<button type="button" data-fil="' + v + '" aria-pressed="' + (f === v) + '" class="flex-1 py-1.5 px-3 rounded-lg text-xs font-bold border shadow-sm transition-all ' +
+        (f === v ? 'bg-emerald-700 text-white border-emerald-700' : 'bg-white text-gray-700 border-gray-200 hover:bg-gray-100') + '">' + v + '</button>';
+    const titre = t => '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-6 mb-2">' + t + '</h3>';
+    const liste = ecolesConcours();
+
+    let h = '<h2 class="text-lg font-extrabold text-emerald-950">🏆 Les concours, expliqués simplement</h2>' +
+        '<p class="text-xs text-gray-500 mt-1">Comment passe-t-on de la prépa à une école ? Voici l\'essentiel, sans jargon.</p>' +
+        '<div class="flex gap-2 mt-3" role="group" aria-label="Filière">' + bouton('BCPST') + bouton('TB') + '</div>';
+
+    // 1. En 5 minutes
+    h += titre('En 5 minutes') + '<ol class="space-y-2">' + CONCOURS_ETAPES.map((s, i) =>
+        '<li class="flex gap-3 bg-white rounded-xl border border-gray-100 shadow-sm p-3"><span class="w-8 h-8 shrink-0 rounded-full bg-emerald-700 text-white text-sm font-black flex items-center justify-center">' + (i + 1) + '</span>' +
+        '<span><span class="block text-sm font-bold text-gray-800">' + s[0] + ' ' + s[1] + '</span><span class="block text-xs text-gray-600 mt-0.5 leading-relaxed">' + s[2] + '</span></span></li>').join('') + '</ol>' +
+        '<div class="mt-3 bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-xs text-emerald-950 leading-relaxed">' +
+        '<p class="font-bold mb-1">Banque, concours, école : quelle différence ?</p>' +
+        '<p>🏦 <b>Banque d\'épreuves</b> : un lot d\'épreuves que l\'on passe une seule fois.<br>🏆 <b>Concours</b> : un classement pour un groupe d\'écoles qui utilisent ces épreuves, avec leurs propres coefficients.<br>🎓 <b>École</b> : elle recrute par un ou plusieurs concours.</p>' +
+        '<p class="mt-2">On peut s\'inscrire à plusieurs banques : c\'est souvent la meilleure façon de multiplier ses chances.</p></div>';
+
+    // 2. Banques en un coup d'œil
+    h += titre('Les banques en un coup d\'œil') + '<p class="text-[11px] text-gray-500 mb-2">Pour la filière ' + f + '. Touchez une banque pour voir ses écoles.</p>';
+    BANQUES_ORDRE.forEach(b => {
+        const es = liste.filter(e => banqueDe(e, f) === b);
+        if (!es.length) return;
+        h += '<details class="bg-white rounded-xl border border-gray-100 shadow-sm mb-2" style="border-left:4px solid ' + couleurBanque(b) + '">' +
+            '<summary class="cursor-pointer p-3 flex items-center gap-2 list-none">' + badgeBanque(b) + '<span class="text-xs text-gray-500">' + es.length + ' école' + (es.length > 1 ? 's' : '') + '</span><span class="ml-auto text-gray-400" aria-hidden="true">▾</span></summary>' +
+            '<div class="px-3 pb-3 text-xs text-gray-600 leading-relaxed"><p>' + esc((BANQUES_INFO[b] || {})[f] || '') + '</p>' +
+            '<p class="mt-2 text-[11px] text-gray-700">' + es.map(e => esc(e.nom)).join(' · ') + '</p></div></details>';
+    });
+
+    // 3. Sélecteur
+    h += titre('Quelles banques pour mes écoles ?') +
+        '<p class="text-xs text-gray-600 mb-2 leading-relaxed">Choisissez les écoles qui vous attirent : on vous dit quelles banques passer.</p>' +
+        '<input id="concours-search" type="search" value="' + esc(etatConcours.q) + '" placeholder="🔍 Chercher une école…" ' +
+        'class="w-full px-3 py-2 text-sm rounded-xl border border-gray-200 bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500" aria-label="Chercher une école">' +
+        '<div id="concours-liste" class="mt-2 max-h-52 overflow-y-auto flex flex-wrap gap-1.5 p-1" role="group" aria-label="Écoles"></div>' +
+        '<div id="concours-resultat" class="mt-3" aria-live="polite"></div>';
+
+    // 4. Glossaire
+    h += titre('Le glossaire') + '<dl>' + CONCOURS_GLOSSAIRE.map(g =>
+        '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 mb-2"><dt class="text-sm font-bold text-emerald-900">' + g[0] + '</dt><dd class="text-xs text-gray-600 mt-0.5 leading-relaxed">' + g[1] + '</dd></div>').join('') + '</dl>' +
+        '<p class="mt-4 text-[11px] text-gray-500 leading-relaxed">ℹ️ Informations générales : les dates, coefficients et modalités changent d\'une année à l\'autre. Vérifiez toujours sur les sites officiels des concours, par exemple ' +
+        '<a href="https://www.concours-agro-veto.fr" target="_blank" rel="noopener" data-suivi="lien-concours-agro-veto" class="underline text-emerald-700">concours-agro-veto.fr</a>.</p>';
+
+    cont.innerHTML = h;
+    cont.querySelectorAll('[data-fil]').forEach(b => b.onclick = () => {
+        if (etatConcours.filiere === b.dataset.fil) return;
+        etatConcours.filiere = b.dataset.fil; etatConcours.sel.clear(); etatConcours.q = '';
+        suivre('concours-filiere-' + b.dataset.fil, 'Concours : filière ' + b.dataset.fil);
+        rendreConcours();
+    });
+    document.getElementById('concours-search').oninput = ev => { etatConcours.q = ev.target.value; majSelecteurConcours(); };
+    majSelecteurConcours();
+}
+
+function majSelecteurConcours() {
+    const f = etatConcours.filiere, tous = ecolesConcours();
+    const q = normaliserTexte(etatConcours.q || '');
+    const vues = tous.filter(e => !q || normaliserTexte(e.nom + ' ' + (e.ville || '')).includes(q));
+    const zone = document.getElementById('concours-liste');
+    zone.innerHTML = vues.length ? vues.map(e => {
+        const on = etatConcours.sel.has(e.nom);
+        return '<button type="button" data-ecole="' + tous.indexOf(e) + '" aria-pressed="' + on + '" class="px-2.5 py-1 rounded-full border text-[11px] font-bold text-left transition-all active:scale-95 ' +
+            (on ? 'bg-emerald-700 text-white border-emerald-700' : 'bg-white text-gray-700 border-gray-200 hover:bg-emerald-50') + '">' +
+            '<span class="inline-block w-2 h-2 rounded-full mr-1 align-middle" style="background:' + couleurBanque(banqueDe(e, f)) + '"></span>' + esc(e.nom) + '</button>';
+    }).join('') : '<p class="text-xs italic text-gray-500 p-1">Aucune école ne correspond.</p>';
+    zone.querySelectorAll('[data-ecole]').forEach(b => b.onclick = () => {
+        const e = tous[+b.dataset.ecole];
+        if (etatConcours.sel.has(e.nom)) etatConcours.sel.delete(e.nom);
+        else { etatConcours.sel.add(e.nom); suivre('concours-ecole-' + e.nom, 'Concours (sélecteur) : ' + e.nom); }
+        majSelecteurConcours();
+    });
+
+    const res = document.getElementById('concours-resultat');
+    const choisies = tous.filter(e => etatConcours.sel.has(e.nom));
+    if (!choisies.length) { res.innerHTML = '<p class="text-xs italic text-gray-500">Aucune école choisie pour l\'instant.</p>'; return; }
+    const groupes = BANQUES_ORDRE.map(b => [b, choisies.filter(e => banqueDe(e, f) === b)]).filter(g => g[1].length);
+    const aPasser = groupes.map(g => g[0]).filter(b => b !== 'Aucune');
+    let h = '<div class="bg-white rounded-xl border border-emerald-200 shadow-sm p-3">';
+    h += aPasser.length
+        ? '<p class="text-sm font-bold text-emerald-950">👉 ' + (aPasser.length === 1 ? 'Une seule banque à passer' : aPasser.length + ' banques à passer') + ' : ' + aPasser.map(b => esc(libelleBanque(b))).join(', ') + '</p>'
+        : '<p class="text-sm font-bold text-emerald-950">👉 Aucun concours commun pour ces écoles</p>';
+    groupes.forEach(([b, es]) => {
+        h += '<div class="mt-3 pt-3 border-t border-gray-100"><div class="flex items-center gap-2">' + badgeBanque(b) + '<span class="text-xs text-gray-500">' + es.length + ' école' + (es.length > 1 ? 's' : '') + '</span></div>' +
+            '<ul class="mt-1.5 space-y-1">' + es.map(e => '<li class="flex items-center gap-2 text-xs text-gray-800"><span class="flex-1 min-w-0">' + esc(e.nom) + '</span>' +
+                '<button type="button" data-carte="' + esc(e.nom) + '" class="shrink-0 text-[11px] font-bold text-emerald-700 underline" aria-label="Voir ' + esc(e.nom) + ' sur la carte">📍 Carte</button></li>').join('') + '</ul>' +
+            '<p class="mt-1.5 text-[11px] text-gray-500 leading-relaxed">' + (b === 'Aucune' ? esc(BANQUES_INFO.Aucune[f]) : 'Une seule série d\'épreuves compte pour ' + (es.length > 1 ? 'toutes ces écoles' : 'cette école') + ', avec des coefficients propres à chaque concours.') + '</p></div>';
+    });
+    h += '<button type="button" id="concours-effacer" class="mt-3 text-[11px] font-bold text-gray-500 underline">Tout effacer</button></div>';
+    res.innerHTML = h;
+    res.querySelectorAll('[data-carte]').forEach(b => b.onclick = () => voirEcoleSurCarte(b.dataset.carte));
+    document.getElementById('concours-effacer').onclick = () => { etatConcours.sel.clear(); majSelecteurConcours(); };
+}
+
 function changerOnglet(o, init) {
-    const ONGLETS = ['carte', 'promos', 'ecoles', 'videos', 'fiches', 'stats'];
+    const ONGLETS = ['carte', 'promos', 'ecoles', 'concours', 'videos', 'fiches', 'stats'];
     if (!ONGLETS.includes(o)) o = 'carte';
     ongletCourant = o;
     if (!init) suivre('onglet-' + o);
@@ -456,7 +604,7 @@ function changerOnglet(o, init) {
             (k === o ? 'border-amber-400 text-emerald-900 bg-emerald-50/60' : 'border-transparent text-gray-500 hover:text-emerald-800');
     });
     if (o === 'carte') setTimeout(() => map.invalidateSize(), 50);
-    try { ({ promos: rendrePromos, ecoles: rendreEcoles, videos: rendreVideos, fiches: rendreFiches, stats: rendreStats })[o]?.(); }
+    try { ({ promos: rendrePromos, ecoles: rendreEcoles, concours: rendreConcours, videos: rendreVideos, fiches: rendreFiches, stats: rendreStats })[o]?.(); }
     catch (err) { signalerErreur('onglet ' + o, err); }
     try {
         if (o === 'videos') marquerVideosVues();
@@ -1274,7 +1422,7 @@ function chargerEtat() {
     if (p.get('g') === '1') setGrandesEcoles(true, false);
     if (anneesSel.size || grandesEcolesSeules) filtrerTout();
     const o = p.get('o');
-    if (o && ['videos', 'stats', 'fiches', 'promos', 'ecoles'].includes(o)) changerOnglet(o);
+    if (o && ['videos', 'stats', 'fiches', 'promos', 'ecoles', 'concours'].includes(o)) changerOnglet(o);
 
     const q = p.get('q');
     if (q) document.getElementById('search-bar').value = q;
