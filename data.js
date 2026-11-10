@@ -7649,7 +7649,7 @@ const videosData = [
     {
         "categorie": "Forums des Anciens 2026",
         "titre": "Être vétérinaire",
-        "lien": "https://youtu.be/KtXT998QiNY",
+        "lien": "https://youtu.be/H0o8ITLY4lM",
         "date_ajout": "2026-11-10"
     }
 ];
