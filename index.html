@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/jpeg" href="logo.jpg">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#065f46">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Anciens Le Chesnoy">
     <title>Anciens BCPST & TB - Le Chesnoy</title>
     <meta name="description" content="Découvrez les parcours et écoles intégrées par les anciens étudiants des filières BCPST et TB du lycée agricole Le Chesnoy.">
 
@@ -103,6 +109,7 @@
 </header>
 
 <nav class="bg-white border-b border-gray-200 flex overflow-x-auto shrink-0" role="tablist" aria-label="Sections du site">
+    <button id="tab-btn-accueil" role="tab" onclick="changerOnglet('accueil')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🏠 Accueil</button>
     <button id="tab-btn-carte"  role="tab" onclick="changerOnglet('carte')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🗺 Carte</button>
     <button id="tab-btn-promos" role="tab" onclick="changerOnglet('promos')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🎓 Promotions</button>
     <button id="tab-btn-ecoles" role="tab" onclick="changerOnglet('ecoles')" class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">🏫 Écoles</button>
@@ -112,6 +119,7 @@
     <button id="tab-btn-stats"  role="tab" onclick="changerOnglet('stats')"  class="px-4 py-3 text-xs font-bold whitespace-nowrap border-b-4">📊 Statistiques</button>
 </nav>
 
+<section id="tab-accueil" class="hidden flex-1 overflow-y-auto bg-gray-50"><div id="accueil-content" class="max-w-3xl mx-auto p-4 md:p-6"></div></section>
 <main id="tab-carte" class="flex-1 flex flex-col md:flex-row overflow-hidden">
 
     <div id="map-container" class="w-full h-2/5 md:h-full md:w-3/5 bg-gray-200 shadow-inner relative">
@@ -449,20 +457,32 @@ function setGrandesEcoles(v, refresh = true) {
 // (les banques de chaque école viennent des champs banque_bcpst / banque_tb de data.js)
 // ================================================================
 const etatConcours = { filiere: 'BCPST', sel: new Set(), q: '' };
-const BANQUES_ORDRE = ['Agro-Véto', 'G2E', 'ENS', 'INSA', 'Polytech', 'Aucune'];
+const BANQUES_CONCOURS = ['Agro-Véto', 'G2E', 'ENS', 'Polytech'];   // épreuves de concours (écrits, oraux)
+const BANQUES_DOSSIER  = ['INSA', 'Aucune'];                       // admission sur dossier, hors banques de concours
+const BANQUES_ORDRE = BANQUES_CONCOURS.concat(BANQUES_DOSSIER);
+const SCAV_URL = 'https://www.concours-agro-veto.fr';
+const lienSCAV = '<a href="' + SCAV_URL + '" target="_blank" rel="noopener" data-suivi="lien-concours-agro-veto" class="underline text-emerald-700 font-bold">concours-agro-veto.fr</a>';
+const INTRO_BANQUES = {
+    BCPST: `En BCPST, vous pouvez passer <b>trois banques de concours</b> : <b>Agro-Véto</b>, <b>G2E</b> et <b>ENS</b>. Chacune a ses propres épreuves, et on peut s'inscrire à une, à deux ou aux trois.`,
+    TB:    `En TB, les concours (Agro, Véto, ENS, Polytech…) sont organisés par le <b>SCAV</b>, qui gère la banque <b>Agro-Véto</b>. On peut s'inscrire à plusieurs d'entre eux.`
+};
+const INTRO_DOSSIER = `Certaines écoles ne recrutent <b>pas</b> par les banques de concours : l'admission se fait <b>sur dossier</b>. C'est le cas des <b>INSA</b>, de certaines universités et d'autres écoles. Il faut se renseigner directement auprès de chacune.`;
 const BANQUES_INFO = {
-    'Agro-Véto': { BCPST: `La plus large : écoles d'agronomie, écoles vétérinaires et plusieurs écoles d'ingénieurs associées. Les mêmes écrits servent à plusieurs concours.`,
-                   TB:    `Écoles d'agronomie, écoles vétérinaires et quelques écoles associées, avec des écrits communs.` },
+    'Agro-Véto': { BCPST: `Banque organisée par le SCAV : concours Agro et Véto, et d'autres concours associés (par exemple Polytech).`,
+                   TB:    `Banque organisée par le SCAV : concours TB Agro et TB Véto, et d'autres concours associés.` },
     'G2E':       { BCPST: `Géologie, Eau, Environnement : une banque à part, pour les écoles de ces domaines.`, TB: '' },
-    'ENS':       { BCPST: `La voie « recherche » : les ENS et les écoles associées.`, TB: `La voie « recherche » : les ENS et les écoles associées.` },
-    'INSA':      { BCPST: `Un recrutement propre au groupe INSA.`, TB: `Un recrutement propre au groupe INSA.` },
-    'Polytech':  { BCPST: `Le réseau des écoles Polytech.`, TB: `Le réseau des écoles Polytech.` },
-    'Aucune':    { BCPST: `Pas de concours commun : l'admission passe par une autre voie (dossier, parcours universitaire…). Voir la fiche de l'école.`,
-                   TB:    `Pas de concours commun : l'admission passe par une autre voie (dossier, parcours universitaire…). Voir la fiche de l'école.` }
+    'ENS':       { BCPST: `La voie « recherche » : le concours ENS, une banque à part qui s'ajoute à Agro-Véto et G2E.`,
+                   TB:    `Le concours TB ENS, organisé par le SCAV comme les concours Agro et Véto.` },
+    'Polytech':  { BCPST: `Le réseau des écoles Polytech : le concours Polytech s'appuie sur les épreuves de la banque Agro-Véto (inscription auprès du SCAV).`,
+                   TB:    `Le réseau des écoles Polytech : le concours Polytech s'appuie sur les épreuves de la banque Agro-Véto (inscription auprès du SCAV).` },
+    'INSA':      { BCPST: `Admission sur dossier, sans passer par les banques de concours. Les modalités sont à consulter auprès de chaque INSA.`,
+                   TB:    `Admission sur dossier, sans passer par les banques de concours. Les modalités sont à consulter auprès de chaque INSA.` },
+    'Aucune':    { BCPST: `Pas de concours commun : l'admission se fait sur dossier ou par une autre voie propre à l'école. Voir la fiche de l'école.`,
+                   TB:    `Pas de concours commun : l'admission se fait sur dossier ou par une autre voie propre à l'école. Voir la fiche de l'école.` }
 };
 const couleurBanque = b => ({ 'Agro-Véto': typeColors.Agro, 'G2E': typeColors.G2E, 'ENS': typeColors.ENS, 'INSA': typeColors.INSA,
                               'Polytech': typeColors.Polytech, 'Aucune': typeColors.Fac })[b] || '#6b7280';
-const libelleBanque = b => b === 'Aucune' ? 'Sans concours commun' : b;
+const libelleBanque = b => b === 'Aucune' ? 'Sans concours commun' : b === 'INSA' ? 'INSA · sur dossier' : b;
 const badgeBanque = b => '<span class="inline-block text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full text-white" style="background:' + couleurBanque(b) + '">' + esc(libelleBanque(b)) + '</span>';
 const banqueDe = (e, f) => ((f === 'TB' ? e.banque_tb : e.banque_bcpst) || '').toString().trim();
 function ecolesConcours() {
@@ -474,12 +494,15 @@ function voirEcoleSurCarte(nom) {
 }
 const CONCOURS_ETAPES = [
     ['📚', 'Deux ans de prépa', `Vous préparez en deux ans les épreuves des concours. Le programme est le même, quelles que soient les écoles visées.`],
-    ['📝', `L'inscription`, `Autour de décembre-janvier de la 2e année, on s'inscrit aux concours qui mènent aux écoles visées. Les frais sont réduits, voire nuls, pour les boursiers.`],
-    ['✍️', 'Les écrits (avril-mai)', `Les mêmes épreuves, au même moment, partout en France. Une épreuve compte pour toutes les écoles d'une même banque, avec des coefficients différents selon le concours.`],
-    ['🗣️', 'Les oraux (juin-juillet)', `Selon les banques, tous les candidats ou seulement les « admissibles » (ceux qui ont réussi les écrits) passent des oraux dans les écoles.`],
+    ['📝', `L'inscription`, `Au cours de la 2e année (en hiver), on s'inscrit aux concours qui mènent aux écoles visées, selon la banque. Les frais sont réduits, voire nuls, pour les boursiers. Dates exactes : voir la notice du concours.`],
+    ['✍️', 'Les écrits (au printemps)', `Les mêmes épreuves, au même moment, partout en France. Une épreuve compte pour toutes les écoles d'une même banque, avec des coefficients différents selon le concours.`],
+    ['🗣️', 'Les oraux (début d\'été)', `Selon les banques, tous les candidats ou seulement les « admissibles » (ceux qui ont réussi les écrits) passent des oraux dans les écoles.`],
     ['🏁', 'Classement, vœux, affectation', `Chaque concours classe les candidats. On classe ensuite ses vœux d'école, et l'affectation dépend de son rang et de ses vœux.`]
 ];
 const CONCOURS_GLOSSAIRE = [
+    [`Notice du concours`, `Document officiel publié chaque année : il fixe les épreuves, les coefficients, les conditions d'inscription et les dates. En cas de doute, c'est elle qui fait foi.`],
+    [`SCAV`, `Service des Concours Agronomiques et Vétérinaires : il organise la banque Agro-Véto et publie les notices des concours.`],
+    [`Sur dossier`, `Admission décidée à partir de votre dossier scolaire (notes, appréciations…) plutôt que par des épreuves de concours. C'est le cas des INSA.`],
     [`Banque d'épreuves`, `Ensemble d'épreuves passées une seule fois, dont les notes servent à plusieurs concours et à plusieurs écoles.`],
     [`Concours`, `Un classement des candidats pour un groupe d'écoles. Un même candidat peut figurer dans plusieurs concours d'une même banque, avec des coefficients différents.`],
     [`Écrits`, `Épreuves écrites passées au printemps, au même moment partout en France, dans un centre d'examen.`],
@@ -504,7 +527,10 @@ function rendreConcours() {
 
     let h = '<h2 class="text-lg font-extrabold text-emerald-950">🏆 Les concours, expliqués simplement</h2>' +
         '<p class="text-xs text-gray-500 mt-1">Comment passe-t-on de la prépa à une école ? Voici l\'essentiel, sans jargon.</p>' +
-        '<div class="flex gap-2 mt-3" role="group" aria-label="Filière">' + bouton('BCPST') + bouton('TB') + '</div>';
+        '<div class="flex gap-2 mt-3" role="group" aria-label="Filière">' + bouton('BCPST') + bouton('TB') + '</div>' +
+        '<div class="mt-3 bg-amber-50 border border-amber-200 rounded-xl p-3 text-xs text-amber-950 leading-relaxed">📄 <b>La notice du concours fait foi.</b> ' +
+        'Les modalités exactes (épreuves, coefficients, inscriptions) et les dates sont définies chaque année par la notice du concours, publiée par le <b>SCAV</b> ' +
+        '(Service des Concours Agronomiques et Vétérinaires) sur ' + lienSCAV + '. Cette page n\'en est qu\'un résumé simplifié.</div>';
 
     // 1. En 5 minutes
     h += titre('En 5 minutes') + '<ol class="space-y-2">' + CONCOURS_ETAPES.map((s, i) =>
@@ -515,16 +541,18 @@ function rendreConcours() {
         '<p>🏦 <b>Banque d\'épreuves</b> : un lot d\'épreuves que l\'on passe une seule fois.<br>🏆 <b>Concours</b> : un classement pour un groupe d\'écoles qui utilisent ces épreuves, avec leurs propres coefficients.<br>🎓 <b>École</b> : elle recrute par un ou plusieurs concours.</p>' +
         '<p class="mt-2">On peut s\'inscrire à plusieurs banques : c\'est souvent la meilleure façon de multiplier ses chances.</p></div>';
 
-    // 2. Banques en un coup d'œil
-    h += titre('Les banques en un coup d\'œil') + '<p class="text-[11px] text-gray-500 mb-2">Pour la filière ' + f + '. Touchez une banque pour voir ses écoles.</p>';
-    BANQUES_ORDRE.forEach(b => {
+    // 2. Banques de concours, puis voies sur dossier
+    const cartesBanques = bs => bs.map(b => {
         const es = liste.filter(e => banqueDe(e, f) === b);
-        if (!es.length) return;
-        h += '<details class="bg-white rounded-xl border border-gray-100 shadow-sm mb-2" style="border-left:4px solid ' + couleurBanque(b) + '">' +
+        if (!es.length) return '';
+        return '<details class="bg-white rounded-xl border border-gray-100 shadow-sm mb-2" style="border-left:4px solid ' + couleurBanque(b) + '">' +
             '<summary class="cursor-pointer p-3 flex items-center gap-2 list-none">' + badgeBanque(b) + '<span class="text-xs text-gray-500">' + es.length + ' école' + (es.length > 1 ? 's' : '') + '</span><span class="ml-auto text-gray-400" aria-hidden="true">▾</span></summary>' +
             '<div class="px-3 pb-3 text-xs text-gray-600 leading-relaxed"><p>' + esc((BANQUES_INFO[b] || {})[f] || '') + '</p>' +
             '<p class="mt-2 text-[11px] text-gray-700">' + es.map(e => esc(e.nom)).join(' · ') + '</p></div></details>';
-    });
+    }).join('');
+    h += titre('Les banques de concours') + '<p class="text-xs text-gray-700 leading-relaxed mb-2">' + INTRO_BANQUES[f] + '</p>' +
+         '<p class="text-[11px] text-gray-500 mb-2">Touchez une banque pour voir ses écoles.</p>' + cartesBanques(BANQUES_CONCOURS) +
+         titre('Les autres voies d\'accès : sur dossier') + '<p class="text-xs text-gray-700 leading-relaxed mb-2">' + INTRO_DOSSIER + '</p>' + cartesBanques(BANQUES_DOSSIER);
 
     // 3. Sélecteur
     h += titre('Quelles banques pour mes écoles ?') +
@@ -537,8 +565,8 @@ function rendreConcours() {
     // 4. Glossaire
     h += titre('Le glossaire') + '<dl>' + CONCOURS_GLOSSAIRE.map(g =>
         '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 mb-2"><dt class="text-sm font-bold text-emerald-900">' + g[0] + '</dt><dd class="text-xs text-gray-600 mt-0.5 leading-relaxed">' + g[1] + '</dd></div>').join('') + '</dl>' +
-        '<p class="mt-4 text-[11px] text-gray-500 leading-relaxed">ℹ️ Informations générales : les dates, coefficients et modalités changent d\'une année à l\'autre. Vérifiez toujours sur les sites officiels des concours, par exemple ' +
-        '<a href="https://www.concours-agro-veto.fr" target="_blank" rel="noopener" data-suivi="lien-concours-agro-veto" class="underline text-emerald-700">concours-agro-veto.fr</a>.</p>';
+        '<p class="mt-4 text-[11px] text-gray-500 leading-relaxed">ℹ️ Informations générales et simplifiées. Les dates, épreuves, coefficients et modalités changent d\'une année à l\'autre : seule la notice officielle du concours (SCAV) fait foi, sur ' + lienSCAV +
+        '. Pour G2E, l\'ENS ou les INSA, consultez le site de chaque concours ou de chaque école.</p>';
 
     cont.innerHTML = h;
     cont.querySelectorAll('[data-fil]').forEach(b => b.onclick = () => {
@@ -573,25 +601,107 @@ function majSelecteurConcours() {
     const choisies = tous.filter(e => etatConcours.sel.has(e.nom));
     if (!choisies.length) { res.innerHTML = '<p class="text-xs italic text-gray-500">Aucune école choisie pour l\'instant.</p>'; return; }
     const groupes = BANQUES_ORDRE.map(b => [b, choisies.filter(e => banqueDe(e, f) === b)]).filter(g => g[1].length);
-    const aPasser = groupes.map(g => g[0]).filter(b => b !== 'Aucune');
+    const aPasser = groupes.map(g => g[0]).filter(b => BANQUES_CONCOURS.includes(b));
+    const nbDossier = groupes.filter(g => BANQUES_DOSSIER.includes(g[0])).reduce((t, g) => t + g[1].length, 0);
     let h = '<div class="bg-white rounded-xl border border-emerald-200 shadow-sm p-3">';
     h += aPasser.length
-        ? '<p class="text-sm font-bold text-emerald-950">👉 ' + (aPasser.length === 1 ? 'Une seule banque à passer' : aPasser.length + ' banques à passer') + ' : ' + aPasser.map(b => esc(libelleBanque(b))).join(', ') + '</p>'
-        : '<p class="text-sm font-bold text-emerald-950">👉 Aucun concours commun pour ces écoles</p>';
+        ? '<p class="text-sm font-bold text-emerald-950">👉 ' + (aPasser.length === 1 ? 'Une seule banque de concours à passer' : aPasser.length + ' banques de concours à passer') + ' : ' + aPasser.map(b => esc(libelleBanque(b))).join(', ') + '</p>'
+        : '<p class="text-sm font-bold text-emerald-950">👉 Aucune banque de concours à passer pour ces écoles</p>';
+    if (nbDossier) h += '<p class="text-xs text-gray-600 mt-1">📂 ' + nbDossier + ' école' + (nbDossier > 1 ? 's' : '') + ' sur dossier : pas d\'épreuves de concours, il faut se renseigner auprès de l\'école.</p>';
     groupes.forEach(([b, es]) => {
         h += '<div class="mt-3 pt-3 border-t border-gray-100"><div class="flex items-center gap-2">' + badgeBanque(b) + '<span class="text-xs text-gray-500">' + es.length + ' école' + (es.length > 1 ? 's' : '') + '</span></div>' +
             '<ul class="mt-1.5 space-y-1">' + es.map(e => '<li class="flex items-center gap-2 text-xs text-gray-800"><span class="flex-1 min-w-0">' + esc(e.nom) + '</span>' +
                 '<button type="button" data-carte="' + esc(e.nom) + '" class="shrink-0 text-[11px] font-bold text-emerald-700 underline" aria-label="Voir ' + esc(e.nom) + ' sur la carte">📍 Carte</button></li>').join('') + '</ul>' +
-            '<p class="mt-1.5 text-[11px] text-gray-500 leading-relaxed">' + (b === 'Aucune' ? esc(BANQUES_INFO.Aucune[f]) : 'Une seule série d\'épreuves compte pour ' + (es.length > 1 ? 'toutes ces écoles' : 'cette école') + ', avec des coefficients propres à chaque concours.') + '</p></div>';
+            '<p class="mt-1.5 text-[11px] text-gray-500 leading-relaxed">' + (BANQUES_DOSSIER.includes(b) ? esc(BANQUES_INFO[b][f]) : 'Une seule série d\'épreuves compte pour ' + (es.length > 1 ? 'toutes ces écoles' : 'cette école') + ', avec des coefficients propres à chaque concours.') + '</p></div>';
     });
-    h += '<button type="button" id="concours-effacer" class="mt-3 text-[11px] font-bold text-gray-500 underline">Tout effacer</button></div>';
+    h += '<p class="mt-3 text-[11px] text-gray-500">Dates et modalités exactes : voir la notice du concours (SCAV).</p>';
+    h += '<button type="button" id="concours-effacer" class="mt-2 text-[11px] font-bold text-gray-500 underline">Tout effacer</button></div>';
     res.innerHTML = h;
     res.querySelectorAll('[data-carte]').forEach(b => b.onclick = () => voirEcoleSurCarte(b.dataset.carte));
     document.getElementById('concours-effacer').onclick = () => { etatConcours.sel.clear(); majSelecteurConcours(); };
 }
 
+// ================================================================
+// ONGLET ACCUEIL : présentation du site + raccourci sur l'écran d'accueil du smartphone
+// ================================================================
+const SECTIONS_ACCUEIL = [
+    ['carte',    '🗺', 'La carte',          `Où sont nos anciens ? Chaque école est un point sur la carte : filtrez par filière, type d'école ou promotion, puis ouvrez une fiche pour voir les parcours.`],
+    ['promos',   '🎓', 'Promotions',        `Les anciens promotion par promotion : où ils sont allés et ce qu'ils font ensuite. Recherche par prénom, école ou métier.`],
+    ['ecoles',   '🏫', 'Écoles',            `Les écoles classées par banque et par concours, avec les coefficients des épreuves.`],
+    ['concours', '🏆', 'Concours',          `Les concours expliqués simplement : les banques, un outil « quelles banques pour mes écoles ? » et un glossaire.`],
+    ['videos',   '🎬', 'Vidéos',            `Témoignages d'anciens, forums des anciens, conférences et réponses aux questions fréquentes.`],
+    ['fiches',   '📄', 'Fiches de poste',   `Des fiches qui décrivent le métier exercé par d'anciens étudiants.`],
+    ['stats',    '📊', 'Statistiques',      `Où vont les étudiants après la prépa : grandes écoles, fac, réorientations, 5/2…`]
+];
+const DEMARRAGES_ACCUEIL = [
+    ['concours', '🌱', `Je découvre les concours`,       `Je suis en 1re année et je ne sais pas par où commencer`],
+    ['carte',    '📍', `J'ai une école en tête`,         `Voir où sont allés les anciens et ce qu'ils y font`],
+    ['videos',   '🎧', `Je veux entendre des anciens`,   `Témoignages, forums et conférences en vidéo`]
+];
+let invitationInstallation = null;   // évènement « beforeinstallprompt » (Android / Chrome)
+window.addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); invitationInstallation = ev; majBlocInstaller(); });
+window.addEventListener('appinstalled', () => { invitationInstallation = null; try { suivre('site-installe', 'Site ajouté à l\'écran d\'accueil'); } catch (e) {} majBlocInstaller(); });
+const estAppInstallee = () => (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+const estAppleMobile = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+function majBlocInstaller() {
+    const z = document.getElementById('accueil-installer');
+    if (!z) return;
+    if (estAppInstallee()) { z.innerHTML = ''; return; }
+    let corps;
+    if (invitationInstallation) {
+        corps = `<p class="text-xs text-gray-600 mt-1 leading-relaxed">Retrouvez le site en un geste, comme une application, sans taper l'adresse.</p>` +
+                `<button type="button" id="btn-installer" class="mt-2 px-4 py-2 rounded-lg bg-emerald-700 text-white text-xs font-bold hover:bg-emerald-800 active:scale-95">Ajouter à l'écran d'accueil</button>`;
+    } else if (estAppleMobile()) {
+        corps = `<p class="text-xs text-gray-600 mt-1 leading-relaxed">Sur iPhone et iPad (dans Safari) : touchez le bouton <b>Partager</b> <span aria-hidden="true">(carré avec une flèche vers le haut)</span>, puis <b>« Sur l'écran d'accueil »</b>.</p>`;
+    } else {
+        corps = `<p class="text-xs text-gray-600 mt-1 leading-relaxed">Sur Android : ouvrez le menu du navigateur <span aria-hidden="true">(⋮)</span>, puis choisissez <b>« Ajouter à l'écran d'accueil »</b> ou <b>« Installer l'application »</b>.<br>` +
+                `Sur iPhone et iPad (Safari) : bouton <b>Partager</b>, puis <b>« Sur l'écran d'accueil »</b>.</p>`;
+    }
+    z.innerHTML = '<div class="bg-white rounded-xl border border-emerald-200 shadow-sm p-3"><p class="text-sm font-bold text-emerald-950">📲 Un raccourci sur votre téléphone</p>' + corps + '</div>';
+    const b = document.getElementById('btn-installer');
+    if (b) b.onclick = async () => {
+        const inv = invitationInstallation; if (!inv) return;
+        suivre('installer-site', 'Accueil : bouton installer');
+        inv.prompt();
+        try { await inv.userChoice; } catch (e) {}
+        invitationInstallation = null; majBlocInstaller();
+    };
+}
+
+function rendreAccueil() {
+    const c = document.getElementById('accueil-content');
+    const titre = t => '<h3 class="text-[11px] font-black uppercase tracking-widest text-emerald-800 mt-6 mb-2">' + t + '</h3>';
+    const nbEcoles = ecolesData.length;
+    const nbPromos = new Set(tousEtudiants().map(x => x.annee).filter(Boolean)).size;
+    const liens = new Set();
+    (VIDEOS_CATEGORISEES || []).forEach(g => g.videos.forEach(v => liens.add(cleVideo(v.lien))));
+    ecolesData.forEach(e => (e.anciens || []).forEach(a => { if (aLien(a.lien_video)) liens.add(cleVideo(a.lien_video)); }));
+    const chiffre = (val, lib) => '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center"><p class="text-2xl font-extrabold text-emerald-700">' + val + '</p><p class="text-[11px] text-gray-500">' + lib + '</p></div>';
+
+    let h = '<div class="rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-600 text-white p-5 shadow-md">' +
+        '<h2 class="text-xl font-extrabold text-amber-300">Bienvenue 👋</h2>' +
+        '<p class="text-sm mt-2 leading-relaxed">Ce site rassemble les parcours des anciens étudiants de <b>BCPST</b> et de <b>TB</b> du lycée Le Chesnoy : où ils sont, ce qu\'ils font, et comment ils y sont arrivés.</p></div>' +
+        '<div class="grid grid-cols-3 gap-2 mt-3">' + chiffre(nbEcoles, 'écoles sur la carte') + chiffre(nbPromos, 'promotions') + chiffre(liens.size, 'vidéos') + '</div>';
+
+    h += titre('Par où commencer ?') + '<div class="space-y-2">' + DEMARRAGES_ACCUEIL.map(d =>
+        '<button type="button" data-onglet="' + d[0] + '" class="w-full flex items-center gap-3 text-left bg-white rounded-xl border border-emerald-100 shadow-sm p-3 hover:bg-emerald-50 active:scale-[.99] transition-all">' +
+        '<span class="text-2xl" aria-hidden="true">' + d[1] + '</span><span class="flex-1 min-w-0"><span class="block text-sm font-bold text-emerald-950">' + d[2] + '</span>' +
+        '<span class="block text-xs text-gray-500">' + d[3] + '</span></span><span class="text-emerald-700 font-bold" aria-hidden="true">→</span></button>').join('') + '</div>';
+
+    h += titre('Tout ce qu\'il y a sur le site') + '<div class="grid grid-cols-1 sm:grid-cols-2 gap-2">' + SECTIONS_ACCUEIL.map(s =>
+        '<button type="button" data-onglet="' + s[0] + '" class="flex gap-3 text-left bg-white rounded-xl border border-gray-100 shadow-sm p-3 hover:bg-emerald-50 active:scale-[.99] transition-all">' +
+        '<span class="text-2xl" aria-hidden="true">' + s[1] + '</span><span class="min-w-0"><span class="block text-sm font-bold text-gray-800">' + s[2] + '</span>' +
+        '<span class="block text-xs text-gray-600 leading-relaxed mt-0.5">' + s[3] + '</span></span></button>').join('') + '</div>';
+
+    h += '<div id="accueil-installer" class="mt-6"></div>';
+    c.innerHTML = h;
+    c.querySelectorAll('[data-onglet]').forEach(b => b.onclick = () => changerOnglet(b.dataset.onglet));
+    majBlocInstaller();
+}
+
 function changerOnglet(o, init) {
-    const ONGLETS = ['carte', 'promos', 'ecoles', 'concours', 'videos', 'fiches', 'stats'];
+    const ONGLETS = ['accueil', 'carte', 'promos', 'ecoles', 'concours', 'videos', 'fiches', 'stats'];
     if (!ONGLETS.includes(o)) o = 'carte';
     ongletCourant = o;
     if (!init) suivre('onglet-' + o);
@@ -604,7 +714,7 @@ function changerOnglet(o, init) {
             (k === o ? 'border-amber-400 text-emerald-900 bg-emerald-50/60' : 'border-transparent text-gray-500 hover:text-emerald-800');
     });
     if (o === 'carte') setTimeout(() => map.invalidateSize(), 50);
-    try { ({ promos: rendrePromos, ecoles: rendreEcoles, concours: rendreConcours, videos: rendreVideos, fiches: rendreFiches, stats: rendreStats })[o]?.(); }
+    try { ({ accueil: rendreAccueil, promos: rendrePromos, ecoles: rendreEcoles, concours: rendreConcours, videos: rendreVideos, fiches: rendreFiches, stats: rendreStats })[o]?.(); }
     catch (err) { signalerErreur('onglet ' + o, err); }
     try {
         if (o === 'videos') marquerVideosVues();
@@ -1392,7 +1502,7 @@ function sauvegarderEtat() {
     if (anneesSel.size) p.set('y', [...anneesSel].sort().join(','));
     if (grandesEcolesSeules) p.set('g', '1');
     const oSave = ongletCourant;
-    if (oSave !== 'carte') p.set('o', oSave);
+    if (oSave !== 'carte' && oSave !== 'accueil') p.set('o', oSave);
     const q = document.getElementById('search-bar').value.trim();
     if (q) p.set('q', q);
     if (ecoleActuelleObj) p.set('s', ecoleActuelleObj.nom);
@@ -2477,9 +2587,10 @@ document.addEventListener("keydown", function(e) {
 document.getElementById('search-bar').addEventListener('input', filtrerTout);
 
 renderAnneeChips();
-changerOnglet('carte', true);
+changerOnglet((HASH_INITIAL && HASH_INITIAL.length > 1) ? 'carte' : 'accueil', true);   // accueil par défaut, carte si le lien contient des filtres
 filtrerTout();
 chargerEtat();
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});   // nécessaire à l'ajout à l'écran d'accueil
 
 </script>
 </body>

@@ -1,0 +1,16 @@
+{
+  "name": "Anciens BCPST & TB – Lycée Le Chesnoy",
+  "short_name": "Anciens Le Chesnoy",
+  "description": "Parcours et écoles intégrées par les anciens étudiants de BCPST et TB du lycée agricole Le Chesnoy.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#065f46",
+  "theme_color": "#065f46",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
