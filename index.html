@@ -441,6 +441,8 @@ const ONGLETS_JPO = ['accueil', 'carte', 'videos', 'stats', 'concours'];   // on
 const JPO_INACTIVITE_S = 60;          // retour à l'accueil après 60 s sans toucher l'écran
 const JPO_INACTIVITE_VIDEO_S = 300;   // 5 min si une vidéo est ouverte (le lecteur ne transmet pas les gestes)
 const JPO_AVERTISSEMENT_S = 10;       // compte à rebours affiché pendant les 10 dernières secondes
+// Version par filière : ...?mode=jpo&f=bcpst ou ...?mode=jpo&f=tb (sans « f », les deux filières sont proposées)
+const JPO_FILIERE = MODE_JPO ? ({ bcpst: 'BCPST', tb: 'TB' }[(new URLSearchParams(location.search).get('f') || '').toLowerCase()] || null) : null;
 
 // Types considérés comme NON « grande école » (ajouter ici 'BUT' etc. si besoin)
 const TYPES_NON_GRANDE_ECOLE = ['Fac', 'BUT', 'IUT', 'Université'];
@@ -1379,7 +1381,7 @@ function verifierEtatInitial() {
     const isInitial = (
         search === "" &&
         anneesSel.size === 0 && !grandesEcolesSeules &&
-        filiereSelectionnee === "TOUT" &&
+        filiereSelectionnee === (JPO_FILIERE || "TOUT") &&
         selectedBanqueTypes.size === 0 &&
         ecoleActuelleObj === null &&
         isMapInitial
@@ -2364,7 +2366,7 @@ function reinitialiserFiltresSeuls() {
     anneesSel.clear(); renderAnneeChips(); setGrandesEcoles(false, false);
     toutDeselectionnerBanques();
     fermerEcole();
-    changerFiliere('TOUT');
+    changerFiliere(JPO_FILIERE || 'TOUT');
 }
 
 function reinitialiserFiltres() {
@@ -2373,7 +2375,7 @@ function reinitialiserFiltres() {
     if (ongletCourant !== 'carte') changerOnglet('carte');
     toutDeselectionnerBanques();
     fermerEcole(); // ferme la fiche et remet la vue de la carte par défaut
-    changerFiliere('TOUT');
+    changerFiliere(JPO_FILIERE || 'TOUT');
 }
 
 // ================================================================
@@ -2731,19 +2733,27 @@ let jpoDerniere = Date.now();
 
 function rendreAccueilJpo(c, chiffre, nbEcoles, nbPromos, nbVideos) {
     c.className = 'max-w-5xl mx-auto p-4 md:p-8';
+    const F = JPO_FILIERE;
+    if (F) {   // version par filière : écoles et promotions de la filière (les vidéos restent communes aux deux)
+        const mien = a => (a.classe || '').includes(F);
+        nbEcoles = ecolesData.filter(e => (e.anciens || []).some(mien)).length;
+        nbPromos = new Set(tousEtudiants().filter(x => mien(x.a)).map(x => x.annee).filter(Boolean)).size;
+    }
+    const texte = t => F && t[0] === 'carte' ? 'Où sont nos anciens de ' + F + ' ? Touchez une école pour découvrir leurs parcours.'
+                     : F && t[0] === 'stats' ? 'Où vont les étudiants de ' + F + ' après la prépa.' : t[3];
     c.innerHTML =
         '<div class="rounded-3xl bg-gradient-to-br from-emerald-800 to-emerald-600 text-white p-6 md:p-8 shadow-lg text-center">' +
             '<h2 class="text-3xl md:text-4xl font-extrabold text-amber-300 leading-tight">Que deviennent nos étudiants après la prépa ?</h2>' +
-            '<p class="mt-3 text-base md:text-lg">Les parcours des anciens de <b>BCPST</b> et de <b>TB</b> du lycée Le Chesnoy</p></div>' +
+            '<p class="mt-3 text-base md:text-lg">Les parcours des anciens de ' + (F ? '<b>' + F + '</b>' : '<b>BCPST</b> et de <b>TB</b>') + ' du lycée Le Chesnoy</p></div>' +
         '<div class="grid grid-cols-3 gap-3 mt-4">' + chiffre(nbEcoles, 'écoles sur la carte') + chiffre(nbPromos, 'promotions') + chiffre(nbVideos, 'vidéos') + '</div>' +
-        '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">' + ['BCPST', 'TB'].map(F =>
-            '<button type="button" data-anim="' + F + '" class="flex items-center gap-4 text-left bg-amber-400 hover:bg-amber-300 rounded-2xl shadow-md p-5 active:scale-[.99] transition-all">' +
-            '<span class="text-5xl" aria-hidden="true">▶</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">Animation ' + F + '</span>' +
+        '<div class="grid grid-cols-1 ' + (F ? '' : 'md:grid-cols-2 ') + 'gap-4 mt-4">' + (F ? [F] : ['BCPST', 'TB']).map(fl =>
+            '<button type="button" data-anim="' + fl + '" class="flex items-center gap-4 text-left bg-amber-400 hover:bg-amber-300 rounded-2xl shadow-md p-5 active:scale-[.99] transition-all">' +
+            '<span class="text-5xl" aria-hidden="true">▶</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">Animation ' + fl + '</span>' +
             '<span class="block text-sm text-emerald-950/80 mt-1 leading-relaxed">Regardez la carte se remplir, promotion après promotion.</span></span></button>').join('') + '</div>' +
         '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">' + JPO_TUILES.map(t =>
             '<button type="button" data-onglet="' + t[0] + '" class="flex items-center gap-4 text-left bg-white rounded-2xl border border-emerald-100 shadow-sm p-5 hover:bg-emerald-50 active:scale-[.99] transition-all">' +
             '<span class="text-5xl" aria-hidden="true">' + t[1] + '</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">' + t[2] + '</span>' +
-            '<span class="block text-sm text-gray-600 mt-1 leading-relaxed">' + t[3] + '</span></span></button>').join('') + '</div>' +
+            '<span class="block text-sm text-gray-600 mt-1 leading-relaxed">' + texte(t) + '</span></span></button>').join('') + '</div>' +
         '<p class="mt-5 text-center text-sm text-gray-500">Une question ? Posez-la aux enseignants et aux étudiants présents.</p>';
     c.querySelectorAll('[data-onglet]').forEach(b => b.onclick = () => changerOnglet(b.dataset.onglet));
     c.querySelectorAll('[data-anim]').forEach(b => b.onclick = () => lancerAnimation(b.dataset.anim));
@@ -2758,7 +2768,8 @@ function jpoAChange() {
     if (document.getElementById('anim-overlay')) return false;   // l'animation tourne en boucle : pas de retour automatique
     return ongletCourant !== 'accueil' || jpoModaleOuverte() || ecoleActuelleObj !== null ||
         document.getElementById('search-bar').value.trim() !== '' || anneesSel.size > 0 || grandesEcolesSeules ||
-        filiereSelectionnee !== 'TOUT' || selectedBanqueTypes.size > 0 || map.getZoom() !== 5;
+        filiereSelectionnee !== (JPO_FILIERE || 'TOUT') || selectedBanqueTypes.size > 0 || map.getZoom() !== 5 ||
+        statsFiliere !== (JPO_FILIERE || 'BCPST') || etatConcours.filiere !== (JPO_FILIERE || 'BCPST') || etatConcours.sel.size > 0 || etatConcours.q !== '';
 }
 
 function jpoMessage(texte) {
@@ -2786,6 +2797,14 @@ function jpoAvertissement(secondes) {
     b.textContent = 'Toujours là ? Retour à l\'accueil dans ' + secondes + ' s — touchez ici pour continuer';
 }
 
+// Filière affichée par défaut dans les statistiques et les concours : celle de la version (sinon BCPST) ; sélection du sélecteur de concours effacée
+function jpoFiliereParDefaut() {
+    statsFiliere = JPO_FILIERE || 'BCPST';
+    etatConcours.filiere = JPO_FILIERE || 'BCPST';
+    etatConcours.sel.clear();
+    etatConcours.q = '';
+}
+
 function jpoFermerFenetres() { while (jpoFenetres.length) { try { jpoFenetres.pop().close(); } catch (e) { /* déjà fermée */ } } }
 
 function jpoRemiseAZero() {
@@ -2794,7 +2813,7 @@ function jpoRemiseAZero() {
     try {
         jpoFermerFenetres();
         fermerModalGlobale();                    // coupe aussi la lecture de la vidéo
-        sousOngletVideo = 'forums'; statsFiliere = 'BCPST';
+        sousOngletVideo = 'forums'; jpoFiliereParDefaut();
         reinitialiserFiltresSeuls();             // recherche, filtres, fiche ouverte, carte recentrée
         changerOnglet('accueil', true);          // true : pas d'évènement de suivi pour un retour automatique
         sauvegarderEtat();
@@ -2811,6 +2830,12 @@ function jpoTick() {
 }
 
 function jpoDemarrer() {
+    jpoFiliereParDefaut();
+    if (JPO_FILIERE) {
+        changerFiliere(JPO_FILIERE);   // carte : seule la filière de la version est affichée par défaut
+        document.title = 'Anciens ' + JPO_FILIERE + ' - Le Chesnoy';
+        document.querySelectorAll('header p').forEach(p => { if (/Où sont nos anciens/.test(p.textContent)) p.textContent += ' · ' + JPO_FILIERE; });
+    }
     // Nouvelles fenêtres : on garde une référence pour les fermer au retour à l'accueil, et on refuse les pages vidéo
     const ouvrir = window.open.bind(window);
     window.open = function (url) {
