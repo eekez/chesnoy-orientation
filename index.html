@@ -90,6 +90,15 @@
         html.jpo [class*="text-[9px]"]  { font-size: 11px !important; }
         html.jpo [class*="text-[10px]"] { font-size: 12px !important; }
         html.jpo [class*="text-[11px]"] { font-size: 13px !important; }
+
+        /* ===== Animation de la carte (promotion après promotion) ===== */
+        .anim-icone { background: transparent; border: 0; }
+        .anim-dot { position: relative; border-radius: 50%; border: 2px solid #fff; box-sizing: border-box; box-shadow: 0 1px 4px rgba(0,0,0,.35); opacity: .93; }
+        .anim-dot::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 3px solid currentColor; opacity: 0; pointer-events: none; }
+        .anim-dot.anim-new { animation: anim-pop .6s ease-out 1; }
+        .anim-dot.anim-new::after { animation: anim-ping 1.5s ease-out 1; }
+        @keyframes anim-pop  { 0% { transform: scale(.1); } 65% { transform: scale(1.5); } 100% { transform: scale(1); } }
+        @keyframes anim-ping { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(4.5); opacity: 0; } }
     </style>
 </head>
 <body class="bg-gray-50 font-sans h-full flex flex-col">
@@ -2550,6 +2559,163 @@ function toggleVideoCategorie(btn) {
 }
 
 // ================================================================
+// ANIMATION : la carte se remplit promotion après promotion (une version par filière : BCPST, TB)
+// ================================================================
+let ANIM = null;
+const ANIM_PAS_MS = 1500;    // durée d'une promotion à l'écran (÷ 2 en vitesse ×2)
+const ANIM_FIN_MS = 7000;    // pause sur le bilan final avant de recommencer
+
+function animIcone(n, couleur, neuf) {
+    const s = Math.round(Math.min(34, 12 + 5 * (Math.sqrt(n) - 1)));   // le point grossit avec le nombre d'anciens
+    return L.divIcon({ className: 'anim-icone', iconSize: [s, s], iconAnchor: [s / 2, s / 2],
+        html: '<div class="anim-dot' + (neuf ? ' anim-new' : '') + '" style="width:' + s + 'px;height:' + s + 'px;background:' + couleur + ';color:' + couleur + '"></div>' });
+}
+
+function lancerAnimation(F) {
+    try {
+        fermerAnimation();
+        const donnees = [];
+        ecolesData.forEach(e => {
+            const par = {};
+            let tot = 0;
+            (e.anciens || []).forEach(a => { if (a.annee && (a.classe || '').includes(F)) { par[a.annee] = (par[a.annee] || 0) + 1; tot++; } });
+            if (tot && Array.isArray(e.coords)) donnees.push({ e, par, couleur: typeColors[typeDe(e, F)] || '#6b7280' });
+        });
+        const ys = donnees.flatMap(d => Object.keys(d.par).map(Number));
+        if (!ys.length) return;
+        const annees = [];
+        for (let y = Math.min(...ys); y <= Math.max(...ys); y++) annees.push(y);
+        donnees.forEach(d => { let c = 0; d.cum = annees.map(y => (c += d.par[y] || 0)); });   // cumul d'anciens par école, promotion après promotion
+
+        const bouton = 'shrink-0 text-xs md:text-sm font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-2 rounded-lg transition-all';
+        const o = document.createElement('div');
+        o.id = 'anim-overlay';
+        o.className = 'fixed inset-0 z-[9000] bg-emerald-950 flex flex-col';
+        o.setAttribute('role', 'dialog'); o.setAttribute('aria-modal', 'true'); o.setAttribute('aria-label', 'Animation de la carte ' + F);
+        const types = [...new Set(donnees.map(d => typeDe(d.e, F)).filter(Boolean))];
+        o.innerHTML =
+            '<div class="bg-emerald-800 text-white px-4 py-3 flex items-center gap-3 border-b-4 border-amber-400 shrink-0">' +
+                '<div class="min-w-0 flex-1"><p class="text-xl md:text-3xl font-extrabold text-amber-300 truncate">' + esc(F) + ' : où sont nos anciens ?</p>' +
+                '<p class="text-xs md:text-sm truncate">Promotion après promotion, la carte se remplit</p></div>' +
+                '<button type="button" id="anim-vitesse" class="' + bouton + '" aria-label="Changer la vitesse">×1</button>' +
+                '<button type="button" id="anim-fermer" class="' + bouton + '">✕ Fermer</button></div>' +
+            '<div class="relative flex-1 min-h-0"><div id="anim-map" class="absolute inset-0"></div>' +
+                '<div class="absolute top-3 left-3 z-[1100] bg-white/95 rounded-2xl shadow-lg px-5 py-3">' +
+                    '<p id="anim-annee" class="text-4xl md:text-6xl font-black text-emerald-800 leading-none">&nbsp;</p>' +
+                    '<p id="anim-nouveaux" class="text-sm md:text-base font-bold text-amber-600 mt-1 h-6"></p>' +
+                    '<div class="mt-2 flex gap-6"><div><p id="anim-nb-ecoles" class="text-2xl md:text-3xl font-extrabold text-emerald-700">0</p><p class="text-xs text-gray-500">écoles</p></div>' +
+                    '<div><p id="anim-nb-anciens" class="text-2xl md:text-3xl font-extrabold text-emerald-700">0</p><p class="text-xs text-gray-500">anciens sur la carte</p></div></div></div>' +
+                '<div class="absolute bottom-6 left-3 z-[1100] bg-white/95 rounded-xl shadow px-3 py-2 text-xs flex flex-wrap gap-x-4 gap-y-1 max-w-[70%]">' +
+                    types.map(t => '<span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:' + typeColors[t] + '"></span>' + esc(t) + '</span>').join('') + '</div></div>' +
+            '<div class="bg-emerald-900 px-4 py-3 flex items-center gap-3 shrink-0">' +
+                '<button type="button" id="anim-lecture" class="' + bouton + ' w-12" aria-label="Pause ou lecture">⏸</button>' +
+                '<button type="button" id="anim-rejouer" class="' + bouton + '" aria-label="Rejouer depuis le début">↺ Rejouer</button>' +
+                '<span class="text-white text-xs md:text-sm font-bold">' + annees[0] + '</span>' +
+                '<input id="anim-curseur" type="range" min="0" max="' + (annees.length - 1) + '" value="0" class="flex-1 accent-amber-400" aria-label="Promotion affichée">' +
+                '<span class="text-white text-xs md:text-sm font-bold">' + annees[annees.length - 1] + '</span></div>';
+        document.body.appendChild(o);
+
+        const carte = L.map('anim-map', { zoomControl: false, zoomSnap: 0.25 });
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1_2ca2_1_ecce94fae6c4dfd24b87b466', {
+            attribution: '© OpenStreetMap contributors © CARTO'
+        }).addTo(carte);
+        const bornes = L.latLngBounds([[41.2, -5.2], [51.2, 9.7]]);   // France métropolitaine, élargie aux écoles proches (Belgique, Suisse…)
+        donnees.map(d => d.e.coords).filter(c => c[0] > 35 && c[0] < 60 && c[1] > -12 && c[1] < 20).forEach(c => bornes.extend(c));
+        carte.fitBounds(bornes, { padding: [20, 20] });
+
+        ANIM = { F, donnees, annees, carte, overlay: o, marqueurs: new Map(), i: -1, timer: null, pause: false, rapide: false, bornes };
+        requestAnimationFrame(() => { if (ANIM && ANIM.carte === carte) { carte.invalidateSize(); carte.fitBounds(bornes, { padding: [20, 20] }); } });
+
+        document.getElementById('anim-fermer').onclick = fermerAnimation;
+        document.getElementById('anim-lecture').onclick = animBasculerLecture;
+        document.getElementById('anim-rejouer').onclick = () => { ANIM.pause = false; animMajBoutons(); animRecommencer(); animPlanifier(); };
+        document.getElementById('anim-vitesse').onclick = () => { ANIM.rapide = !ANIM.rapide; animMajBoutons(); animPlanifier(); };
+        document.getElementById('anim-curseur').oninput = ev => { ANIM.pause = true; animMajBoutons(); clearTimeout(ANIM.timer); animAfficher(+ev.target.value, false); };
+        suivre('animation-' + F.toLowerCase(), 'Animation ' + F);
+
+        ANIM.timer = setTimeout(() => { if (ANIM) { animAfficher(0, true); animPlanifier(); } }, 500);
+    } catch (err) { signalerErreur('animation ' + F, err); fermerAnimation(); }
+}
+
+function animMajBoutons() {
+    document.getElementById('anim-lecture').textContent = ANIM.pause ? '▶' : '⏸';
+    document.getElementById('anim-vitesse').textContent = ANIM.rapide ? '×2' : '×1';
+}
+
+// Affiche l'état de la carte à la fin de la promotion i ; animer = faire « pousser » les nouveaux points
+function animAfficher(i, animer) {
+    const A = ANIM;
+    if (!A) return;
+    let ecoles = 0, anciens = 0, nouveaux = 0;
+    A.donnees.forEach(d => {
+        const n = d.cum[i], avant = i > 0 ? d.cum[i - 1] : 0;
+        const m = A.marqueurs.get(d);
+        if (!n) { if (m) { m.marker.remove(); A.marqueurs.delete(d); } return; }
+        ecoles++; anciens += n; nouveaux += n - avant;
+        const info = esc(d.e.nom) + ' · ' + n + (n > 1 ? ' anciens' : ' ancien');
+        if (!m) {
+            const marker = L.marker(d.e.coords, { icon: animIcone(n, d.couleur, animer), keyboard: false }).addTo(A.carte);
+            marker.bindTooltip(info);
+            A.marqueurs.set(d, { marker, n });
+        } else if (m.n !== n) {
+            m.marker.setIcon(animIcone(n, d.couleur, animer && n > m.n));
+            m.marker.setTooltipContent(info);
+            m.n = n;
+        }
+    });
+    A.i = i;
+    document.getElementById('anim-annee').textContent = 'Promotion ' + A.annees[i];
+    document.getElementById('anim-nouveaux').textContent = nouveaux > 0 ? '+ ' + nouveaux + (nouveaux > 1 ? ' étudiants cette année' : ' étudiant cette année') : '';
+    document.getElementById('anim-nb-ecoles').textContent = ecoles;
+    document.getElementById('anim-nb-anciens').textContent = anciens;
+    document.getElementById('anim-curseur').value = i;
+}
+
+function animVider() { ANIM.marqueurs.forEach(m => m.marker.remove()); ANIM.marqueurs.clear(); }
+function animRecommencer() { animVider(); animAfficher(0, true); }
+
+function animPlanifier() {
+    const A = ANIM;
+    if (!A) return;
+    clearTimeout(A.timer);
+    if (A.pause) return;
+    const dernier = A.i >= A.annees.length - 1;
+    A.timer = setTimeout(() => {
+        if (ANIM !== A) return;
+        if (dernier) animRecommencer(); else animAfficher(A.i + 1, true);
+        animPlanifier();
+    }, dernier ? ANIM_FIN_MS : ANIM_PAS_MS / (A.rapide ? 2 : 1));
+}
+
+function animBasculerLecture() {
+    const A = ANIM;
+    if (!A) return;
+    A.pause = !A.pause;
+    if (!A.pause && A.i >= A.annees.length - 1) animRecommencer();
+    animMajBoutons();
+    animPlanifier();
+}
+
+function fermerAnimation() {
+    const A = ANIM;
+    if (!A) return;
+    clearTimeout(A.timer);
+    try { A.carte.remove(); } catch (e) { /* carte déjà détruite */ }
+    A.overlay.remove();
+    ANIM = null;
+}
+
+document.addEventListener('keydown', ev => {
+    if (!ANIM) return;
+    if (ev.key === 'Escape') fermerAnimation();
+    else if (ev.key === ' ' && !/^(BUTTON|INPUT)$/.test(ev.target.tagName)) { ev.preventDefault(); animBasculerLecture(); }
+    else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
+        ANIM.pause = true; animMajBoutons(); clearTimeout(ANIM.timer);
+        animAfficher(Math.max(0, Math.min(ANIM.annees.length - 1, ANIM.i + (ev.key === 'ArrowRight' ? 1 : -1))), false);
+    }
+});
+
+// ================================================================
 // MODE JPO / BORNE : accueil dédié, retour automatique, vidéos réservées à la borne
 // ================================================================
 const JPO_TUILES = [
@@ -2570,12 +2736,17 @@ function rendreAccueilJpo(c, chiffre, nbEcoles, nbPromos, nbVideos) {
             '<h2 class="text-3xl md:text-4xl font-extrabold text-amber-300 leading-tight">Que deviennent nos étudiants après la prépa ?</h2>' +
             '<p class="mt-3 text-base md:text-lg">Les parcours des anciens de <b>BCPST</b> et de <b>TB</b> du lycée Le Chesnoy</p></div>' +
         '<div class="grid grid-cols-3 gap-3 mt-4">' + chiffre(nbEcoles, 'écoles sur la carte') + chiffre(nbPromos, 'promotions') + chiffre(nbVideos, 'vidéos') + '</div>' +
+        '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">' + ['BCPST', 'TB'].map(F =>
+            '<button type="button" data-anim="' + F + '" class="flex items-center gap-4 text-left bg-amber-400 hover:bg-amber-300 rounded-2xl shadow-md p-5 active:scale-[.99] transition-all">' +
+            '<span class="text-5xl" aria-hidden="true">▶</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">Animation ' + F + '</span>' +
+            '<span class="block text-sm text-emerald-950/80 mt-1 leading-relaxed">Regardez la carte se remplir, promotion après promotion.</span></span></button>').join('') + '</div>' +
         '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">' + JPO_TUILES.map(t =>
             '<button type="button" data-onglet="' + t[0] + '" class="flex items-center gap-4 text-left bg-white rounded-2xl border border-emerald-100 shadow-sm p-5 hover:bg-emerald-50 active:scale-[.99] transition-all">' +
             '<span class="text-5xl" aria-hidden="true">' + t[1] + '</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">' + t[2] + '</span>' +
             '<span class="block text-sm text-gray-600 mt-1 leading-relaxed">' + t[3] + '</span></span></button>').join('') + '</div>' +
         '<p class="mt-5 text-center text-sm text-gray-500">Une question ? Posez-la aux enseignants et aux étudiants présents.</p>';
     c.querySelectorAll('[data-onglet]').forEach(b => b.onclick = () => changerOnglet(b.dataset.onglet));
+    c.querySelectorAll('[data-anim]').forEach(b => b.onclick = () => lancerAnimation(b.dataset.anim));
 }
 
 function jpoModaleOuverte() { return !document.getElementById('global-video-modal').classList.contains('hidden'); }
@@ -2584,6 +2755,7 @@ function jpoActivite() { jpoDerniere = Date.now(); }
 
 // Vrai si quelque chose a été modifié depuis l'accueil (onglet, filtre, fiche ouverte, carte déplacée, vidéo)
 function jpoAChange() {
+    if (document.getElementById('anim-overlay')) return false;   // l'animation tourne en boucle : pas de retour automatique
     return ongletCourant !== 'accueil' || jpoModaleOuverte() || ecoleActuelleObj !== null ||
         document.getElementById('search-bar').value.trim() !== '' || anneesSel.size > 0 || grandesEcolesSeules ||
         filiereSelectionnee !== 'TOUT' || selectedBanqueTypes.size > 0 || map.getZoom() !== 5;
@@ -2743,6 +2915,10 @@ changerOnglet((HASH_INITIAL && HASH_INITIAL.length > 1) ? 'carte' : 'accueil', t
 filtrerTout();
 chargerEtat();
 if (MODE_JPO) jpoDemarrer();
+{   // ...?anim=bcpst ou ...?anim=tb : ouvre directement l'animation (avec ?mode=jpo&anim=bcpst, un écran qui tourne tout seul)
+    const pa = (new URLSearchParams(location.search).get('anim') || '').toUpperCase();
+    if (pa === 'BCPST' || pa === 'TB') lancerAnimation(pa);
+}
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});   // nécessaire à l'ajout à l'écran d'accueil
 
 </script>
