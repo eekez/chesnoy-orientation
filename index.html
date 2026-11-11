@@ -11,6 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Anciens Le Chesnoy">
     <title>Anciens BCPST & TB - Le Chesnoy</title>
+    <script>if (/(^|[?&])mode=jpo(&|$)/.test(location.search)) document.documentElement.classList.add('jpo');</script>
     <meta name="description" content="Découvrez les parcours et écoles intégrées par les anciens étudiants des filières BCPST et TB du lycée agricole Le Chesnoy.">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -80,6 +81,15 @@
             #tab-carte.sheet-reduit #btn-filtres-flottant { display: none; }
             #tab-carte.sheet-reduit #map-legend { bottom: 5.6rem !important; }
         }
+
+        /* ===== Mode JPO / borne (adresse ...?mode=jpo) ===== */
+        html.jpo { font-size: 118%; }
+        html.jpo #tab-btn-promos, html.jpo #tab-btn-ecoles, html.jpo #tab-btn-fiches { display: none; }
+        html.jpo nav[role="tablist"] { justify-content: center; }
+        html.jpo nav[role="tablist"] button { padding: 1rem 1.6rem; font-size: 0.95rem; }
+        html.jpo [class*="text-[9px]"]  { font-size: 11px !important; }
+        html.jpo [class*="text-[10px]"] { font-size: 12px !important; }
+        html.jpo [class*="text-[11px]"] { font-size: 13px !important; }
     </style>
 </head>
 <body class="bg-gray-50 font-sans h-full flex flex-col">
@@ -93,7 +103,7 @@
         </div>
     </div>
     
-    <div class="flex items-center gap-2 shrink-0">
+    <div id="header-actions" class="flex items-center gap-2 shrink-0">
         <button id="btn-retour-accueil" onclick="reinitialiserFiltres()" 
                 aria-label="Retour"
                 class="hidden text-xs font-bold text-emerald-950 bg-amber-400 hover:bg-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow shrink-0">
@@ -416,6 +426,13 @@ let ongletCourant = 'carte';
 let sousOngletVideo = 'forums';
 let statsFiliere = 'BCPST';
 
+// ---------- Mode JPO / borne (adresse ...?mode=jpo) ----------
+const MODE_JPO = document.documentElement.classList.contains('jpo');
+const ONGLETS_JPO = ['accueil', 'carte', 'videos', 'stats', 'concours'];   // onglets visibles à la borne
+const JPO_INACTIVITE_S = 60;          // retour à l'accueil après 60 s sans toucher l'écran
+const JPO_INACTIVITE_VIDEO_S = 300;   // 5 min si une vidéo est ouverte (le lecteur ne transmet pas les gestes)
+const JPO_AVERTISSEMENT_S = 10;       // compte à rebours affiché pendant les 10 dernières secondes
+
 // Types considérés comme NON « grande école » (ajouter ici 'BUT' etc. si besoin)
 const TYPES_NON_GRANDE_ECOLE = ['Fac', 'BUT', 'IUT', 'Université'];
 function estGrandeEcole(e) {
@@ -679,6 +696,8 @@ function rendreAccueil() {
     ecolesData.forEach(e => (e.anciens || []).forEach(a => { if (aLien(a.lien_video)) liens.add(cleVideo(a.lien_video)); }));
     const chiffre = (val, lib) => '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center"><p class="text-2xl font-extrabold text-emerald-700">' + val + '</p><p class="text-[11px] text-gray-500">' + lib + '</p></div>';
 
+    if (MODE_JPO) { rendreAccueilJpo(c, chiffre, nbEcoles, nbPromos, liens.size); return; }
+
     let h = '<div class="rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-600 text-white p-5 shadow-md">' +
         '<h2 class="text-xl font-extrabold text-amber-300">Bienvenue 👋</h2>' +
         '<p class="text-sm mt-2 leading-relaxed">Ce site rassemble les parcours des anciens étudiants de <b>BCPST</b> et de <b>TB</b> du lycée Le Chesnoy : où ils sont, ce qu\'ils font, et comment ils y sont arrivés.</p></div>' +
@@ -703,6 +722,7 @@ function rendreAccueil() {
 function changerOnglet(o, init) {
     const ONGLETS = ['accueil', 'carte', 'promos', 'ecoles', 'concours', 'videos', 'fiches', 'stats'];
     if (!ONGLETS.includes(o)) o = 'carte';
+    if (MODE_JPO && !ONGLETS_JPO.includes(o)) o = 'accueil';
     ongletCourant = o;
     if (!init) suivre('onglet-' + o);
     fermerModalGlobale();
@@ -2530,6 +2550,138 @@ function toggleVideoCategorie(btn) {
 }
 
 // ================================================================
+// MODE JPO / BORNE : accueil dédié, retour automatique, vidéos réservées à la borne
+// ================================================================
+const JPO_TUILES = [
+    ['carte',    '🗺', 'La carte',      `Où sont nos anciens ? Touchez une école pour découvrir leurs parcours.`],
+    ['videos',   '🎬', 'Les vidéos',    `Des anciens étudiants racontent leur parcours ; forums et réponses aux questions que l'on se pose.`],
+    ['stats',    '📊', 'Les chiffres',  `Où vont les étudiants après la prépa, filière par filière.`],
+    ['concours', '🏆', 'Les concours',  `Comprendre en quelques minutes comment on entre dans une école.`]
+];
+// Les vidéos ne se regardent qu'ici : toute ouverture d'une page vidéo dans un nouvel onglet est refusée
+const JPO_HOTES_VIDEO = /(youtube\.com|youtu\.be|youtube-nocookie\.com|vimeo\.com|dailymotion\.com|instagram\.com|tiktok\.com|facebook\.com|fb\.watch)/i;
+const jpoFenetres = [];
+let jpoDerniere = Date.now();
+
+function rendreAccueilJpo(c, chiffre, nbEcoles, nbPromos, nbVideos) {
+    c.className = 'max-w-5xl mx-auto p-4 md:p-8';
+    c.innerHTML =
+        '<div class="rounded-3xl bg-gradient-to-br from-emerald-800 to-emerald-600 text-white p-6 md:p-8 shadow-lg text-center">' +
+            '<h2 class="text-3xl md:text-4xl font-extrabold text-amber-300 leading-tight">Que deviennent nos étudiants après la prépa ?</h2>' +
+            '<p class="mt-3 text-base md:text-lg">Les parcours des anciens de <b>BCPST</b> et de <b>TB</b> du lycée Le Chesnoy</p></div>' +
+        '<div class="grid grid-cols-3 gap-3 mt-4">' + chiffre(nbEcoles, 'écoles sur la carte') + chiffre(nbPromos, 'promotions') + chiffre(nbVideos, 'vidéos') + '</div>' +
+        '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">' + JPO_TUILES.map(t =>
+            '<button type="button" data-onglet="' + t[0] + '" class="flex items-center gap-4 text-left bg-white rounded-2xl border border-emerald-100 shadow-sm p-5 hover:bg-emerald-50 active:scale-[.99] transition-all">' +
+            '<span class="text-5xl" aria-hidden="true">' + t[1] + '</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">' + t[2] + '</span>' +
+            '<span class="block text-sm text-gray-600 mt-1 leading-relaxed">' + t[3] + '</span></span></button>').join('') + '</div>' +
+        '<p class="mt-5 text-center text-sm text-gray-500">Une question ? Posez-la aux enseignants et aux étudiants présents.</p>';
+    c.querySelectorAll('[data-onglet]').forEach(b => b.onclick = () => changerOnglet(b.dataset.onglet));
+}
+
+function jpoModaleOuverte() { return !document.getElementById('global-video-modal').classList.contains('hidden'); }
+function jpoDelaiMs() { return (jpoModaleOuverte() ? JPO_INACTIVITE_VIDEO_S : JPO_INACTIVITE_S) * 1000; }
+function jpoActivite() { jpoDerniere = Date.now(); }
+
+// Vrai si quelque chose a été modifié depuis l'accueil (onglet, filtre, fiche ouverte, carte déplacée, vidéo)
+function jpoAChange() {
+    return ongletCourant !== 'accueil' || jpoModaleOuverte() || ecoleActuelleObj !== null ||
+        document.getElementById('search-bar').value.trim() !== '' || anneesSel.size > 0 || grandesEcolesSeules ||
+        filiereSelectionnee !== 'TOUT' || selectedBanqueTypes.size > 0 || map.getZoom() !== 5;
+}
+
+function jpoMessage(texte) {
+    let m = document.getElementById('jpo-message');
+    if (!m) {
+        m = document.createElement('div');
+        m.id = 'jpo-message';
+        m.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-[9996] bg-emerald-900 text-white font-bold text-sm md:text-base px-5 py-3 rounded-full shadow-xl';
+        document.body.appendChild(m);
+    }
+    m.textContent = texte;
+    clearTimeout(m._t);
+    m._t = setTimeout(() => m.remove(), 4000);
+}
+
+function jpoAvertissement(secondes) {
+    let b = document.getElementById('jpo-avertissement');
+    if (secondes == null) { if (b) b.remove(); return; }
+    if (!b) {
+        b = document.createElement('button');
+        b.id = 'jpo-avertissement'; b.type = 'button';
+        b.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-[9995] bg-amber-400 text-emerald-950 font-bold text-sm md:text-base px-5 py-3 rounded-full shadow-xl active:scale-95';
+        document.body.appendChild(b);
+    }
+    b.textContent = 'Toujours là ? Retour à l\'accueil dans ' + secondes + ' s — touchez ici pour continuer';
+}
+
+function jpoFermerFenetres() { while (jpoFenetres.length) { try { jpoFenetres.pop().close(); } catch (e) { /* déjà fermée */ } } }
+
+function jpoRemiseAZero() {
+    jpoDerniere = Date.now();
+    jpoAvertissement(null);
+    try {
+        jpoFermerFenetres();
+        fermerModalGlobale();                    // coupe aussi la lecture de la vidéo
+        sousOngletVideo = 'forums'; statsFiliere = 'BCPST';
+        reinitialiserFiltresSeuls();             // recherche, filtres, fiche ouverte, carte recentrée
+        changerOnglet('accueil', true);          // true : pas d'évènement de suivi pour un retour automatique
+        sauvegarderEtat();
+        document.querySelectorAll('main, section').forEach(s => { s.scrollTop = 0; });
+    } catch (err) { signalerErreur('remise à zéro JPO', err); }
+}
+
+function jpoTick() {
+    if (!jpoAChange()) { jpoAvertissement(null); return; }
+    const reste = jpoDelaiMs() - (Date.now() - jpoDerniere);
+    if (reste <= 0) jpoRemiseAZero();
+    else if (reste <= JPO_AVERTISSEMENT_S * 1000) jpoAvertissement(Math.ceil(reste / 1000));
+    else jpoAvertissement(null);
+}
+
+function jpoDemarrer() {
+    // Nouvelles fenêtres : on garde une référence pour les fermer au retour à l'accueil, et on refuse les pages vidéo
+    const ouvrir = window.open.bind(window);
+    window.open = function (url) {
+        if (JPO_HOTES_VIDEO.test(String(url || ''))) { jpoMessage('Cette vidéo se regarde uniquement sur cette borne.'); return null; }
+        const w = ouvrir.apply(window, arguments);
+        if (w) jpoFenetres.push(w);
+        return w;
+    };
+    document.addEventListener('click', ev => {
+        const a = ev.target.closest && ev.target.closest('a[target="_blank"]');
+        if (!a || !a.href) return;
+        ev.preventDefault();
+        window.open(a.href, '_blank');
+    }, true);
+
+    // Lecteur vidéo verrouillé : le lecteur ne peut ouvrir aucune fenêtre (logo, « Regarder sur YouTube »),
+    // et un voile transparent recouvre le bandeau du haut (titre, partage, copier le lien)
+    const lecteur = document.getElementById('global-video-player');
+    lecteur.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-presentation');
+    const zone = lecteur.parentElement;
+    zone.style.position = 'relative';
+    const voile = document.createElement('div');
+    voile.style.cssText = 'position:absolute;left:0;right:0;top:0;height:18%;z-index:2';
+    zone.appendChild(voile);
+    document.addEventListener('contextmenu', ev => ev.preventDefault());
+
+    // Bouton plein écran (le navigateur l'exige déclenché par un geste ; F11 fait la même chose)
+    const zoneBoutons = document.getElementById('header-actions');
+    if (zoneBoutons && document.fullscreenEnabled) {
+        const p = document.createElement('button');
+        p.type = 'button';
+        p.className = 'text-xs md:text-sm font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shrink-0';
+        p.innerHTML = '<span aria-hidden="true">⛶</span><span>Plein écran</span>';
+        p.onclick = () => { document.documentElement.requestFullscreen().catch(() => {}); };
+        zoneBoutons.prepend(p);
+        document.addEventListener('fullscreenchange', () => p.classList.toggle('hidden', !!document.fullscreenElement));
+    }
+
+    ['pointerdown', 'keydown', 'wheel', 'touchstart', 'mousemove'].forEach(e => document.addEventListener(e, jpoActivite, { passive: true, capture: true }));
+    setInterval(jpoTick, 1000);
+}
+
+// ================================================================
 // INITIALISATION
 // ================================================================
 mettreAJourBanques();
@@ -2590,6 +2742,7 @@ renderAnneeChips();
 changerOnglet((HASH_INITIAL && HASH_INITIAL.length > 1) ? 'carte' : 'accueil', true);   // accueil par défaut, carte si le lien contient des filtres
 filtrerTout();
 chargerEtat();
+if (MODE_JPO) jpoDemarrer();
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});   // nécessaire à l'ajout à l'écran d'accueil
 
 </script>
