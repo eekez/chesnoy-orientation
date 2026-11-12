@@ -2044,7 +2044,7 @@ const ecolesData = [
                 "initiale_nom": "L",
                 "annee": 2022,
                 "classe": "TB",
-                "lien_video": "",
+                "lien_video": "https://youtu.be/5OClAfHH_8I",
                 "date_ajout": "",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
@@ -2801,7 +2801,7 @@ const ecolesData = [
                 "annee": 2022,
                 "classe": "TB",
                 "lien_video": "",
-                "date_ajout": "",
+                "date_ajout": "2026-11-13",
                 "lien_fiche_poste": "",
                 "fonctionnaire": "",
                 "apres_ecole": "",
@@ -7612,9 +7612,9 @@ const videosData = [
     },
     {
         "categorie": "FAQ",
-        "titre": "Si un étudiant n'a pas fait STL, est-ce génant pour faire une TB ?",
-        "lien": "https://youtube.com/shorts/l5g2IE8i5JE",
-        "date_ajout": ""
+        "titre": "Une junior entreprise, c'est quoi ?",
+        "lien": "https://youtube.com/shorts/fBvH16F76kg?feature=share",
+        "date_ajout": "2026-11-13"
     },
     {
         "categorie": "Conférence Agreenium",
