@@ -99,6 +99,20 @@
         .anim-dot.anim-new::after { animation: anim-ping 1.5s ease-out 1; }
         @keyframes anim-pop  { 0% { transform: scale(.1); } 65% { transform: scale(1.5); } 100% { transform: scale(1); } }
         @keyframes anim-ping { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(4.5); opacity: 0; } }
+
+        /* ===== Animations « semaine type » et « BCPST ou TB ? » ===== */
+        .scene-sans-anim *, .scene-sans-anim *::before { transition: none !important; }
+        .sem-col { background-color: #fafafa; background-image: linear-gradient(to bottom, #e5e7eb 1px, transparent 1px); background-size: 100% 10%; }
+        .sem-bloc { position: absolute; left: 2px; right: 2px; border-radius: .5rem; padding: .25rem .4rem; font-size: .72rem; font-weight: 800; line-height: 1.15; color: #fff; overflow: hidden;
+                    opacity: 0; transform: scale(.9) translateY(10px); transition: opacity .45s ease, transform .45s ease; }
+        .sem-bloc.sem-on { opacity: 1; transform: none; }
+        .t-cours { background: #059669; } .t-td { background: #0d9488; } .t-tp { background: #d97706; }
+        .t-kholle { background: #7c3aed; } .t-ds { background: #dc2626; } .t-perso { background: #6b7280; }
+        .sem-jour { transition: background-color .3s, color .3s; }
+        .sem-jour.sem-jour-actif { background: #fbbf24; color: #064e3b; }
+        .sem-barre, .cmp-barre { transition: width .9s ease; }
+        .cmp-row { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
+        .cmp-row.cmp-on { opacity: 1; transform: none; }
     </style>
 </head>
 <body class="bg-gray-50 font-sans h-full flex flex-col">
@@ -2575,6 +2589,7 @@ function animIcone(n, couleur, neuf) {
 
 function lancerAnimation(F) {
     try {
+        fermerScene();
         fermerAnimation();
         const donnees = [];
         ecolesData.forEach(e => {
@@ -2718,6 +2733,277 @@ document.addEventListener('keydown', ev => {
 });
 
 // ================================================================
+// ANIMATIONS « UNE SEMAINE TYPE » (BCPST, TB) ET « BCPST OU TB ? »
+// Lecteur commun : étapes successives, pause, rejouer, curseur, vitesse ; boucle automatique.
+// ================================================================
+let SCENE = null;
+const SCENE_PAS_MS = 2200;    // durée d'une étape à l'écran (÷ 2 en vitesse ×2)
+const SCENE_FIN_MS = 8000;    // pause sur la dernière étape avant de recommencer
+
+function lancerScene(cfg) {
+    try {
+        fermerScene();
+        fermerAnimation();
+        const bouton = 'shrink-0 text-xs md:text-sm font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-2 rounded-lg transition-all';
+        const o = document.createElement('div');
+        o.id = 'scene-overlay';
+        o.className = 'fixed inset-0 z-[9000] bg-emerald-950 flex flex-col';
+        o.setAttribute('role', 'dialog'); o.setAttribute('aria-modal', 'true'); o.setAttribute('aria-label', cfg.titre);
+        o.innerHTML =
+            '<div class="bg-emerald-800 text-white px-4 py-3 flex items-center gap-3 border-b-4 border-amber-400 shrink-0">' +
+                '<div class="min-w-0 flex-1"><p class="text-xl md:text-3xl font-extrabold text-amber-300 truncate">' + esc(cfg.titre) + '</p>' +
+                '<p class="text-xs md:text-sm truncate">' + esc(cfg.sousTitre) + '</p></div>' +
+                '<button type="button" id="scene-vitesse" class="' + bouton + '" aria-label="Changer la vitesse">×1</button>' +
+                '<button type="button" id="scene-fermer" class="' + bouton + '">✕ Fermer</button></div>' +
+            '<div id="scene-corps" class="flex-1 min-h-0 overflow-y-auto">' + cfg.corps + '</div>' +
+            '<div class="bg-emerald-900 px-4 py-3 flex items-center gap-3 shrink-0">' +
+                '<button type="button" id="scene-lecture" class="' + bouton + ' w-12" aria-label="Pause ou lecture">⏸</button>' +
+                '<button type="button" id="scene-rejouer" class="' + bouton + '" aria-label="Rejouer depuis le début">↺ Rejouer</button>' +
+                '<input id="scene-curseur" type="range" min="0" max="' + (cfg.nb - 1) + '" value="0" class="flex-1 accent-amber-400" aria-label="Étape affichée"></div>';
+        document.body.appendChild(o);
+        SCENE = { cfg, nb: cfg.nb, overlay: o, i: -1, timer: null, pause: false, rapide: false };
+
+        document.getElementById('scene-fermer').onclick = fermerScene;
+        document.getElementById('scene-lecture').onclick = sceneBasculerLecture;
+        document.getElementById('scene-rejouer').onclick = () => { SCENE.pause = false; sceneMajBoutons(); sceneRecommencer(); scenePlanifier(); };
+        document.getElementById('scene-vitesse').onclick = () => { SCENE.rapide = !SCENE.rapide; sceneMajBoutons(); scenePlanifier(); };
+        document.getElementById('scene-curseur').oninput = ev => { SCENE.pause = true; sceneMajBoutons(); clearTimeout(SCENE.timer); sceneAfficher(+ev.target.value, false); };
+        suivre(cfg.suivi, cfg.titre);
+
+        sceneAfficher(-1, false);
+        SCENE.timer = setTimeout(() => { if (SCENE) { sceneAfficher(0, true); scenePlanifier(); } }, 500);
+    } catch (err) { signalerErreur('animation ' + cfg.titre, err); fermerScene(); }
+}
+
+function sceneMajBoutons() {
+    document.getElementById('scene-lecture').textContent = SCENE.pause ? '▶' : '⏸';
+    document.getElementById('scene-vitesse').textContent = SCENE.rapide ? '×2' : '×1';
+}
+
+// i = -1 : écran vide ; animer = false : saut direct, sans transition
+function sceneAfficher(i, animer) {
+    const S = SCENE;
+    if (!S) return;
+    S.overlay.classList.toggle('scene-sans-anim', !animer);
+    void S.overlay.offsetWidth;   // applique l'état « sans transition » avant de changer l'affichage
+    S.i = i;
+    S.cfg.rendre(i, animer, S.overlay);
+    document.getElementById('scene-curseur').value = Math.max(0, i);
+    if (animer) S.overlay.classList.remove('scene-sans-anim');
+}
+
+function sceneRecommencer() { sceneAfficher(-1, false); sceneAfficher(0, true); }
+
+function scenePlanifier() {
+    const S = SCENE;
+    if (!S) return;
+    clearTimeout(S.timer);
+    if (S.pause) return;
+    const dernier = S.i >= S.nb - 1;
+    S.timer = setTimeout(() => {
+        if (SCENE !== S) return;
+        if (dernier) sceneRecommencer(); else sceneAfficher(S.i + 1, true);
+        scenePlanifier();
+    }, dernier ? SCENE_FIN_MS : SCENE_PAS_MS / (S.rapide ? 2 : 1));
+}
+
+function sceneBasculerLecture() {
+    const S = SCENE;
+    if (!S) return;
+    S.pause = !S.pause;
+    if (!S.pause && S.i >= S.nb - 1) sceneRecommencer();
+    sceneMajBoutons();
+    scenePlanifier();
+}
+
+function fermerScene() {
+    const S = SCENE;
+    if (!S) return;
+    clearTimeout(S.timer);
+    S.overlay.remove();
+    SCENE = null;
+}
+
+document.addEventListener('keydown', ev => {
+    if (!SCENE) return;
+    if (ev.key === 'Escape') fermerScene();
+    else if (ev.key === ' ' && !/^(BUTTON|INPUT)$/.test(ev.target.tagName)) { ev.preventDefault(); sceneBasculerLecture(); }
+    else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
+        SCENE.pause = true; sceneMajBoutons(); clearTimeout(SCENE.timer);
+        sceneAfficher(Math.max(0, Math.min(SCENE.nb - 1, SCENE.i + (ev.key === 'ArrowRight' ? 1 : -1))), false);
+    }
+});
+
+// ---------- Une semaine type ----------
+// >>> À REMPLACER par les vrais emplois du temps (ce sont des exemples). Bloc : [début, fin, type, intitulé]
+// types : cours, td, tp, kholle, ds, perso (travail personnel au lycée). Plage affichée : 8 h – 18 h.
+const SEMAINE_HEURES = [8, 18];
+const SEMAINE_TYPES = { cours: 'Cours', td: 'TD', tp: 'TP', kholle: 'Khôlle', ds: 'Devoir surveillé', perso: 'Travail personnel' };
+const SEMAINE_CATEGORIES = [   // regroupement pour les totaux : [libellé, types, couleur]
+    ['Cours et TD', ['cours', 'td'], '#059669'], ['TP', ['tp'], '#d97706'], ['Khôlles', ['kholle'], '#7c3aed'],
+    ['Devoir surveillé', ['ds'], '#dc2626'], ['Travail personnel au lycée', ['perso'], '#6b7280']
+];
+const SEMAINE = {
+    BCPST: {
+        conclusion: 'Et après les cours ? Reprendre, apprendre, s\'entraîner… et se reposer.',
+        jours: [
+            { nom: 'Lundi', note: 'On démarre la semaine : cours et TD.', blocs: [['08:00', '10:00', 'cours', 'Maths'], ['10:00', '12:00', 'cours', 'Biologie'], ['14:00', '16:00', 'td', 'Physique'], ['16:00', '18:00', 'perso', 'Travail perso']] },
+            { nom: 'Mardi', note: 'Une demi-journée de TP, puis une première khôlle.', blocs: [['08:00', '12:00', 'tp', 'TP Biologie'], ['14:00', '16:00', 'cours', 'Chimie'], ['16:00', '17:00', 'kholle', 'Khôlle Maths'], ['17:00', '18:00', 'perso', 'Travail perso']] },
+            { nom: 'Mercredi', note: 'Maths le matin, du sport l\'après-midi.', blocs: [['08:00', '10:00', 'cours', 'Maths'], ['10:00', '12:00', 'td', 'Maths'], ['14:00', '16:00', 'cours', 'Sport (EPS)']] },
+            { nom: 'Jeudi', note: 'Sciences de la Terre, physique et langue vivante.', blocs: [['08:00', '10:00', 'cours', 'Géologie'], ['10:00', '12:00', 'cours', 'Physique'], ['14:00', '16:00', 'cours', 'Anglais'], ['16:00', '17:00', 'kholle', 'Khôlle Physique'], ['17:00', '18:00', 'perso', 'Travail perso']] },
+            { nom: 'Vendredi', note: 'Informatique, TP, et une khôlle pour finir.', blocs: [['08:00', '10:00', 'cours', 'Français-philo'], ['10:00', '12:00', 'td', 'Informatique'], ['14:00', '17:00', 'tp', 'TP Chimie'], ['17:00', '18:00', 'kholle', 'Khôlle Biologie']] },
+            { nom: 'Samedi', note: 'Le devoir surveillé : s\'entraîner aux conditions du concours.', blocs: [['08:00', '12:00', 'ds', 'DS (4 h)']] }
+        ]
+    },
+    TB: {
+        conclusion: 'Et après les cours ? Reprendre, apprendre, s\'entraîner… et se reposer.',
+        jours: [
+            { nom: 'Lundi', note: 'On démarre la semaine : cours et TD.', blocs: [['08:00', '10:00', 'cours', 'Maths'], ['10:00', '12:00', 'cours', 'Biologie'], ['14:00', '16:00', 'td', 'Physique-chimie'], ['16:00', '18:00', 'perso', 'Travail perso']] },
+            { nom: 'Mardi', note: 'Une demi-journée de TP, puis une première khôlle.', blocs: [['08:00', '12:00', 'tp', 'TP Biologie'], ['14:00', '16:00', 'cours', 'Physique-chimie'], ['16:00', '17:00', 'kholle', 'Khôlle Maths'], ['17:00', '18:00', 'perso', 'Travail perso']] },
+            { nom: 'Mercredi', note: 'Maths le matin, du sport l\'après-midi.', blocs: [['08:00', '10:00', 'cours', 'Maths'], ['10:00', '12:00', 'td', 'Maths'], ['14:00', '16:00', 'cours', 'Sport (EPS)']] },
+            { nom: 'Jeudi', note: 'Géologie, biologie et langue vivante.', blocs: [['08:00', '10:00', 'cours', 'Géologie'], ['10:00', '12:00', 'cours', 'Biologie'], ['14:00', '16:00', 'cours', 'Anglais'], ['16:00', '17:00', 'kholle', 'Khôlle Biologie'], ['17:00', '18:00', 'perso', 'Travail perso']] },
+            { nom: 'Vendredi', note: 'Informatique, TP, et une khôlle pour finir.', blocs: [['08:00', '10:00', 'cours', 'Français-philo'], ['10:00', '12:00', 'td', 'Informatique'], ['14:00', '17:00', 'tp', 'TP Chimie'], ['17:00', '18:00', 'kholle', 'Khôlle Physique-chimie']] },
+            { nom: 'Samedi', note: 'Le devoir surveillé : s\'entraîner aux conditions du concours.', blocs: [['08:00', '12:00', 'ds', 'DS (4 h)']] }
+        ]
+    }
+};
+
+function lancerSemaine(F) {
+    const D = SEMAINE[F];
+    if (!D) return;
+    const [H0, H1] = SEMAINE_HEURES, nbJ = D.jours.length;
+    const heure = s => { const p = s.split(':'); return +p[0] + (+p[1] || 0) / 60; };
+    const pct = h => ((h - H0) / (H1 - H0) * 100).toFixed(3);
+    // heures par catégorie et par jour, puis cumul
+    const parJour = D.jours.map(j => SEMAINE_CATEGORIES.map(c => j.blocs.filter(b => c[1].includes(b[2])).reduce((s, b) => s + heure(b[1]) - heure(b[0]), 0)));
+    const cumul = parJour.map((_, k) => SEMAINE_CATEGORIES.map((_, c) => parJour.slice(0, k + 1).reduce((s, p) => s + p[c], 0)));
+    const total = cumul[nbJ - 1], maxi = Math.max(...total, 1);
+    const fmt = h => (Math.round(h * 2) / 2).toString().replace('.', ',') + ' h';
+    const colonnes = 'grid-template-columns:2.25rem repeat(' + nbJ + ',minmax(0,1fr))';
+
+    let heures = '';
+    for (let h = H0; h <= H1; h++) heures += '<span style="position:absolute;right:3px;top:calc(' + pct(h) + '% - .45rem)">' + h + 'h</span>';
+    const corps =
+        '<div class="min-h-full flex flex-col lg:flex-row gap-3 p-3">' +
+            '<div class="flex-1 min-w-0 bg-white rounded-2xl p-2 flex flex-col">' +
+                '<div class="grid gap-1 mb-1" style="' + colonnes + '"><div></div>' +
+                    D.jours.map((j, k) => '<div class="sem-jour text-center text-xs md:text-sm font-extrabold py-1 rounded-lg bg-emerald-50 text-emerald-900" data-j="' + k + '">' + esc(j.nom) + '</div>').join('') + '</div>' +
+                '<div class="grid gap-1 flex-1" style="' + colonnes + ';min-height:26rem"><div class="relative text-[10px] text-gray-400">' + heures + '</div>' +
+                    D.jours.map((j, k) => '<div class="relative sem-col rounded-lg">' + j.blocs.map((b, n) =>
+                        '<div class="sem-bloc t-' + b[2] + '" data-j="' + k + '" title="' + esc(SEMAINE_TYPES[b[2]]) + '" style="top:' + pct(heure(b[0])) + '%;height:calc(' + (pct(heure(b[1])) - pct(heure(b[0]))).toFixed(3) + '% - 3px);transition-delay:' + (n * 140) + 'ms">' + esc(b[3]) + '</div>').join('') + '</div>').join('') + '</div>' +
+                '<div class="flex flex-wrap gap-x-4 gap-y-1 mt-2 px-1 text-xs text-gray-600">' +
+                    Object.keys(SEMAINE_TYPES).map(t => '<span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded t-' + t + '"></span>' + esc(SEMAINE_TYPES[t]) + '</span>').join('') + '</div>' +
+                '<p class="px-1 mt-1 text-[11px] text-gray-400">Emploi du temps indicatif.</p></div>' +
+            '<div class="lg:w-80 shrink-0 bg-white rounded-2xl p-4 flex flex-col gap-4">' +
+                '<div><p id="sem-jour" class="text-2xl md:text-3xl font-black text-emerald-800 leading-tight">&nbsp;</p><p id="sem-note" class="text-sm md:text-base text-gray-600 mt-1 min-h-[3.5rem]"></p></div>' +
+                '<div class="flex flex-col gap-3">' + SEMAINE_CATEGORIES.map((c, k) =>
+                    '<div><div class="flex justify-between text-xs md:text-sm font-bold text-gray-700"><span>' + esc(c[0]) + '</span><span id="sem-h-' + k + '">0 h</span></div>' +
+                    '<div class="h-3 rounded-full bg-gray-100 overflow-hidden mt-1"><div id="sem-b-' + k + '" class="sem-barre h-full rounded-full" style="width:0;background:' + c[2] + '"></div></div></div>').join('') + '</div>' +
+                '<p id="sem-fin" class="text-sm md:text-base font-bold text-amber-700 mt-auto min-h-[3rem]"></p></div></div>';
+
+    lancerScene({
+        titre: 'Une semaine type en ' + F, sousTitre: 'Cours, TP, khôlles et devoir surveillé : la semaine se construit jour après jour',
+        suivi: 'animation-semaine-' + F.toLowerCase(), nb: nbJ + 1, corps,
+        rendre: (i, animer, o) => {
+            o.querySelectorAll('.sem-bloc').forEach(b => b.classList.toggle('sem-on', +b.dataset.j <= i));
+            o.querySelectorAll('.sem-jour').forEach(h => h.classList.toggle('sem-jour-actif', +h.dataset.j === i));
+            const k = Math.min(i, nbJ - 1), vals = k < 0 ? SEMAINE_CATEGORIES.map(() => 0) : cumul[k];
+            document.getElementById('sem-jour').innerHTML = i < 0 ? '&nbsp;' : i >= nbJ ? 'Bilan de la semaine' : esc(D.jours[i].nom);
+            document.getElementById('sem-note').textContent = i < 0 ? '' : i >= nbJ ? 'Voici ce que représente une semaine, en heures au lycée.' : D.jours[i].note;
+            document.getElementById('sem-fin').textContent = i >= nbJ ? D.conclusion : '';
+            SEMAINE_CATEGORIES.forEach((c, n) => {
+                document.getElementById('sem-h-' + n).textContent = fmt(vals[n]);
+                document.getElementById('sem-b-' + n).style.width = (vals[n] / maxi * 100).toFixed(1) + '%';
+            });
+        }
+    });
+}
+
+// ---------- BCPST ou TB ? ----------
+// >>> Les lignes « Pour qui ? » et « Les matières » sont des exemples à vérifier ; les lignes concours, écoles et anciens viennent des données du site.
+const COMPARATIF = {
+    pour: {
+        BCPST: ['Bac général', 'souvent avec des spécialités scientifiques'],
+        TB:    ['Bac technologique', 'STAV ou STL']
+    },
+    matieres: {
+        BCPST: ['Maths', 'Physique', 'Chimie', 'Biologie', 'Géologie', 'Informatique', 'Français-philo', 'Anglais'],
+        TB:    ['Maths', 'Physique-chimie', 'Biologie', 'Géologie', 'Informatique', 'Français-philo', 'Anglais']
+    },
+    conclusion: 'Même objectif : une école à la fin de la prépa. Posez-nous vos questions !'
+};
+
+function lancerComparatif() {
+    const FIL = ['BCPST', 'TB'];
+    const stat = F => {
+        const banques = {}, types = {}, ecoles = new Set(), ys = [];
+        let anciens = 0;
+        ecolesData.forEach(e => {
+            const b = banqueDe(e, F);
+            if (b) banques[b] = (banques[b] || 0) + 1;
+            (e.anciens || []).forEach(a => {
+                if (!(a.classe || '').includes(F)) return;
+                anciens++; ecoles.add(e.nom);
+                const t = typeDe(e, F) || 'Autre';
+                types[t] = (types[t] || 0) + 1;
+                if (a.annee) ys.push(a.annee);
+            });
+        });
+        return { banques, types, anciens, nbEcoles: ecoles.size, debut: ys.length ? Math.min(...ys) : null, fin: ys.length ? Math.max(...ys) : null };
+    };
+    const S = { BCPST: stat('BCPST'), TB: stat('TB') };
+    const maxType = Math.max(1, ...FIL.flatMap(F => Object.values(S[F].types)));
+    const chip = (txt, fond, couleur) => '<span class="inline-block text-xs md:text-sm font-bold px-2.5 py-1 rounded-full ' + (fond ? 'text-white' : 'bg-emerald-50 text-emerald-900') + '" style="' + (fond ? 'background:' + fond : '') + '">' + esc(txt) + '</span>';
+    const plur = (n, s, p) => n + ' ' + (n > 1 ? p : s);
+
+    const LIGNES = [
+        ['Pour qui ?', F => '<p class="text-xl md:text-2xl font-extrabold text-emerald-950">' + esc(COMPARATIF.pour[F][0]) + '</p><p class="text-sm md:text-base text-gray-600 mt-1">' + esc(COMPARATIF.pour[F][1]) + '</p>'],
+        ['Les matières', F => '<div class="flex flex-wrap gap-1.5">' + COMPARATIF.matieres[F].map(m => chip(m)).join('') + '</div>'],
+        ['Les concours : les banques d\'épreuves', F => {
+            const b = BANQUES_ORDRE.filter(x => S[F].banques[x]);
+            return b.length ? '<div class="flex flex-wrap gap-1.5">' + b.map(x => chip(libelleBanque(x) + ' · ' + plur(S[F].banques[x], 'école', 'écoles'), couleurBanque(x))).join('') + '</div>' : '<p class="text-gray-500">—</p>';
+        }],
+        ['Où vont nos anciens ?', F => {
+            const t = Object.entries(S[F].types).sort((a, b) => b[1] - a[1]).slice(0, 6);
+            return t.length ? '<div class="flex flex-col gap-1.5">' + t.map(([nom, n]) =>
+                '<div class="flex items-center gap-2"><span class="w-24 md:w-28 text-xs md:text-sm font-bold text-gray-700 truncate">' + esc(nom) + '</span>' +
+                '<div class="flex-1 h-3.5 rounded-full bg-gray-100 overflow-hidden"><div class="cmp-barre h-full rounded-full" data-l="' + (n / maxType * 100).toFixed(1) + '" style="width:0;background:' + (typeColors[nom] || '#6b7280') + '"></div></div>' +
+                '<span class="w-8 text-right text-xs md:text-sm font-extrabold text-gray-800">' + n + '</span></div>').join('') + '</div>' : '<p class="text-gray-500">—</p>';
+        }],
+        ['Nos anciens sur la carte', F => '<p class="text-3xl md:text-4xl font-black text-emerald-800 leading-none">' + S[F].anciens + '</p>' +
+            '<p class="text-sm md:text-base text-gray-600 mt-1">' + plur(S[F].nbEcoles, 'école', 'écoles') + (S[F].debut ? ', promotions ' + S[F].debut + ' à ' + S[F].fin : '') + '</p>']
+    ];
+    const entete = (F, sous, couleur) => '<div class="rounded-2xl p-3 text-center text-white shadow-lg" style="background:' + couleur + '"><p class="text-3xl md:text-5xl font-black leading-none">' + F + '</p><p class="text-xs md:text-sm mt-1 opacity-90">' + sous + '</p></div>';
+    const corps =
+        '<div class="max-w-6xl mx-auto p-3 md:p-5">' +
+            '<div class="grid grid-cols-2 gap-3 mb-4">' + entete('BCPST', 'Biologie, Chimie, Physique et Sciences de la Terre', '#047857') + entete('TB', 'Technologie et Biologie', '#d97706') + '</div>' +
+            LIGNES.map(l => '<div class="cmp-row mb-4"><p class="text-center text-xs md:text-sm font-black uppercase tracking-widest text-amber-300 mb-1.5">' + esc(l[0]) + '</p>' +
+                '<div class="grid grid-cols-2 gap-3">' + FIL.map((F, k) => '<div class="bg-white rounded-2xl p-4 border-t-8 ' + (k ? 'border-amber-400' : 'border-emerald-600') + '" style="transition-delay:' + (k * 200) + 'ms">' + l[1](F) + '</div>').join('') + '</div></div>').join('') +
+            '<div class="cmp-row mb-4"><p class="text-center text-lg md:text-2xl font-extrabold text-amber-300 py-3">' + esc(COMPARATIF.conclusion) + '</p></div></div>';
+
+    lancerScene({
+        titre: 'BCPST ou TB ?', sousTitre: 'Les deux filières côte à côte : pour qui, matières, concours, écoles',
+        suivi: 'animation-comparatif', nb: LIGNES.length + 1, corps,
+        rendre: (i, animer, o) => {
+            const lignes = o.querySelectorAll('.cmp-row');
+            lignes.forEach((r, k) => {
+                r.classList.toggle('cmp-on', k <= i);
+                r.querySelectorAll('.cmp-barre').forEach(b => { b.style.width = k <= i ? b.dataset.l + '%' : '0'; });
+            });
+            if (animer && i >= 0 && lignes[i] && lignes[i].scrollIntoView) lignes[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            if (i <= 0 && o.querySelector('#scene-corps')) o.querySelector('#scene-corps').scrollTop = 0;
+        }
+    });
+}
+
+function lancerAnim(code) {   // code : « carte:BCPST », « semaine:TB » ou « compare: »
+    const p = code.split(':');
+    if (p[0] === 'carte') lancerAnimation(p[1]);
+    else if (p[0] === 'semaine') lancerSemaine(p[1]);
+    else if (p[0] === 'compare') lancerComparatif();
+}
+
+// ================================================================
 // MODE JPO / BORNE : accueil dédié, retour automatique, vidéos réservées à la borne
 // ================================================================
 const JPO_TUILES = [
@@ -2741,22 +3027,26 @@ function rendreAccueilJpo(c, chiffre, nbEcoles, nbPromos, nbVideos) {
     }
     const texte = t => F && t[0] === 'carte' ? 'Où sont nos anciens de ' + F + ' ? Touchez une école pour découvrir leurs parcours.'
                      : F && t[0] === 'stats' ? 'Où vont les étudiants de ' + F + ' après la prépa.' : t[3];
+    const filieres = F ? [F] : ['BCPST', 'TB'];   // animations proposées : carte et semaine type de chaque filière, puis le comparatif
+    const animations = filieres.map(fl => ['carte:' + fl, 'La carte des anciens ' + fl, 'Regardez-la se remplir, promotion après promotion.'])
+        .concat(filieres.map(fl => ['semaine:' + fl, 'Une semaine type en ' + fl, 'Cours, TP, khôlles et devoir surveillé, jour après jour.']))
+        .concat([['compare:', 'BCPST ou TB ?', 'Les deux filières côte à côte : pour qui, matières, concours, écoles.', true]]);
     c.innerHTML =
         '<div class="rounded-3xl bg-gradient-to-br from-emerald-800 to-emerald-600 text-white p-6 md:p-8 shadow-lg text-center">' +
             '<h2 class="text-3xl md:text-4xl font-extrabold text-amber-300 leading-tight">Que deviennent nos étudiants après la prépa ?</h2>' +
             '<p class="mt-3 text-base md:text-lg">Les parcours des anciens de ' + (F ? '<b>' + F + '</b>' : '<b>BCPST</b> et de <b>TB</b>') + ' du lycée Le Chesnoy</p></div>' +
         '<div class="grid grid-cols-3 gap-3 mt-4">' + chiffre(nbEcoles, 'écoles sur la carte') + chiffre(nbPromos, 'promotions') + chiffre(nbVideos, 'vidéos') + '</div>' +
-        '<div class="grid grid-cols-1 ' + (F ? '' : 'md:grid-cols-2 ') + 'gap-4 mt-4">' + (F ? [F] : ['BCPST', 'TB']).map(fl =>
-            '<button type="button" data-anim="' + fl + '" class="flex items-center gap-4 text-left bg-amber-400 hover:bg-amber-300 rounded-2xl shadow-md p-5 active:scale-[.99] transition-all">' +
-            '<span class="text-5xl" aria-hidden="true">▶</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">Animation ' + fl + '</span>' +
-            '<span class="block text-sm text-emerald-950/80 mt-1 leading-relaxed">Regardez la carte se remplir, promotion après promotion.</span></span></button>').join('') + '</div>' +
+        '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">' + animations.map(a =>
+            '<button type="button" data-anim="' + a[0] + '" class="flex items-center gap-4 text-left bg-amber-400 hover:bg-amber-300 rounded-2xl shadow-md p-5 active:scale-[.99] transition-all' + (a[3] ? ' md:col-span-2' : '') + '">' +
+            '<span class="text-5xl" aria-hidden="true">▶</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">' + a[1] + '</span>' +
+            '<span class="block text-sm text-emerald-950/80 mt-1 leading-relaxed">' + a[2] + '</span></span></button>').join('') + '</div>' +
         '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">' + JPO_TUILES.map(t =>
             '<button type="button" data-onglet="' + t[0] + '" class="flex items-center gap-4 text-left bg-white rounded-2xl border border-emerald-100 shadow-sm p-5 hover:bg-emerald-50 active:scale-[.99] transition-all">' +
             '<span class="text-5xl" aria-hidden="true">' + t[1] + '</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">' + t[2] + '</span>' +
             '<span class="block text-sm text-gray-600 mt-1 leading-relaxed">' + texte(t) + '</span></span></button>').join('') + '</div>' +
         '<p class="mt-5 text-center text-sm text-gray-500">Une question ? Posez-la aux enseignants et aux étudiants présents.</p>';
     c.querySelectorAll('[data-onglet]').forEach(b => b.onclick = () => changerOnglet(b.dataset.onglet));
-    c.querySelectorAll('[data-anim]').forEach(b => b.onclick = () => lancerAnimation(b.dataset.anim));
+    c.querySelectorAll('[data-anim]').forEach(b => b.onclick = () => lancerAnim(b.dataset.anim));
 }
 
 function jpoModaleOuverte() { return !document.getElementById('global-video-modal').classList.contains('hidden'); }
@@ -2765,7 +3055,7 @@ function jpoActivite() { jpoDerniere = Date.now(); }
 
 // Vrai si quelque chose a été modifié depuis l'accueil (onglet, filtre, fiche ouverte, carte déplacée, vidéo)
 function jpoAChange() {
-    if (document.getElementById('anim-overlay')) return false;   // l'animation tourne en boucle : pas de retour automatique
+    if (document.getElementById('anim-overlay') || document.getElementById('scene-overlay')) return false;   // l'animation tourne en boucle : pas de retour automatique
     return ongletCourant !== 'accueil' || jpoModaleOuverte() || ecoleActuelleObj !== null ||
         document.getElementById('search-bar').value.trim() !== '' || anneesSel.size > 0 || grandesEcolesSeules ||
         filiereSelectionnee !== (JPO_FILIERE || 'TOUT') || selectedBanqueTypes.size > 0 || map.getZoom() !== 5 ||
@@ -2940,9 +3230,10 @@ changerOnglet((HASH_INITIAL && HASH_INITIAL.length > 1) ? 'carte' : 'accueil', t
 filtrerTout();
 chargerEtat();
 if (MODE_JPO) jpoDemarrer();
-{   // ...?anim=bcpst ou ...?anim=tb : ouvre directement l'animation (avec ?mode=jpo&anim=bcpst, un écran qui tourne tout seul)
-    const pa = (new URLSearchParams(location.search).get('anim') || '').toUpperCase();
-    if (pa === 'BCPST' || pa === 'TB') lancerAnimation(pa);
+{   // ...?anim=bcpst | tb | semaine-bcpst | semaine-tb | compare : ouvre directement l'animation (avec ?mode=jpo, un écran qui tourne tout seul)
+    const pa = (new URLSearchParams(location.search).get('anim') || '').toLowerCase();
+    const code = { bcpst: 'carte:BCPST', tb: 'carte:TB', 'semaine-bcpst': 'semaine:BCPST', 'semaine-tb': 'semaine:TB', compare: 'compare:' }[pa];
+    if (code) lancerAnim(code);
 }
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});   // nécessaire à l'ajout à l'écran d'accueil
 
