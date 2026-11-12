@@ -3027,26 +3027,17 @@ function rendreAccueilJpo(c, chiffre, nbEcoles, nbPromos, nbVideos) {
     }
     const texte = t => F && t[0] === 'carte' ? 'Où sont nos anciens de ' + F + ' ? Touchez une école pour découvrir leurs parcours.'
                      : F && t[0] === 'stats' ? 'Où vont les étudiants de ' + F + ' après la prépa.' : t[3];
-    const filieres = F ? [F] : ['BCPST', 'TB'];   // animations proposées : carte et semaine type de chaque filière, puis le comparatif
-    const animations = filieres.map(fl => ['carte:' + fl, 'La carte des anciens ' + fl, 'Regardez-la se remplir, promotion après promotion.'])
-        .concat(filieres.map(fl => ['semaine:' + fl, 'Une semaine type en ' + fl, 'Cours, TP, khôlles et devoir surveillé, jour après jour.']))
-        .concat([['compare:', 'BCPST ou TB ?', 'Les deux filières côte à côte : pour qui, matières, concours, écoles.', true]]);
     c.innerHTML =
         '<div class="rounded-3xl bg-gradient-to-br from-emerald-800 to-emerald-600 text-white p-6 md:p-8 shadow-lg text-center">' +
             '<h2 class="text-3xl md:text-4xl font-extrabold text-amber-300 leading-tight">Que deviennent nos étudiants après la prépa ?</h2>' +
             '<p class="mt-3 text-base md:text-lg">Les parcours des anciens de ' + (F ? '<b>' + F + '</b>' : '<b>BCPST</b> et de <b>TB</b>') + ' du lycée Le Chesnoy</p></div>' +
         '<div class="grid grid-cols-3 gap-3 mt-4">' + chiffre(nbEcoles, 'écoles sur la carte') + chiffre(nbPromos, 'promotions') + chiffre(nbVideos, 'vidéos') + '</div>' +
-        '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">' + animations.map(a =>
-            '<button type="button" data-anim="' + a[0] + '" class="flex items-center gap-4 text-left bg-amber-400 hover:bg-amber-300 rounded-2xl shadow-md p-5 active:scale-[.99] transition-all' + (a[3] ? ' md:col-span-2' : '') + '">' +
-            '<span class="text-5xl" aria-hidden="true">▶</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">' + a[1] + '</span>' +
-            '<span class="block text-sm text-emerald-950/80 mt-1 leading-relaxed">' + a[2] + '</span></span></button>').join('') + '</div>' +
         '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">' + JPO_TUILES.map(t =>
             '<button type="button" data-onglet="' + t[0] + '" class="flex items-center gap-4 text-left bg-white rounded-2xl border border-emerald-100 shadow-sm p-5 hover:bg-emerald-50 active:scale-[.99] transition-all">' +
             '<span class="text-5xl" aria-hidden="true">' + t[1] + '</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">' + t[2] + '</span>' +
             '<span class="block text-sm text-gray-600 mt-1 leading-relaxed">' + texte(t) + '</span></span></button>').join('') + '</div>' +
         '<p class="mt-5 text-center text-sm text-gray-500">Une question ? Posez-la aux enseignants et aux étudiants présents.</p>';
     c.querySelectorAll('[data-onglet]').forEach(b => b.onclick = () => changerOnglet(b.dataset.onglet));
-    c.querySelectorAll('[data-anim]').forEach(b => b.onclick = () => lancerAnim(b.dataset.anim));
 }
 
 function jpoModaleOuverte() { return !document.getElementById('global-video-modal').classList.contains('hidden'); }
