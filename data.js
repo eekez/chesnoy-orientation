@@ -7651,5 +7651,11 @@ const videosData = [
         "titre": "Être vétérinaire",
         "lien": "https://youtu.be/H0o8ITLY4lM",
         "date_ajout": "2026-11-10"
+    },
+    {
+        "categorie": "Conférence Bordeaux Sciences Agro",
+        "titre": "Intégrer Bordeaux Sciences Agro après une prépa",
+        "lien": "https://vimeo.com/1245438461/ba4bccc0b9?share=copy&fl=cl&fe=ci",
+        "date_ajout": "2026-11-17"
     }
 ];

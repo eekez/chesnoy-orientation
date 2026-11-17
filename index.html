@@ -11,7 +11,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-title" content="Anciens Le Chesnoy">
     <title>Anciens BCPST & TB - Le Chesnoy</title>
-    <script>if (/(^|[?&])mode=jpo(&|$)/.test(location.search)) document.documentElement.classList.add('jpo');</script>
     <meta name="description" content="Découvrez les parcours et écoles intégrées par les anciens étudiants des filières BCPST et TB du lycée agricole Le Chesnoy.">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -81,38 +80,6 @@
             #tab-carte.sheet-reduit #btn-filtres-flottant { display: none; }
             #tab-carte.sheet-reduit #map-legend { bottom: 5.6rem !important; }
         }
-
-        /* ===== Mode JPO / borne (adresse ...?mode=jpo) ===== */
-        html.jpo { font-size: 118%; }
-        html.jpo #tab-btn-promos, html.jpo #tab-btn-ecoles, html.jpo #tab-btn-fiches { display: none; }
-        html.jpo nav[role="tablist"] { justify-content: center; }
-        html.jpo nav[role="tablist"] button { padding: 1rem 1.6rem; font-size: 0.95rem; }
-        html.jpo [class*="text-[9px]"]  { font-size: 11px !important; }
-        html.jpo [class*="text-[10px]"] { font-size: 12px !important; }
-        html.jpo [class*="text-[11px]"] { font-size: 13px !important; }
-
-        /* ===== Animation de la carte (promotion après promotion) ===== */
-        .anim-icone { background: transparent; border: 0; }
-        .anim-dot { position: relative; border-radius: 50%; border: 2px solid #fff; box-sizing: border-box; box-shadow: 0 1px 4px rgba(0,0,0,.35); opacity: .93; }
-        .anim-dot::after { content: ''; position: absolute; inset: -3px; border-radius: 50%; border: 3px solid currentColor; opacity: 0; pointer-events: none; }
-        .anim-dot.anim-new { animation: anim-pop .6s ease-out 1; }
-        .anim-dot.anim-new::after { animation: anim-ping 1.5s ease-out 1; }
-        @keyframes anim-pop  { 0% { transform: scale(.1); } 65% { transform: scale(1.5); } 100% { transform: scale(1); } }
-        @keyframes anim-ping { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(4.5); opacity: 0; } }
-
-        /* ===== Animations « semaine type » et « BCPST ou TB ? » ===== */
-        .scene-sans-anim *, .scene-sans-anim *::before { transition: none !important; }
-        .sem-col { background-color: #fafafa; background-image: linear-gradient(to bottom, #e5e7eb 1px, transparent 1px); background-size: 100% 10%; }
-        .sem-bloc { position: absolute; left: 2px; right: 2px; border-radius: .5rem; padding: .25rem .4rem; font-size: .72rem; font-weight: 800; line-height: 1.15; color: #fff; overflow: hidden;
-                    opacity: 0; transform: scale(.9) translateY(10px); transition: opacity .45s ease, transform .45s ease; }
-        .sem-bloc.sem-on { opacity: 1; transform: none; }
-        .t-cours { background: #059669; } .t-td { background: #0d9488; } .t-tp { background: #d97706; }
-        .t-kholle { background: #7c3aed; } .t-ds { background: #dc2626; } .t-perso { background: #6b7280; }
-        .sem-jour { transition: background-color .3s, color .3s; }
-        .sem-jour.sem-jour-actif { background: #fbbf24; color: #064e3b; }
-        .sem-barre, .cmp-barre { transition: width .9s ease; }
-        .cmp-row { opacity: 0; transform: translateY(16px); transition: opacity .5s ease, transform .5s ease; }
-        .cmp-row.cmp-on { opacity: 1; transform: none; }
     </style>
 </head>
 <body class="bg-gray-50 font-sans h-full flex flex-col">
@@ -126,7 +93,7 @@
         </div>
     </div>
     
-    <div id="header-actions" class="flex items-center gap-2 shrink-0">
+    <div class="flex items-center gap-2 shrink-0">
         <button id="btn-retour-accueil" onclick="reinitialiserFiltres()" 
                 aria-label="Retour"
                 class="hidden text-xs font-bold text-emerald-950 bg-amber-400 hover:bg-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shadow shrink-0">
@@ -327,7 +294,7 @@
         </div>
         <div class="aspect-video w-full bg-black">
             <iframe id="global-video-player" class="w-full h-full" src="" frameborder="0"
-                    allow="autoplay; encrypted-media; fullscreen" allowfullscreen title="Conférence ou forum d'anciens"></iframe>
+                    allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen title="Conférence ou forum d'anciens"></iframe>
         </div>
     </div>
 </div>
@@ -448,15 +415,6 @@ let grandesEcolesSeules = false;
 let ongletCourant = 'carte';
 let sousOngletVideo = 'forums';
 let statsFiliere = 'BCPST';
-
-// ---------- Mode JPO / borne (adresse ...?mode=jpo) ----------
-const MODE_JPO = document.documentElement.classList.contains('jpo');
-const ONGLETS_JPO = ['accueil', 'carte', 'videos', 'stats', 'concours'];   // onglets visibles à la borne
-const JPO_INACTIVITE_S = 60;          // retour à l'accueil après 60 s sans toucher l'écran
-const JPO_INACTIVITE_VIDEO_S = 300;   // 5 min si une vidéo est ouverte (le lecteur ne transmet pas les gestes)
-const JPO_AVERTISSEMENT_S = 10;       // compte à rebours affiché pendant les 10 dernières secondes
-// Version par filière : ...?mode=jpo&f=bcpst ou ...?mode=jpo&f=tb (sans « f », les deux filières sont proposées)
-const JPO_FILIERE = MODE_JPO ? ({ bcpst: 'BCPST', tb: 'TB' }[(new URLSearchParams(location.search).get('f') || '').toLowerCase()] || null) : null;
 
 // Types considérés comme NON « grande école » (ajouter ici 'BUT' etc. si besoin)
 const TYPES_NON_GRANDE_ECOLE = ['Fac', 'BUT', 'IUT', 'Université'];
@@ -721,8 +679,6 @@ function rendreAccueil() {
     ecolesData.forEach(e => (e.anciens || []).forEach(a => { if (aLien(a.lien_video)) liens.add(cleVideo(a.lien_video)); }));
     const chiffre = (val, lib) => '<div class="bg-white rounded-xl border border-gray-100 shadow-sm p-3 text-center"><p class="text-2xl font-extrabold text-emerald-700">' + val + '</p><p class="text-[11px] text-gray-500">' + lib + '</p></div>';
 
-    if (MODE_JPO) { rendreAccueilJpo(c, chiffre, nbEcoles, nbPromos, liens.size); return; }
-
     let h = '<div class="rounded-2xl bg-gradient-to-br from-emerald-800 to-emerald-600 text-white p-5 shadow-md">' +
         '<h2 class="text-xl font-extrabold text-amber-300">Bienvenue 👋</h2>' +
         '<p class="text-sm mt-2 leading-relaxed">Ce site rassemble les parcours des anciens étudiants de <b>BCPST</b> et de <b>TB</b> du lycée Le Chesnoy : où ils sont, ce qu\'ils font, et comment ils y sont arrivés.</p></div>' +
@@ -747,7 +703,6 @@ function rendreAccueil() {
 function changerOnglet(o, init) {
     const ONGLETS = ['accueil', 'carte', 'promos', 'ecoles', 'concours', 'videos', 'fiches', 'stats'];
     if (!ONGLETS.includes(o)) o = 'carte';
-    if (MODE_JPO && !ONGLETS_JPO.includes(o)) o = 'accueil';
     ongletCourant = o;
     if (!init) suivre('onglet-' + o);
     fermerModalGlobale();
@@ -1166,12 +1121,11 @@ const SOUS_ONGLETS_VIDEOS = [
 ];
 
 function carteVideo(titre, sous, lien, nouvelle, duo, titreComplet) {
-    const id = extraireIdYoutube(lien);
     const el = document.createElement('button');
     el.className = 'group text-left bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all overflow-hidden active:scale-[0.98]';
     el.innerHTML =
         '<div class="relative aspect-video bg-gradient-to-br from-emerald-700 to-emerald-900">' +
-            (id ? '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" onerror="this.remove()">' : '') +
+            vignetteVideoHtml(lien) +
             (nouvelle ? '<span class="absolute top-1.5 left-1.5 z-10 text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-red-600 text-white shadow">Nouveau</span>' : '') +
             (duo ? '<span class="absolute top-1.5 right-1.5 z-10 text-[9px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full bg-amber-400 text-emerald-950 shadow">👥 Duo</span>' : '') +
             '<span class="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-black/30 transition-colors">' +
@@ -1180,6 +1134,7 @@ function carteVideo(titre, sous, lien, nouvelle, duo, titreComplet) {
         '<div class="p-2.5"><p class="text-xs font-bold text-gray-900 leading-snug line-clamp-2">' + titre + '</p>' +
         (sous ? '<p class="text-[10px] text-gray-500 mt-0.5 ' + (duo ? 'line-clamp-2' : 'truncate') + '">' + sous + '</p>' : '') + '</div>';
     // titreComplet : pour un duo entre écoles différentes, la carte n'affiche que l'élève de l'école, la fenêtre de lecture cite les deux
+    chargerVignettesVimeo(el);
     el.setAttribute('aria-label', 'Lire : ' + (titreComplet || titre));
     if (duo) el.title = titre + (sous ? ' — ' + sous : '');
     el.onclick = () => ouvrirModalGlobale(lien, titreComplet || titre);
@@ -1195,16 +1150,17 @@ function rendreFaq(groupes, cont) {
         '<span class="min-w-0 text-left"><span class="block text-[10px] font-black uppercase tracking-widest text-emerald-700 mb-0.5">Question' + (nouvelle ? ' <span class="ml-1 align-middle text-[9px] px-1.5 py-0.5 rounded-full bg-red-600 text-white tracking-wider">Nouveau</span>' : '') + '</span>' +
         '<span class="block text-base md:text-lg font-extrabold text-emerald-950 leading-snug">' + titre + '</span></span>';
     const reponse = (v) => {
-        const id = extraireIdYoutube(v.lien), court = /\/shorts\//.test(v.lien);
+        const court = /\/shorts\//.test(v.lien);
         const b = document.createElement('button');
         b.className = 'group flex items-center gap-4 p-4 text-left w-full hover:bg-amber-50/60 transition-colors active:scale-[0.99]';
         b.setAttribute('aria-label', 'Voir la réponse en vidéo : ' + v.titre.replace(/"/g, '&quot;'));
         b.innerHTML =
             '<span class="relative shrink-0 overflow-hidden rounded-xl bg-gradient-to-br from-emerald-700 to-emerald-900 shadow ' + (court ? 'w-20 aspect-[9/16]' : 'w-40 aspect-video') + '">' +
-                (id ? '<img src="https://i.ytimg.com/vi/' + id + '/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" onerror="this.remove()">' : '') +
+                vignetteVideoHtml(v.lien) +
                 '<span class="absolute inset-0 flex items-center justify-center bg-black/15 group-hover:bg-black/30 transition-colors"><span class="w-9 h-9 rounded-full bg-white/90 text-red-600 flex items-center justify-center pl-0.5 shadow" aria-hidden="true">▶</span></span></span>' +
             '<span class="min-w-0"><span class="block text-[10px] font-black uppercase tracking-widest text-amber-600 mb-0.5">Réponse</span>' +
             '<span class="block text-sm font-bold text-gray-800">Voir la réponse en vidéo</span></span>';
+        chargerVignettesVimeo(b);
         b.onclick = () => ouvrirModalGlobale(v.lien, v.titre);
         return b;
     };
@@ -1395,7 +1351,7 @@ function verifierEtatInitial() {
     const isInitial = (
         search === "" &&
         anneesSel.size === 0 && !grandesEcolesSeules &&
-        filiereSelectionnee === (JPO_FILIERE || "TOUT") &&
+        filiereSelectionnee === "TOUT" &&
         selectedBanqueTypes.size === 0 &&
         ecoleActuelleObj === null &&
         isMapInitial
@@ -2331,8 +2287,43 @@ function extraireIdYoutube(url) {
     return (m && m[2].length === 11) ? m[2] : "";
 }
 
+// Vimeo : vimeo.com/ID, vimeo.com/ID/CLE (vidéo non répertoriée), player.vimeo.com/video/ID?h=CLE, vimeo.com/channels/x/ID…
+function extraireVimeo(url) {
+    if (!url) return null;
+    const s = url.toString();
+    const m = s.match(/vimeo\.com\/(?:[^?#]*\/)?(\d{5,})(?:\/([0-9a-f]{6,}))?/i);
+    if (!m) return null;
+    const q = s.match(/[?&]h=([0-9a-f]+)/i);
+    return { id: m[1], h: m[2] || (q ? q[1] : '') };
+}
+// Lecteur intégré pour un lien : YouTube (sans cookies) ou Vimeo (sans suivi) ; null si le lien n'est pas intégrable
+function infosLecteur(lien) {
+    const yt = extraireIdYoutube(lien);
+    if (yt) return { fournisseur: 'youtube', id: yt, src: 'https://www.youtube-nocookie.com/embed/' + yt + '?autoplay=1&rel=0&modestbranding=1&playsinline=1' };
+    const vm = extraireVimeo(lien);
+    if (vm) return { fournisseur: 'vimeo', id: vm.id, src: 'https://player.vimeo.com/video/' + vm.id + '?' + (vm.h ? 'h=' + vm.h + '&' : '') + 'autoplay=1&dnt=1&title=0&byline=0&portrait=0' };
+    return null;
+}
+// Vignette : YouTube la fournit directement ; pour Vimeo on la demande à l'API oEmbed (sans clé), sinon le fond vert reste.
+const cacheVignettesVimeo = new Map();
+function vignetteVideoHtml(lien) {
+    const yt = extraireIdYoutube(lien);
+    if (yt) return '<img src="https://i.ytimg.com/vi/' + yt + '/hqdefault.jpg" alt="" loading="lazy" class="w-full h-full object-cover" onerror="this.remove()">';
+    const vm = extraireVimeo(lien);
+    return vm ? '<img data-vimeo="' + vm.id + (vm.h ? '/' + vm.h : '') + '" alt="" class="w-full h-full object-cover hidden">' : '';
+}
+function chargerVignettesVimeo(racine) {
+    racine.querySelectorAll('img[data-vimeo]').forEach(img => {
+        const cle = img.dataset.vimeo;
+        if (!cacheVignettesVimeo.has(cle))
+            cacheVignettesVimeo.set(cle, fetch('https://vimeo.com/api/oembed.json?width=640&url=' + encodeURIComponent('https://vimeo.com/' + cle))
+                .then(r => r.ok ? r.json() : Promise.reject()).then(j => j.thumbnail_url || '').catch(() => ''));
+        cacheVignettesVimeo.get(cle).then(u => { if (u) { img.onerror = () => img.remove(); img.src = u; img.classList.remove('hidden'); } else img.remove(); });
+    });
+}
+
 function lancerVideo(lien, prenom) {
-    const videoId = extraireIdYoutube(lien);
+    const videoId = infosLecteur(lien);
 
     if (videoId) {
         const duo = participantsVideo(lien);
@@ -2347,12 +2338,12 @@ function lancerVideo(lien, prenom) {
 
 
 function ouvrirModalGlobale(lien, titre) {
-    const videoId = extraireIdYoutube(lien);
-    if (videoId) {
-        // Le titre d'un témoignage contient un prénom : on ne l'envoie pas, seul l'identifiant YouTube est enregistré
-        suivre('video-' + videoId, /^Témoignage de /.test(titre) ? 'Témoignage' : titre);
+    const lecteur = infosLecteur(lien);
+    if (lecteur) {
+        // Le titre d'un témoignage contient un prénom : on ne l'envoie pas, seul l'identifiant de la vidéo est enregistré
+        suivre('video-' + (lecteur.fournisseur === 'vimeo' ? 'vimeo-' : '') + lecteur.id, /^Témoignage de /.test(titre) ? 'Témoignage' : titre);
         document.getElementById('global-video-title-text').innerText = titre;
-		document.getElementById('global-video-player').src =    "https://www.youtube-nocookie.com/embed/" +    videoId +    "?autoplay=1&rel=0&modestbranding=1&playsinline=1";
+        document.getElementById('global-video-player').src = lecteur.src;
         document.getElementById('global-video-modal').classList.remove('hidden');
         document.getElementById('global-video-modal').focus();
     } else { window.open(lien, '_blank'); }
@@ -2380,7 +2371,7 @@ function reinitialiserFiltresSeuls() {
     anneesSel.clear(); renderAnneeChips(); setGrandesEcoles(false, false);
     toutDeselectionnerBanques();
     fermerEcole();
-    changerFiliere(JPO_FILIERE || 'TOUT');
+    changerFiliere('TOUT');
 }
 
 function reinitialiserFiltres() {
@@ -2389,7 +2380,7 @@ function reinitialiserFiltres() {
     if (ongletCourant !== 'carte') changerOnglet('carte');
     toutDeselectionnerBanques();
     fermerEcole(); // ferme la fiche et remet la vue de la carte par défaut
-    changerFiliere(JPO_FILIERE || 'TOUT');
+    changerFiliere('TOUT');
 }
 
 // ================================================================
@@ -2575,591 +2566,6 @@ function toggleVideoCategorie(btn) {
 }
 
 // ================================================================
-// ANIMATION : la carte se remplit promotion après promotion (une version par filière : BCPST, TB)
-// ================================================================
-let ANIM = null;
-const ANIM_PAS_MS = 1500;    // durée d'une promotion à l'écran (÷ 2 en vitesse ×2)
-const ANIM_FIN_MS = 7000;    // pause sur le bilan final avant de recommencer
-
-function animIcone(n, couleur, neuf) {
-    const s = Math.round(Math.min(34, 12 + 5 * (Math.sqrt(n) - 1)));   // le point grossit avec le nombre d'anciens
-    return L.divIcon({ className: 'anim-icone', iconSize: [s, s], iconAnchor: [s / 2, s / 2],
-        html: '<div class="anim-dot' + (neuf ? ' anim-new' : '') + '" style="width:' + s + 'px;height:' + s + 'px;background:' + couleur + ';color:' + couleur + '"></div>' });
-}
-
-function lancerAnimation(F) {
-    try {
-        fermerScene();
-        fermerAnimation();
-        const donnees = [];
-        ecolesData.forEach(e => {
-            const par = {};
-            let tot = 0;
-            (e.anciens || []).forEach(a => { if (a.annee && (a.classe || '').includes(F)) { par[a.annee] = (par[a.annee] || 0) + 1; tot++; } });
-            if (tot && Array.isArray(e.coords)) donnees.push({ e, par, couleur: typeColors[typeDe(e, F)] || '#6b7280' });
-        });
-        const ys = donnees.flatMap(d => Object.keys(d.par).map(Number));
-        if (!ys.length) return;
-        const annees = [];
-        for (let y = Math.min(...ys); y <= Math.max(...ys); y++) annees.push(y);
-        donnees.forEach(d => { let c = 0; d.cum = annees.map(y => (c += d.par[y] || 0)); });   // cumul d'anciens par école, promotion après promotion
-
-        const bouton = 'shrink-0 text-xs md:text-sm font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-2 rounded-lg transition-all';
-        const o = document.createElement('div');
-        o.id = 'anim-overlay';
-        o.className = 'fixed inset-0 z-[9000] bg-emerald-950 flex flex-col';
-        o.setAttribute('role', 'dialog'); o.setAttribute('aria-modal', 'true'); o.setAttribute('aria-label', 'Animation de la carte ' + F);
-        const types = [...new Set(donnees.map(d => typeDe(d.e, F)).filter(Boolean))];
-        o.innerHTML =
-            '<div class="bg-emerald-800 text-white px-4 py-3 flex items-center gap-3 border-b-4 border-amber-400 shrink-0">' +
-                '<div class="min-w-0 flex-1"><p class="text-xl md:text-3xl font-extrabold text-amber-300 truncate">' + esc(F) + ' : où sont nos anciens ?</p>' +
-                '<p class="text-xs md:text-sm truncate">Promotion après promotion, la carte se remplit</p></div>' +
-                '<button type="button" id="anim-vitesse" class="' + bouton + '" aria-label="Changer la vitesse">×1</button>' +
-                '<button type="button" id="anim-fermer" class="' + bouton + '">✕ Fermer</button></div>' +
-            '<div class="relative flex-1 min-h-0"><div id="anim-map" class="absolute inset-0"></div>' +
-                '<div class="absolute top-3 left-3 z-[1100] bg-white/95 rounded-2xl shadow-lg px-5 py-3">' +
-                    '<p id="anim-annee" class="text-4xl md:text-6xl font-black text-emerald-800 leading-none">&nbsp;</p>' +
-                    '<p id="anim-nouveaux" class="text-sm md:text-base font-bold text-amber-600 mt-1 h-6"></p>' +
-                    '<div class="mt-2 flex gap-6"><div><p id="anim-nb-ecoles" class="text-2xl md:text-3xl font-extrabold text-emerald-700">0</p><p class="text-xs text-gray-500">écoles</p></div>' +
-                    '<div><p id="anim-nb-anciens" class="text-2xl md:text-3xl font-extrabold text-emerald-700">0</p><p class="text-xs text-gray-500">anciens sur la carte</p></div></div></div>' +
-                '<div class="absolute bottom-6 left-3 z-[1100] bg-white/95 rounded-xl shadow px-3 py-2 text-xs flex flex-wrap gap-x-4 gap-y-1 max-w-[70%]">' +
-                    types.map(t => '<span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded-full" style="background:' + typeColors[t] + '"></span>' + esc(t) + '</span>').join('') + '</div></div>' +
-            '<div class="bg-emerald-900 px-4 py-3 flex items-center gap-3 shrink-0">' +
-                '<button type="button" id="anim-lecture" class="' + bouton + ' w-12" aria-label="Pause ou lecture">⏸</button>' +
-                '<button type="button" id="anim-rejouer" class="' + bouton + '" aria-label="Rejouer depuis le début">↺ Rejouer</button>' +
-                '<span class="text-white text-xs md:text-sm font-bold">' + annees[0] + '</span>' +
-                '<input id="anim-curseur" type="range" min="0" max="' + (annees.length - 1) + '" value="0" class="flex-1 accent-amber-400" aria-label="Promotion affichée">' +
-                '<span class="text-white text-xs md:text-sm font-bold">' + annees[annees.length - 1] + '</span></div>';
-        document.body.appendChild(o);
-
-        const carte = L.map('anim-map', { zoomControl: false, zoomSnap: 0.25 });
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png?key=cb1_2ca2_1_ecce94fae6c4dfd24b87b466', {
-            attribution: '© OpenStreetMap contributors © CARTO'
-        }).addTo(carte);
-        const bornes = L.latLngBounds([[41.2, -5.2], [51.2, 9.7]]);   // France métropolitaine, élargie aux écoles proches (Belgique, Suisse…)
-        donnees.map(d => d.e.coords).filter(c => c[0] > 35 && c[0] < 60 && c[1] > -12 && c[1] < 20).forEach(c => bornes.extend(c));
-        carte.fitBounds(bornes, { padding: [20, 20] });
-
-        ANIM = { F, donnees, annees, carte, overlay: o, marqueurs: new Map(), i: -1, timer: null, pause: false, rapide: false, bornes };
-        requestAnimationFrame(() => { if (ANIM && ANIM.carte === carte) { carte.invalidateSize(); carte.fitBounds(bornes, { padding: [20, 20] }); } });
-
-        document.getElementById('anim-fermer').onclick = fermerAnimation;
-        document.getElementById('anim-lecture').onclick = animBasculerLecture;
-        document.getElementById('anim-rejouer').onclick = () => { ANIM.pause = false; animMajBoutons(); animRecommencer(); animPlanifier(); };
-        document.getElementById('anim-vitesse').onclick = () => { ANIM.rapide = !ANIM.rapide; animMajBoutons(); animPlanifier(); };
-        document.getElementById('anim-curseur').oninput = ev => { ANIM.pause = true; animMajBoutons(); clearTimeout(ANIM.timer); animAfficher(+ev.target.value, false); };
-        suivre('animation-' + F.toLowerCase(), 'Animation ' + F);
-
-        ANIM.timer = setTimeout(() => { if (ANIM) { animAfficher(0, true); animPlanifier(); } }, 500);
-    } catch (err) { signalerErreur('animation ' + F, err); fermerAnimation(); }
-}
-
-function animMajBoutons() {
-    document.getElementById('anim-lecture').textContent = ANIM.pause ? '▶' : '⏸';
-    document.getElementById('anim-vitesse').textContent = ANIM.rapide ? '×2' : '×1';
-}
-
-// Affiche l'état de la carte à la fin de la promotion i ; animer = faire « pousser » les nouveaux points
-function animAfficher(i, animer) {
-    const A = ANIM;
-    if (!A) return;
-    let ecoles = 0, anciens = 0, nouveaux = 0;
-    A.donnees.forEach(d => {
-        const n = d.cum[i], avant = i > 0 ? d.cum[i - 1] : 0;
-        const m = A.marqueurs.get(d);
-        if (!n) { if (m) { m.marker.remove(); A.marqueurs.delete(d); } return; }
-        ecoles++; anciens += n; nouveaux += n - avant;
-        const info = esc(d.e.nom) + ' · ' + n + (n > 1 ? ' anciens' : ' ancien');
-        if (!m) {
-            const marker = L.marker(d.e.coords, { icon: animIcone(n, d.couleur, animer), keyboard: false }).addTo(A.carte);
-            marker.bindTooltip(info);
-            A.marqueurs.set(d, { marker, n });
-        } else if (m.n !== n) {
-            m.marker.setIcon(animIcone(n, d.couleur, animer && n > m.n));
-            m.marker.setTooltipContent(info);
-            m.n = n;
-        }
-    });
-    A.i = i;
-    document.getElementById('anim-annee').textContent = 'Promotion ' + A.annees[i];
-    document.getElementById('anim-nouveaux').textContent = nouveaux > 0 ? '+ ' + nouveaux + (nouveaux > 1 ? ' étudiants cette année' : ' étudiant cette année') : '';
-    document.getElementById('anim-nb-ecoles').textContent = ecoles;
-    document.getElementById('anim-nb-anciens').textContent = anciens;
-    document.getElementById('anim-curseur').value = i;
-}
-
-function animVider() { ANIM.marqueurs.forEach(m => m.marker.remove()); ANIM.marqueurs.clear(); }
-function animRecommencer() { animVider(); animAfficher(0, true); }
-
-function animPlanifier() {
-    const A = ANIM;
-    if (!A) return;
-    clearTimeout(A.timer);
-    if (A.pause) return;
-    const dernier = A.i >= A.annees.length - 1;
-    A.timer = setTimeout(() => {
-        if (ANIM !== A) return;
-        if (dernier) animRecommencer(); else animAfficher(A.i + 1, true);
-        animPlanifier();
-    }, dernier ? ANIM_FIN_MS : ANIM_PAS_MS / (A.rapide ? 2 : 1));
-}
-
-function animBasculerLecture() {
-    const A = ANIM;
-    if (!A) return;
-    A.pause = !A.pause;
-    if (!A.pause && A.i >= A.annees.length - 1) animRecommencer();
-    animMajBoutons();
-    animPlanifier();
-}
-
-function fermerAnimation() {
-    const A = ANIM;
-    if (!A) return;
-    clearTimeout(A.timer);
-    try { A.carte.remove(); } catch (e) { /* carte déjà détruite */ }
-    A.overlay.remove();
-    ANIM = null;
-}
-
-document.addEventListener('keydown', ev => {
-    if (!ANIM) return;
-    if (ev.key === 'Escape') fermerAnimation();
-    else if (ev.key === ' ' && !/^(BUTTON|INPUT)$/.test(ev.target.tagName)) { ev.preventDefault(); animBasculerLecture(); }
-    else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
-        ANIM.pause = true; animMajBoutons(); clearTimeout(ANIM.timer);
-        animAfficher(Math.max(0, Math.min(ANIM.annees.length - 1, ANIM.i + (ev.key === 'ArrowRight' ? 1 : -1))), false);
-    }
-});
-
-// ================================================================
-// ANIMATIONS « UNE SEMAINE TYPE » (BCPST, TB) ET « BCPST OU TB ? »
-// Lecteur commun : étapes successives, pause, rejouer, curseur, vitesse ; boucle automatique.
-// ================================================================
-let SCENE = null;
-const SCENE_PAS_MS = 2200;    // durée d'une étape à l'écran (÷ 2 en vitesse ×2)
-const SCENE_FIN_MS = 8000;    // pause sur la dernière étape avant de recommencer
-
-function lancerScene(cfg) {
-    try {
-        fermerScene();
-        fermerAnimation();
-        const bouton = 'shrink-0 text-xs md:text-sm font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-2 rounded-lg transition-all';
-        const o = document.createElement('div');
-        o.id = 'scene-overlay';
-        o.className = 'fixed inset-0 z-[9000] bg-emerald-950 flex flex-col';
-        o.setAttribute('role', 'dialog'); o.setAttribute('aria-modal', 'true'); o.setAttribute('aria-label', cfg.titre);
-        o.innerHTML =
-            '<div class="bg-emerald-800 text-white px-4 py-3 flex items-center gap-3 border-b-4 border-amber-400 shrink-0">' +
-                '<div class="min-w-0 flex-1"><p class="text-xl md:text-3xl font-extrabold text-amber-300 truncate">' + esc(cfg.titre) + '</p>' +
-                '<p class="text-xs md:text-sm truncate">' + esc(cfg.sousTitre) + '</p></div>' +
-                '<button type="button" id="scene-vitesse" class="' + bouton + '" aria-label="Changer la vitesse">×1</button>' +
-                '<button type="button" id="scene-fermer" class="' + bouton + '">✕ Fermer</button></div>' +
-            '<div id="scene-corps" class="flex-1 min-h-0 overflow-y-auto">' + cfg.corps + '</div>' +
-            '<div class="bg-emerald-900 px-4 py-3 flex items-center gap-3 shrink-0">' +
-                '<button type="button" id="scene-lecture" class="' + bouton + ' w-12" aria-label="Pause ou lecture">⏸</button>' +
-                '<button type="button" id="scene-rejouer" class="' + bouton + '" aria-label="Rejouer depuis le début">↺ Rejouer</button>' +
-                '<input id="scene-curseur" type="range" min="0" max="' + (cfg.nb - 1) + '" value="0" class="flex-1 accent-amber-400" aria-label="Étape affichée"></div>';
-        document.body.appendChild(o);
-        SCENE = { cfg, nb: cfg.nb, overlay: o, i: -1, timer: null, pause: false, rapide: false };
-
-        document.getElementById('scene-fermer').onclick = fermerScene;
-        document.getElementById('scene-lecture').onclick = sceneBasculerLecture;
-        document.getElementById('scene-rejouer').onclick = () => { SCENE.pause = false; sceneMajBoutons(); sceneRecommencer(); scenePlanifier(); };
-        document.getElementById('scene-vitesse').onclick = () => { SCENE.rapide = !SCENE.rapide; sceneMajBoutons(); scenePlanifier(); };
-        document.getElementById('scene-curseur').oninput = ev => { SCENE.pause = true; sceneMajBoutons(); clearTimeout(SCENE.timer); sceneAfficher(+ev.target.value, false); };
-        suivre(cfg.suivi, cfg.titre);
-
-        sceneAfficher(-1, false);
-        SCENE.timer = setTimeout(() => { if (SCENE) { sceneAfficher(0, true); scenePlanifier(); } }, 500);
-    } catch (err) { signalerErreur('animation ' + cfg.titre, err); fermerScene(); }
-}
-
-function sceneMajBoutons() {
-    document.getElementById('scene-lecture').textContent = SCENE.pause ? '▶' : '⏸';
-    document.getElementById('scene-vitesse').textContent = SCENE.rapide ? '×2' : '×1';
-}
-
-// i = -1 : écran vide ; animer = false : saut direct, sans transition
-function sceneAfficher(i, animer) {
-    const S = SCENE;
-    if (!S) return;
-    S.overlay.classList.toggle('scene-sans-anim', !animer);
-    void S.overlay.offsetWidth;   // applique l'état « sans transition » avant de changer l'affichage
-    S.i = i;
-    S.cfg.rendre(i, animer, S.overlay);
-    document.getElementById('scene-curseur').value = Math.max(0, i);
-    if (animer) S.overlay.classList.remove('scene-sans-anim');
-}
-
-function sceneRecommencer() { sceneAfficher(-1, false); sceneAfficher(0, true); }
-
-function scenePlanifier() {
-    const S = SCENE;
-    if (!S) return;
-    clearTimeout(S.timer);
-    if (S.pause) return;
-    const dernier = S.i >= S.nb - 1;
-    S.timer = setTimeout(() => {
-        if (SCENE !== S) return;
-        if (dernier) sceneRecommencer(); else sceneAfficher(S.i + 1, true);
-        scenePlanifier();
-    }, dernier ? SCENE_FIN_MS : SCENE_PAS_MS / (S.rapide ? 2 : 1));
-}
-
-function sceneBasculerLecture() {
-    const S = SCENE;
-    if (!S) return;
-    S.pause = !S.pause;
-    if (!S.pause && S.i >= S.nb - 1) sceneRecommencer();
-    sceneMajBoutons();
-    scenePlanifier();
-}
-
-function fermerScene() {
-    const S = SCENE;
-    if (!S) return;
-    clearTimeout(S.timer);
-    S.overlay.remove();
-    SCENE = null;
-}
-
-document.addEventListener('keydown', ev => {
-    if (!SCENE) return;
-    if (ev.key === 'Escape') fermerScene();
-    else if (ev.key === ' ' && !/^(BUTTON|INPUT)$/.test(ev.target.tagName)) { ev.preventDefault(); sceneBasculerLecture(); }
-    else if (ev.key === 'ArrowRight' || ev.key === 'ArrowLeft') {
-        SCENE.pause = true; sceneMajBoutons(); clearTimeout(SCENE.timer);
-        sceneAfficher(Math.max(0, Math.min(SCENE.nb - 1, SCENE.i + (ev.key === 'ArrowRight' ? 1 : -1))), false);
-    }
-});
-
-// ---------- Une semaine type ----------
-// >>> À REMPLACER par les vrais emplois du temps (ce sont des exemples). Bloc : [début, fin, type, intitulé]
-// types : cours, td, tp, kholle, ds, perso (travail personnel au lycée). Plage affichée : 8 h – 18 h.
-const SEMAINE_HEURES = [8, 18];
-const SEMAINE_TYPES = { cours: 'Cours', td: 'TD', tp: 'TP', kholle: 'Khôlle', ds: 'Devoir surveillé', perso: 'Travail personnel' };
-const SEMAINE_CATEGORIES = [   // regroupement pour les totaux : [libellé, types, couleur]
-    ['Cours et TD', ['cours', 'td'], '#059669'], ['TP', ['tp'], '#d97706'], ['Khôlles', ['kholle'], '#7c3aed'],
-    ['Devoir surveillé', ['ds'], '#dc2626'], ['Travail personnel au lycée', ['perso'], '#6b7280']
-];
-const SEMAINE = {
-    BCPST: {
-        conclusion: 'Et après les cours ? Reprendre, apprendre, s\'entraîner… et se reposer.',
-        jours: [
-            { nom: 'Lundi', note: 'On démarre la semaine : cours et TD.', blocs: [['08:00', '10:00', 'cours', 'Maths'], ['10:00', '12:00', 'cours', 'Biologie'], ['14:00', '16:00', 'td', 'Physique'], ['16:00', '18:00', 'perso', 'Travail perso']] },
-            { nom: 'Mardi', note: 'Une demi-journée de TP, puis une première khôlle.', blocs: [['08:00', '12:00', 'tp', 'TP Biologie'], ['14:00', '16:00', 'cours', 'Chimie'], ['16:00', '17:00', 'kholle', 'Khôlle Maths'], ['17:00', '18:00', 'perso', 'Travail perso']] },
-            { nom: 'Mercredi', note: 'Maths le matin, du sport l\'après-midi.', blocs: [['08:00', '10:00', 'cours', 'Maths'], ['10:00', '12:00', 'td', 'Maths'], ['14:00', '16:00', 'cours', 'Sport (EPS)']] },
-            { nom: 'Jeudi', note: 'Sciences de la Terre, physique et langue vivante.', blocs: [['08:00', '10:00', 'cours', 'Géologie'], ['10:00', '12:00', 'cours', 'Physique'], ['14:00', '16:00', 'cours', 'Anglais'], ['16:00', '17:00', 'kholle', 'Khôlle Physique'], ['17:00', '18:00', 'perso', 'Travail perso']] },
-            { nom: 'Vendredi', note: 'Informatique, TP, et une khôlle pour finir.', blocs: [['08:00', '10:00', 'cours', 'Français-philo'], ['10:00', '12:00', 'td', 'Informatique'], ['14:00', '17:00', 'tp', 'TP Chimie'], ['17:00', '18:00', 'kholle', 'Khôlle Biologie']] },
-            { nom: 'Samedi', note: 'Le devoir surveillé : s\'entraîner aux conditions du concours.', blocs: [['08:00', '12:00', 'ds', 'DS (4 h)']] }
-        ]
-    },
-    TB: {
-        conclusion: 'Et après les cours ? Reprendre, apprendre, s\'entraîner… et se reposer.',
-        jours: [
-            { nom: 'Lundi', note: 'On démarre la semaine : cours et TD.', blocs: [['08:00', '10:00', 'cours', 'Maths'], ['10:00', '12:00', 'cours', 'Biologie'], ['14:00', '16:00', 'td', 'Physique-chimie'], ['16:00', '18:00', 'perso', 'Travail perso']] },
-            { nom: 'Mardi', note: 'Une demi-journée de TP, puis une première khôlle.', blocs: [['08:00', '12:00', 'tp', 'TP Biologie'], ['14:00', '16:00', 'cours', 'Physique-chimie'], ['16:00', '17:00', 'kholle', 'Khôlle Maths'], ['17:00', '18:00', 'perso', 'Travail perso']] },
-            { nom: 'Mercredi', note: 'Maths le matin, du sport l\'après-midi.', blocs: [['08:00', '10:00', 'cours', 'Maths'], ['10:00', '12:00', 'td', 'Maths'], ['14:00', '16:00', 'cours', 'Sport (EPS)']] },
-            { nom: 'Jeudi', note: 'Géologie, biologie et langue vivante.', blocs: [['08:00', '10:00', 'cours', 'Géologie'], ['10:00', '12:00', 'cours', 'Biologie'], ['14:00', '16:00', 'cours', 'Anglais'], ['16:00', '17:00', 'kholle', 'Khôlle Biologie'], ['17:00', '18:00', 'perso', 'Travail perso']] },
-            { nom: 'Vendredi', note: 'Informatique, TP, et une khôlle pour finir.', blocs: [['08:00', '10:00', 'cours', 'Français-philo'], ['10:00', '12:00', 'td', 'Informatique'], ['14:00', '17:00', 'tp', 'TP Chimie'], ['17:00', '18:00', 'kholle', 'Khôlle Physique-chimie']] },
-            { nom: 'Samedi', note: 'Le devoir surveillé : s\'entraîner aux conditions du concours.', blocs: [['08:00', '12:00', 'ds', 'DS (4 h)']] }
-        ]
-    }
-};
-
-function lancerSemaine(F) {
-    const D = SEMAINE[F];
-    if (!D) return;
-    const [H0, H1] = SEMAINE_HEURES, nbJ = D.jours.length;
-    const heure = s => { const p = s.split(':'); return +p[0] + (+p[1] || 0) / 60; };
-    const pct = h => ((h - H0) / (H1 - H0) * 100).toFixed(3);
-    // heures par catégorie et par jour, puis cumul
-    const parJour = D.jours.map(j => SEMAINE_CATEGORIES.map(c => j.blocs.filter(b => c[1].includes(b[2])).reduce((s, b) => s + heure(b[1]) - heure(b[0]), 0)));
-    const cumul = parJour.map((_, k) => SEMAINE_CATEGORIES.map((_, c) => parJour.slice(0, k + 1).reduce((s, p) => s + p[c], 0)));
-    const total = cumul[nbJ - 1], maxi = Math.max(...total, 1);
-    const fmt = h => (Math.round(h * 2) / 2).toString().replace('.', ',') + ' h';
-    const colonnes = 'grid-template-columns:2.25rem repeat(' + nbJ + ',minmax(0,1fr))';
-
-    let heures = '';
-    for (let h = H0; h <= H1; h++) heures += '<span style="position:absolute;right:3px;top:calc(' + pct(h) + '% - .45rem)">' + h + 'h</span>';
-    const corps =
-        '<div class="min-h-full flex flex-col lg:flex-row gap-3 p-3">' +
-            '<div class="flex-1 min-w-0 bg-white rounded-2xl p-2 flex flex-col">' +
-                '<div class="grid gap-1 mb-1" style="' + colonnes + '"><div></div>' +
-                    D.jours.map((j, k) => '<div class="sem-jour text-center text-xs md:text-sm font-extrabold py-1 rounded-lg bg-emerald-50 text-emerald-900" data-j="' + k + '">' + esc(j.nom) + '</div>').join('') + '</div>' +
-                '<div class="grid gap-1 flex-1" style="' + colonnes + ';min-height:26rem"><div class="relative text-[10px] text-gray-400">' + heures + '</div>' +
-                    D.jours.map((j, k) => '<div class="relative sem-col rounded-lg">' + j.blocs.map((b, n) =>
-                        '<div class="sem-bloc t-' + b[2] + '" data-j="' + k + '" title="' + esc(SEMAINE_TYPES[b[2]]) + '" style="top:' + pct(heure(b[0])) + '%;height:calc(' + (pct(heure(b[1])) - pct(heure(b[0]))).toFixed(3) + '% - 3px);transition-delay:' + (n * 140) + 'ms">' + esc(b[3]) + '</div>').join('') + '</div>').join('') + '</div>' +
-                '<div class="flex flex-wrap gap-x-4 gap-y-1 mt-2 px-1 text-xs text-gray-600">' +
-                    Object.keys(SEMAINE_TYPES).map(t => '<span class="flex items-center gap-1.5"><span class="inline-block w-3 h-3 rounded t-' + t + '"></span>' + esc(SEMAINE_TYPES[t]) + '</span>').join('') + '</div>' +
-                '<p class="px-1 mt-1 text-[11px] text-gray-400">Emploi du temps indicatif.</p></div>' +
-            '<div class="lg:w-80 shrink-0 bg-white rounded-2xl p-4 flex flex-col gap-4">' +
-                '<div><p id="sem-jour" class="text-2xl md:text-3xl font-black text-emerald-800 leading-tight">&nbsp;</p><p id="sem-note" class="text-sm md:text-base text-gray-600 mt-1 min-h-[3.5rem]"></p></div>' +
-                '<div class="flex flex-col gap-3">' + SEMAINE_CATEGORIES.map((c, k) =>
-                    '<div><div class="flex justify-between text-xs md:text-sm font-bold text-gray-700"><span>' + esc(c[0]) + '</span><span id="sem-h-' + k + '">0 h</span></div>' +
-                    '<div class="h-3 rounded-full bg-gray-100 overflow-hidden mt-1"><div id="sem-b-' + k + '" class="sem-barre h-full rounded-full" style="width:0;background:' + c[2] + '"></div></div></div>').join('') + '</div>' +
-                '<p id="sem-fin" class="text-sm md:text-base font-bold text-amber-700 mt-auto min-h-[3rem]"></p></div></div>';
-
-    lancerScene({
-        titre: 'Une semaine type en ' + F, sousTitre: 'Cours, TP, khôlles et devoir surveillé : la semaine se construit jour après jour',
-        suivi: 'animation-semaine-' + F.toLowerCase(), nb: nbJ + 1, corps,
-        rendre: (i, animer, o) => {
-            o.querySelectorAll('.sem-bloc').forEach(b => b.classList.toggle('sem-on', +b.dataset.j <= i));
-            o.querySelectorAll('.sem-jour').forEach(h => h.classList.toggle('sem-jour-actif', +h.dataset.j === i));
-            const k = Math.min(i, nbJ - 1), vals = k < 0 ? SEMAINE_CATEGORIES.map(() => 0) : cumul[k];
-            document.getElementById('sem-jour').innerHTML = i < 0 ? '&nbsp;' : i >= nbJ ? 'Bilan de la semaine' : esc(D.jours[i].nom);
-            document.getElementById('sem-note').textContent = i < 0 ? '' : i >= nbJ ? 'Voici ce que représente une semaine, en heures au lycée.' : D.jours[i].note;
-            document.getElementById('sem-fin').textContent = i >= nbJ ? D.conclusion : '';
-            SEMAINE_CATEGORIES.forEach((c, n) => {
-                document.getElementById('sem-h-' + n).textContent = fmt(vals[n]);
-                document.getElementById('sem-b-' + n).style.width = (vals[n] / maxi * 100).toFixed(1) + '%';
-            });
-        }
-    });
-}
-
-// ---------- BCPST ou TB ? ----------
-// >>> Les lignes « Pour qui ? » et « Les matières » sont des exemples à vérifier ; les lignes concours, écoles et anciens viennent des données du site.
-const COMPARATIF = {
-    pour: {
-        BCPST: ['Bac général', 'souvent avec des spécialités scientifiques'],
-        TB:    ['Bac technologique', 'STAV ou STL']
-    },
-    matieres: {
-        BCPST: ['Maths', 'Physique', 'Chimie', 'Biologie', 'Géologie', 'Informatique', 'Français-philo', 'Anglais'],
-        TB:    ['Maths', 'Physique-chimie', 'Biologie', 'Géologie', 'Informatique', 'Français-philo', 'Anglais']
-    },
-    conclusion: 'Même objectif : une école à la fin de la prépa. Posez-nous vos questions !'
-};
-
-function lancerComparatif() {
-    const FIL = ['BCPST', 'TB'];
-    const stat = F => {
-        const banques = {}, types = {}, ecoles = new Set(), ys = [];
-        let anciens = 0;
-        ecolesData.forEach(e => {
-            const b = banqueDe(e, F);
-            if (b) banques[b] = (banques[b] || 0) + 1;
-            (e.anciens || []).forEach(a => {
-                if (!(a.classe || '').includes(F)) return;
-                anciens++; ecoles.add(e.nom);
-                const t = typeDe(e, F) || 'Autre';
-                types[t] = (types[t] || 0) + 1;
-                if (a.annee) ys.push(a.annee);
-            });
-        });
-        return { banques, types, anciens, nbEcoles: ecoles.size, debut: ys.length ? Math.min(...ys) : null, fin: ys.length ? Math.max(...ys) : null };
-    };
-    const S = { BCPST: stat('BCPST'), TB: stat('TB') };
-    const maxType = Math.max(1, ...FIL.flatMap(F => Object.values(S[F].types)));
-    const chip = (txt, fond, couleur) => '<span class="inline-block text-xs md:text-sm font-bold px-2.5 py-1 rounded-full ' + (fond ? 'text-white' : 'bg-emerald-50 text-emerald-900') + '" style="' + (fond ? 'background:' + fond : '') + '">' + esc(txt) + '</span>';
-    const plur = (n, s, p) => n + ' ' + (n > 1 ? p : s);
-
-    const LIGNES = [
-        ['Pour qui ?', F => '<p class="text-xl md:text-2xl font-extrabold text-emerald-950">' + esc(COMPARATIF.pour[F][0]) + '</p><p class="text-sm md:text-base text-gray-600 mt-1">' + esc(COMPARATIF.pour[F][1]) + '</p>'],
-        ['Les matières', F => '<div class="flex flex-wrap gap-1.5">' + COMPARATIF.matieres[F].map(m => chip(m)).join('') + '</div>'],
-        ['Les concours : les banques d\'épreuves', F => {
-            const b = BANQUES_ORDRE.filter(x => S[F].banques[x]);
-            return b.length ? '<div class="flex flex-wrap gap-1.5">' + b.map(x => chip(libelleBanque(x) + ' · ' + plur(S[F].banques[x], 'école', 'écoles'), couleurBanque(x))).join('') + '</div>' : '<p class="text-gray-500">—</p>';
-        }],
-        ['Où vont nos anciens ?', F => {
-            const t = Object.entries(S[F].types).sort((a, b) => b[1] - a[1]).slice(0, 6);
-            return t.length ? '<div class="flex flex-col gap-1.5">' + t.map(([nom, n]) =>
-                '<div class="flex items-center gap-2"><span class="w-24 md:w-28 text-xs md:text-sm font-bold text-gray-700 truncate">' + esc(nom) + '</span>' +
-                '<div class="flex-1 h-3.5 rounded-full bg-gray-100 overflow-hidden"><div class="cmp-barre h-full rounded-full" data-l="' + (n / maxType * 100).toFixed(1) + '" style="width:0;background:' + (typeColors[nom] || '#6b7280') + '"></div></div>' +
-                '<span class="w-8 text-right text-xs md:text-sm font-extrabold text-gray-800">' + n + '</span></div>').join('') + '</div>' : '<p class="text-gray-500">—</p>';
-        }],
-        ['Nos anciens sur la carte', F => '<p class="text-3xl md:text-4xl font-black text-emerald-800 leading-none">' + S[F].anciens + '</p>' +
-            '<p class="text-sm md:text-base text-gray-600 mt-1">' + plur(S[F].nbEcoles, 'école', 'écoles') + (S[F].debut ? ', promotions ' + S[F].debut + ' à ' + S[F].fin : '') + '</p>']
-    ];
-    const entete = (F, sous, couleur) => '<div class="rounded-2xl p-3 text-center text-white shadow-lg" style="background:' + couleur + '"><p class="text-3xl md:text-5xl font-black leading-none">' + F + '</p><p class="text-xs md:text-sm mt-1 opacity-90">' + sous + '</p></div>';
-    const corps =
-        '<div class="max-w-6xl mx-auto p-3 md:p-5">' +
-            '<div class="grid grid-cols-2 gap-3 mb-4">' + entete('BCPST', 'Biologie, Chimie, Physique et Sciences de la Terre', '#047857') + entete('TB', 'Technologie et Biologie', '#d97706') + '</div>' +
-            LIGNES.map(l => '<div class="cmp-row mb-4"><p class="text-center text-xs md:text-sm font-black uppercase tracking-widest text-amber-300 mb-1.5">' + esc(l[0]) + '</p>' +
-                '<div class="grid grid-cols-2 gap-3">' + FIL.map((F, k) => '<div class="bg-white rounded-2xl p-4 border-t-8 ' + (k ? 'border-amber-400' : 'border-emerald-600') + '" style="transition-delay:' + (k * 200) + 'ms">' + l[1](F) + '</div>').join('') + '</div></div>').join('') +
-            '<div class="cmp-row mb-4"><p class="text-center text-lg md:text-2xl font-extrabold text-amber-300 py-3">' + esc(COMPARATIF.conclusion) + '</p></div></div>';
-
-    lancerScene({
-        titre: 'BCPST ou TB ?', sousTitre: 'Les deux filières côte à côte : pour qui, matières, concours, écoles',
-        suivi: 'animation-comparatif', nb: LIGNES.length + 1, corps,
-        rendre: (i, animer, o) => {
-            const lignes = o.querySelectorAll('.cmp-row');
-            lignes.forEach((r, k) => {
-                r.classList.toggle('cmp-on', k <= i);
-                r.querySelectorAll('.cmp-barre').forEach(b => { b.style.width = k <= i ? b.dataset.l + '%' : '0'; });
-            });
-            if (animer && i >= 0 && lignes[i] && lignes[i].scrollIntoView) lignes[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-            if (i <= 0 && o.querySelector('#scene-corps')) o.querySelector('#scene-corps').scrollTop = 0;
-        }
-    });
-}
-
-function lancerAnim(code) {   // code : « carte:BCPST », « semaine:TB » ou « compare: »
-    const p = code.split(':');
-    if (p[0] === 'carte') lancerAnimation(p[1]);
-    else if (p[0] === 'semaine') lancerSemaine(p[1]);
-    else if (p[0] === 'compare') lancerComparatif();
-}
-
-// ================================================================
-// MODE JPO / BORNE : accueil dédié, retour automatique, vidéos réservées à la borne
-// ================================================================
-const JPO_TUILES = [
-    ['carte',    '🗺', 'La carte',      `Où sont nos anciens ? Touchez une école pour découvrir leurs parcours.`],
-    ['videos',   '🎬', 'Les vidéos',    `Des anciens étudiants racontent leur parcours ; forums et réponses aux questions que l'on se pose.`],
-    ['stats',    '📊', 'Les chiffres',  `Où vont les étudiants après la prépa, filière par filière.`],
-    ['concours', '🏆', 'Les concours',  `Comprendre en quelques minutes comment on entre dans une école.`]
-];
-// Les vidéos ne se regardent qu'ici : toute ouverture d'une page vidéo dans un nouvel onglet est refusée
-const JPO_HOTES_VIDEO = /(youtube\.com|youtu\.be|youtube-nocookie\.com|vimeo\.com|dailymotion\.com|instagram\.com|tiktok\.com|facebook\.com|fb\.watch)/i;
-const jpoFenetres = [];
-let jpoDerniere = Date.now();
-
-function rendreAccueilJpo(c, chiffre, nbEcoles, nbPromos, nbVideos) {
-    c.className = 'max-w-5xl mx-auto p-4 md:p-8';
-    const F = JPO_FILIERE;
-    if (F) {   // version par filière : écoles et promotions de la filière (les vidéos restent communes aux deux)
-        const mien = a => (a.classe || '').includes(F);
-        nbEcoles = ecolesData.filter(e => (e.anciens || []).some(mien)).length;
-        nbPromos = new Set(tousEtudiants().filter(x => mien(x.a)).map(x => x.annee).filter(Boolean)).size;
-    }
-    const texte = t => F && t[0] === 'carte' ? 'Où sont nos anciens de ' + F + ' ? Touchez une école pour découvrir leurs parcours.'
-                     : F && t[0] === 'stats' ? 'Où vont les étudiants de ' + F + ' après la prépa.' : t[3];
-    c.innerHTML =
-        '<div class="rounded-3xl bg-gradient-to-br from-emerald-800 to-emerald-600 text-white p-6 md:p-8 shadow-lg text-center">' +
-            '<h2 class="text-3xl md:text-4xl font-extrabold text-amber-300 leading-tight">Que deviennent nos étudiants après la prépa ?</h2>' +
-            '<p class="mt-3 text-base md:text-lg">Les parcours des anciens de ' + (F ? '<b>' + F + '</b>' : '<b>BCPST</b> et de <b>TB</b>') + ' du lycée Le Chesnoy</p></div>' +
-        '<div class="grid grid-cols-3 gap-3 mt-4">' + chiffre(nbEcoles, 'écoles sur la carte') + chiffre(nbPromos, 'promotions') + chiffre(nbVideos, 'vidéos') + '</div>' +
-        '<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">' + JPO_TUILES.map(t =>
-            '<button type="button" data-onglet="' + t[0] + '" class="flex items-center gap-4 text-left bg-white rounded-2xl border border-emerald-100 shadow-sm p-5 hover:bg-emerald-50 active:scale-[.99] transition-all">' +
-            '<span class="text-5xl" aria-hidden="true">' + t[1] + '</span><span class="min-w-0"><span class="block text-xl font-extrabold text-emerald-950">' + t[2] + '</span>' +
-            '<span class="block text-sm text-gray-600 mt-1 leading-relaxed">' + texte(t) + '</span></span></button>').join('') + '</div>' +
-        '<p class="mt-5 text-center text-sm text-gray-500">Une question ? Posez-la aux enseignants et aux étudiants présents.</p>';
-    c.querySelectorAll('[data-onglet]').forEach(b => b.onclick = () => changerOnglet(b.dataset.onglet));
-}
-
-function jpoModaleOuverte() { return !document.getElementById('global-video-modal').classList.contains('hidden'); }
-function jpoDelaiMs() { return (jpoModaleOuverte() ? JPO_INACTIVITE_VIDEO_S : JPO_INACTIVITE_S) * 1000; }
-function jpoActivite() { jpoDerniere = Date.now(); }
-
-// Vrai si quelque chose a été modifié depuis l'accueil (onglet, filtre, fiche ouverte, carte déplacée, vidéo)
-function jpoAChange() {
-    if (document.getElementById('anim-overlay') || document.getElementById('scene-overlay')) return false;   // l'animation tourne en boucle : pas de retour automatique
-    return ongletCourant !== 'accueil' || jpoModaleOuverte() || ecoleActuelleObj !== null ||
-        document.getElementById('search-bar').value.trim() !== '' || anneesSel.size > 0 || grandesEcolesSeules ||
-        filiereSelectionnee !== (JPO_FILIERE || 'TOUT') || selectedBanqueTypes.size > 0 || map.getZoom() !== 5 ||
-        statsFiliere !== (JPO_FILIERE || 'BCPST') || etatConcours.filiere !== (JPO_FILIERE || 'BCPST') || etatConcours.sel.size > 0 || etatConcours.q !== '';
-}
-
-function jpoMessage(texte) {
-    let m = document.getElementById('jpo-message');
-    if (!m) {
-        m = document.createElement('div');
-        m.id = 'jpo-message';
-        m.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-[9996] bg-emerald-900 text-white font-bold text-sm md:text-base px-5 py-3 rounded-full shadow-xl';
-        document.body.appendChild(m);
-    }
-    m.textContent = texte;
-    clearTimeout(m._t);
-    m._t = setTimeout(() => m.remove(), 4000);
-}
-
-function jpoAvertissement(secondes) {
-    let b = document.getElementById('jpo-avertissement');
-    if (secondes == null) { if (b) b.remove(); return; }
-    if (!b) {
-        b = document.createElement('button');
-        b.id = 'jpo-avertissement'; b.type = 'button';
-        b.className = 'fixed bottom-4 left-1/2 -translate-x-1/2 z-[9995] bg-amber-400 text-emerald-950 font-bold text-sm md:text-base px-5 py-3 rounded-full shadow-xl active:scale-95';
-        document.body.appendChild(b);
-    }
-    b.textContent = 'Toujours là ? Retour à l\'accueil dans ' + secondes + ' s — touchez ici pour continuer';
-}
-
-// Filière affichée par défaut dans les statistiques et les concours : celle de la version (sinon BCPST) ; sélection du sélecteur de concours effacée
-function jpoFiliereParDefaut() {
-    statsFiliere = JPO_FILIERE || 'BCPST';
-    etatConcours.filiere = JPO_FILIERE || 'BCPST';
-    etatConcours.sel.clear();
-    etatConcours.q = '';
-}
-
-function jpoFermerFenetres() { while (jpoFenetres.length) { try { jpoFenetres.pop().close(); } catch (e) { /* déjà fermée */ } } }
-
-function jpoRemiseAZero() {
-    jpoDerniere = Date.now();
-    jpoAvertissement(null);
-    try {
-        jpoFermerFenetres();
-        fermerModalGlobale();                    // coupe aussi la lecture de la vidéo
-        sousOngletVideo = 'forums'; jpoFiliereParDefaut();
-        reinitialiserFiltresSeuls();             // recherche, filtres, fiche ouverte, carte recentrée
-        changerOnglet('accueil', true);          // true : pas d'évènement de suivi pour un retour automatique
-        sauvegarderEtat();
-        document.querySelectorAll('main, section').forEach(s => { s.scrollTop = 0; });
-    } catch (err) { signalerErreur('remise à zéro JPO', err); }
-}
-
-function jpoTick() {
-    if (!jpoAChange()) { jpoAvertissement(null); return; }
-    const reste = jpoDelaiMs() - (Date.now() - jpoDerniere);
-    if (reste <= 0) jpoRemiseAZero();
-    else if (reste <= JPO_AVERTISSEMENT_S * 1000) jpoAvertissement(Math.ceil(reste / 1000));
-    else jpoAvertissement(null);
-}
-
-function jpoDemarrer() {
-    jpoFiliereParDefaut();
-    if (JPO_FILIERE) {
-        changerFiliere(JPO_FILIERE);   // carte : seule la filière de la version est affichée par défaut
-        document.title = 'Anciens ' + JPO_FILIERE + ' - Le Chesnoy';
-        document.querySelectorAll('header p').forEach(p => { if (/Où sont nos anciens/.test(p.textContent)) p.textContent += ' · ' + JPO_FILIERE; });
-    }
-    // Nouvelles fenêtres : on garde une référence pour les fermer au retour à l'accueil, et on refuse les pages vidéo
-    const ouvrir = window.open.bind(window);
-    window.open = function (url) {
-        if (JPO_HOTES_VIDEO.test(String(url || ''))) { jpoMessage('Cette vidéo se regarde uniquement sur cette borne.'); return null; }
-        const w = ouvrir.apply(window, arguments);
-        if (w) jpoFenetres.push(w);
-        return w;
-    };
-    document.addEventListener('click', ev => {
-        const a = ev.target.closest && ev.target.closest('a[target="_blank"]');
-        if (!a || !a.href) return;
-        ev.preventDefault();
-        window.open(a.href, '_blank');
-    }, true);
-
-    // Lecteur vidéo verrouillé : le lecteur ne peut ouvrir aucune fenêtre (logo, « Regarder sur YouTube »),
-    // et un voile transparent recouvre le bandeau du haut (titre, partage, copier le lien)
-    const lecteur = document.getElementById('global-video-player');
-    lecteur.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-presentation');
-    const zone = lecteur.parentElement;
-    zone.style.position = 'relative';
-    const voile = document.createElement('div');
-    voile.style.cssText = 'position:absolute;left:0;right:0;top:0;height:18%;z-index:2';
-    zone.appendChild(voile);
-    document.addEventListener('contextmenu', ev => ev.preventDefault());
-
-    // Bouton plein écran (le navigateur l'exige déclenché par un geste ; F11 fait la même chose)
-    const zoneBoutons = document.getElementById('header-actions');
-    if (zoneBoutons && document.fullscreenEnabled) {
-        const p = document.createElement('button');
-        p.type = 'button';
-        p.className = 'text-xs md:text-sm font-bold text-amber-200 hover:text-white border border-amber-400/50 hover:border-amber-300 px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 shrink-0';
-        p.innerHTML = '<span aria-hidden="true">⛶</span><span>Plein écran</span>';
-        p.onclick = () => { document.documentElement.requestFullscreen().catch(() => {}); };
-        zoneBoutons.prepend(p);
-        document.addEventListener('fullscreenchange', () => p.classList.toggle('hidden', !!document.fullscreenElement));
-    }
-
-    ['pointerdown', 'keydown', 'wheel', 'touchstart', 'mousemove'].forEach(e => document.addEventListener(e, jpoActivite, { passive: true, capture: true }));
-    setInterval(jpoTick, 1000);
-}
-
-// ================================================================
 // INITIALISATION
 // ================================================================
 mettreAJourBanques();
@@ -3220,12 +2626,6 @@ renderAnneeChips();
 changerOnglet((HASH_INITIAL && HASH_INITIAL.length > 1) ? 'carte' : 'accueil', true);   // accueil par défaut, carte si le lien contient des filtres
 filtrerTout();
 chargerEtat();
-if (MODE_JPO) jpoDemarrer();
-{   // ...?anim=bcpst | tb | semaine-bcpst | semaine-tb | compare : ouvre directement l'animation (avec ?mode=jpo, un écran qui tourne tout seul)
-    const pa = (new URLSearchParams(location.search).get('anim') || '').toLowerCase();
-    const code = { bcpst: 'carte:BCPST', tb: 'carte:TB', 'semaine-bcpst': 'semaine:BCPST', 'semaine-tb': 'semaine:TB', compare: 'compare:' }[pa];
-    if (code) lancerAnim(code);
-}
 if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) navigator.serviceWorker.register('sw.js').catch(() => {});   // nécessaire à l'ajout à l'écran d'accueil
 
 </script>
