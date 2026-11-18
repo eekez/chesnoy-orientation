@@ -7653,8 +7653,8 @@ const videosData = [
         "date_ajout": "2026-11-10"
     },
     {
-        "categorie": "Conférence Bordeaux Sciences Agro",
-        "titre": "Intégrer Bordeaux Sciences Agro après une prépa",
+        "categorie": "Webinaire écoles 2026/2027",
+        "titre": "Intégrer Bordeaux Sciences Agro",
         "lien": "https://vimeo.com/1245438461/ba4bccc0b9?share=copy&fl=cl&fe=ci",
         "date_ajout": "2026-11-17"
     }
