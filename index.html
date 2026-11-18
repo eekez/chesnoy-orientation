@@ -629,14 +629,14 @@ const SECTIONS_ACCUEIL = [
     ['promos',   '🎓', 'Promotions',        `Les anciens promotion par promotion : où ils sont allés et ce qu'ils font ensuite. Recherche par prénom, école ou métier.`],
     ['ecoles',   '🏫', 'Écoles',            `Les écoles classées par banque et par concours, avec les coefficients des épreuves.`],
     ['concours', '🏆', 'Concours',          `Les concours expliqués simplement : les banques, un outil « quelles banques pour mes écoles ? » et un glossaire.`],
-    ['videos',   '🎬', 'Vidéos',            `Témoignages d'anciens, forums des anciens, conférences et réponses aux questions fréquentes.`],
+    ['videos',   '🎬', 'Vidéos',            `Témoignages d'anciens, forums des anciens, conférences, webinaires et réponses aux questions fréquentes.`],
     ['fiches',   '📄', 'Fiches de poste',   `Des fiches qui décrivent le métier exercé par d'anciens étudiants.`],
     ['stats',    '📊', 'Statistiques',      `Où vont les étudiants après la prépa : grandes écoles, fac, réorientations, 5/2…`]
 ];
 const DEMARRAGES_ACCUEIL = [
     ['concours', '🌱', `Je découvre les concours`,       `Je suis en 1re année et je ne sais pas par où commencer`],
     ['carte',    '📍', `J'ai une école en tête`,         `Voir où sont allés les anciens et ce qu'ils y font`],
-    ['videos',   '🎧', `Je veux entendre des anciens`,   `Témoignages, forums et conférences en vidéo`]
+    ['videos',   '🎧', `Je veux entendre des anciens`,   `Témoignages, forums, conférences et webinaires en vidéo`]
 ];
 let invitationInstallation = null;   // évènement « beforeinstallprompt » (Android / Chrome)
 window.addEventListener('beforeinstallprompt', ev => { ev.preventDefault(); invitationInstallation = ev; majBlocInstaller(); });
@@ -762,8 +762,8 @@ function videosRecentes() {
     }));
     VIDEOS_CATEGORISEES.forEach(c => (c.videos || []).forEach(v => {
         if (estRecente(v.date)) {
-            const r = SOUS_ONGLETS_VIDEOS.find(x => !x.temoignages && x.test(c.categorie));
-            liste.push({ lien: v.lien, titre: v.titre, sous: c.categorie, date: v.date, rubrique: r ? r.id : 'forums', temoignage: false });
+            const r = rubriqueVideo(c.categorie, v.titre);
+            liste.push({ lien: v.lien, titre: v.titre, sous: c.categorie, date: v.date, rubrique: r || 'forums', temoignage: false });
         }
     }));
     return liste.sort((x, y) => y.date.localeCompare(x.date));
@@ -1115,10 +1115,25 @@ function rendreFiches() {
 // ---------- Onglet Vidéos ----------
 const SOUS_ONGLETS_VIDEOS = [
     { id: 'forums',      label: 'Forums',      icone: '🎤', test: c => /forum/i.test(c) },
-    { id: 'conferences', label: 'Conférences', icone: '🎓', test: c => /conf/i.test(c) },
+    { id: 'conferences', label: 'Conférences', icone: '🎓', test: c => /conf|webinai?re|webinar/i.test(c) },
     { id: 'faq',         label: 'FAQ',         icone: '❓', test: c => /faq/i.test(c) },
     { id: 'temoignages', label: 'Témoignages', icone: '🗣️', temoignages: true }
 ];
+
+// Une vidéo dont le titre contient « webinaire » va dans la rubrique « Conférences », quelle que soit sa catégorie ;
+// sinon, c'est le nom de sa catégorie (colonne « categorie » de l'onglet « Videos ») qui décide de la rubrique.
+const estWebinaire = txt => /webinai?re|webinar/i.test(txt || '');
+function rubriqueVideo(categorie, titre) {
+    if (estWebinaire(titre)) return 'conferences';
+    const r = SOUS_ONGLETS_VIDEOS.find(x => !x.temoignages && x.test(categorie));
+    return r ? r.id : null;
+}
+function groupesVideos(sousOnglet) {
+    return VIDEOS_CATEGORISEES
+        .map(c => ({ titre: c.categorie, videos: c.videos.filter(v => rubriqueVideo(c.categorie, v.titre) === sousOnglet.id)
+                                                   .map(v => ({ titre: v.titre, sous: '', lien: v.lien, nouvelle: estRecente(v.date) })) }))
+        .filter(g => g.videos.length);
+}
 
 function carteVideo(titre, sous, lien, nouvelle, duo, titreComplet) {
     const el = document.createElement('button');
@@ -1243,8 +1258,7 @@ function rendreVideos() {
     if (s.temoignages) {
         groupes = groupesTemoignages();
     } else {
-        groupes = VIDEOS_CATEGORISEES.filter(c => s.test(c.categorie))
-            .map(c => ({ titre: c.categorie, videos: c.videos.map(v => ({ titre: v.titre, sous: '', lien: v.lien, nouvelle: estRecente(v.date) })) }));
+        groupes = groupesVideos(s);
     }
 
     const cont = document.getElementById('video-grid');
